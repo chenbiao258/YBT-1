@@ -1,0 +1,14 @@
+
+
+本地队列
+define qlocal(DATA)
+
+远程队列:REMOTE.DATA.R
+指向队列：DATA.R   指向队列管理器：TEST_RQM
+
+define qremote(REMOTE.DATA.R) rname(DATA.R) rqmname(DAPIZ063) xmitq(TEST.R)
+
+传输队列
+define qlocal(TEST.R) usage(xmitq)
+
+创建发送方通道：define channel(DAPIZ063) chltype(sdr) conname('DAP004A(10114)') xmitq(TEST.R) trptype(tcp)
