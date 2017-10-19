@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.MenuExtDao">
+
+ 
+ <insert id="addBean" parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean" >
+    insert into MENU
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parUid != null" >
+       par_uid,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuDesc != null" >
+        menu_desc,
+      </if>
+      <if test="menuStatus != null" >
+       menu_status,
+      </if>
+      <if test="menuLink != null" >
+       menu_link, 
+      </if>
+      <if test="menuIndex != null" >
+        menu_index,
+      </if>
+      <if test="tSUid != null" >
+       T_S_uid,
+      </if>
+      <if test="meddlemenu != null" >
+       meddle_menu,
+      </if>
+      <if test="meddlemenuname != null" >
+        meddle_menu_name, 
+      </if>
+      <if test="crtTime != null" >
+        crt_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+      <if test=" submenuname!= null" >
+        SUB_MENU_NAME,
+      </if>
+      <if test=" submenu!= null" >
+        SUB_MENU,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parUid != null" >
+        #{parUid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null" >
+        #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        #{menuStatus,jdbcType=CHAR},
+      </if>
+      <if test="menuLink != null" >
+        #{menuLink,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIndex != null" >
+        #{menuIndex,jdbcType=DECIMAL},
+      </if>
+      <if test="tSUid != null" >
+        #{tSUid,jdbcType=VARCHAR},
+      </if>
+      <if test="meddlemenu != null" >
+        #{meddlemenu},
+      </if>
+      <if test="meddlemenuname != null" >
+        #{meddlemenuname,jdbcType=CHAR},
+      </if>
+      <if test="crtTime != null" >
+        #{crtTime,jdbcType=DATE},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=DATE},
+      </if>
+      <if test="submenuname!= null" >
+        #{submenuname,jdbcType=VARCHAR},
+      </if>
+      <if test="submenu != null" >
+        #{submenu,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  	<update id="updateBean" parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean" >
+    update MENU
+    <set >
+      <if test="parUid != null" >
+        par_uid = #{parUid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null" >
+        menu_desc = #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        menu_status = #{menuStatus,jdbcType=CHAR},
+      </if>
+      <if test="menuLink != null" >
+       menu_link = #{menuLink,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIndex != null" >
+        menu_index = #{menuIndex,jdbcType=DECIMAL},
+      </if>
+      <if test="tSUid != null" >
+        T_S_uid = #{tSUid,jdbcType=VARCHAR},
+      </if>
+      <if test="meddlemenu != null" >
+        meddle_menu = #{meddlemenu},
+      </if>
+      <if test="meddlemenuname != null" >
+        meddle_menu_name = #{meddlemenuname,jdbcType=CHAR},
+      </if>
+      <if test="crtTime != null" >
+        crt_time = #{crtTime,jdbcType=DATE},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=DATE},
+      </if>
+      <if test="submenuname!= null" >
+        SUB_MENU_NAME=#{submenuname,jdbcType=VARCHAR},
+      </if>
+      <if test="submenu != null" >
+        SUB_MENU=#{submenu,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    
+    <resultMap id="sb" type="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="par_uid" jdbcType="VARCHAR" property="parUid" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="menu_desc" jdbcType="VARCHAR" property="menuDesc" />
+    <result column="menu_status" jdbcType="CHAR" property="menuStatus" />
+    <result column="menu_link" jdbcType="VARCHAR" property="menuLink" />
+    <result column="menu_index" jdbcType="INTEGER" property="menuIndex" />
+    <result column="T_S_uid" jdbcType="VARCHAR" property="operatorUid" />
+    <result column="meddle_menu" jdbcType="INTEGER" property="meddlemenu" />
+    <result column="meddle_menu_name" jdbcType="CHAR" property="meddlemenuname" />
+    <result column="crt_time" jdbcType="TIMESTAMP" property="crtTime" />
+    <result column="upd_time" jdbcType="TIMESTAMP" property="updTime" />
+    <result column="SUB_MENU_NAME" jdbcType="VARCHAR" property="submenuname" />
+    <result column="SUB_MENU" jdbcType="INTEGER" property="submenu" />
+  </resultMap>
+   <select id="selectBean" resultMap="sb" parameterType="String" >
+    select  id, par_uid, menu_name, menu_desc, menu_status, menu_link, menu_index, T_S_uid, meddle_menu, meddle_menu_name, 
+   crt_time, upd_time from MENU where menu_name = #{menuName}
+  </select>
+    <select id="selectMenuName" resultMap="sb" parameterType="String" >
+    select * from MENU where menu_name = #{menuName}
+    </select>
+    
+    <!--查出用户未添加的菜单 -->
+    <select id="selectByUser"  resultMap="sb"  parameterType="String">
+      select n.sub_menu_name,n.sub_menu from menu n where n.sub_menu  not in(select c.menugrpcode from menu m join LDUserTOMenuGrpA c on m.sub_menu=c.menugrpcode and c.usercode=#{usercode})
+    </select>
+  <select id="queryUserMenu" parameterType="com.sinosoft.service.business.ui.menumanage.bean.ldusertomenugrpBean" resultType="com.sinosoft.service.business.ui.menumanage.bean.ldusertomenugrpBean">
+     
+  select * from ldusertomenugrp where 1=1
+   <if test="usercode != null" >
+  and   usercode=#{usercode}
+    </if> 
+ </select>
+ 
+ 
+ <delete id="deleteuserMenu" parameterType="com.sinosoft.service.business.ui.menumanage.bean.ldusertomenugrpBean">
+ delete from  ldusertomenugrp where  usercode=#{usercode} and menugrpcode=#{menugrpcode}
+ </delete>
+ 
+ 
+ <update id="updateUserMenu" parameterType="com.sinosoft.service.business.ui.menumanage.bean.ldusertomenugrpBean">
+  update ldusertomenugrp
+    <set>
+      <if test="menugrpcode != null">
+        menugrpcode= #{menugrpcode,jdbcType=VARCHAR},
+      </if>
+      </set>
+    where usercode=#{usercode}
+ </update>
+     <select id="selectMenualls" resultMap="sb" >
+      select * from menu
+     </select>   
+     <select id="selectMenuone" resultMap="sb" >
+     select distinct(m.sub_menu),m.sub_menu_name from menu m
+     </select> 
+     <select id="selectMenutwo" resultMap="sb" >
+      select distinct(m.meddle_menu),m.meddle_menu_name,m.sub_menu,m.sub_menu_name from menu m order by m.sub_menu,m.meddle_menu
+     </select>    
+     <select id="selectldmenugrpa" resultType="com.sinosoft.service.business.db.vo.ldmenuGrpVO">
+     select * from LDMENUGRPA
+     </select>
+    <select id="selectldusertomenugrp" resultType="com.sinosoft.service.business.ui.menumanage.bean.ldusertomenugrpBean">
+      select * from ldusertomenugrp
+     
+     </select>  
+     <insert id="ldusertomenugrpinsert" parameterType="com.sinosoft.service.business.ui.menumanage.bean.ldusertomenugrpBean">
+     insert into ldusertomenugrp values(#{usercode},#{menugrpcode})
+     </insert>  
+      <select id="selectuser" resultType="com.sinosoft.service.business.db.vo.SYSUserVo" parameterType="java.lang.String">
+      select distinct(emplid) from lduser where emplid=#{usercode}
+      </select>
+      <!-- 查询组拥有的父菜单节点 -->
+     <select id="querymenuparentByall"  resultMap="sb"  parameterType="com.sinosoft.service.business.db.vo.ldmenuGrpVO">
+     
+select distinct(n.sub_menu)
+  from menu n
+ where 1 = 1
+   <if test="menugrpname != null" >
+   and n.sub_menu in
+       (select c.nodecode
+          from LDMENUGRPTOMENUA c
+         where c.menugrpcode in (select a.menugrpcode
+                                   from LDMENUGRPA a
+                                  where a.menugrpname =#{menugrpname}))
+   </if>       
+   <if test="menugrpname != null" >                   
+   and n.meddle_menu in
+       (select c.meddlemenu
+          from LDMENUGRPTOMENUA c
+         where c.menugrpcode in (select a.menugrpcode
+                                   from LDMENUGRPA a
+                                  where a.menugrpname=#{menugrpname}))
+   </if>       
+   <if test="menugrpname != null" >  
+   and n.menu_desc in
+       (select c.menudesc
+          from LDMENUGRPTOMENUA c
+         where c.menugrpcode in (select a.menugrpcode
+                                   from LDMENUGRPA a
+                                  where a.menugrpname =#{menugrpname}))
+   </if>
+ order by n.sub_menu
+     
+     </select>   
+        
+      <!-- 查询组拥有的子菜单节点 -->
+     <select id="querymenuchildByall"  resultMap="sb"  parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean">
+      
+ select n.meddle_menu, n.meddle_menu_name
+  from menu n
+ where 1 = 1
+   and n.sub_menu in (#{submenu})
+   and n.meddle_menu in
+       (select distinct (meddlemenu)
+          from LDMENUGRPTOMENUA a
+         where menugrpcode = (select a.menugrpcode
+                                   from LDMENUGRPA a
+                                  where a.menugrpname =#{menugrpname})
+           and nodecode =#{submenu})
+ group by n.meddle_menu, n.meddle_menu_name
+ order by n.meddle_menu asc
+     </select>   
+           
+        
+        
+        
+        
+        <select id="querygrondsonall"  resultMap="sb"  parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean">
+        
+        select n.menu_desc, n.menu_name,n.meddle_menu, n.meddle_menu_name,n.sub_menu,n.sub_menu_name,n.upd_time,n.t_s_uid,n.menu_status,n.menu_link,n.menu_index,
+n.par_uid,n.id,n.crt_time
+  from menu n
+ where 1 = 1
+   and n.sub_menu in (#{submenu})
+   and n.meddle_menu in(#{meddlemenu})
+   and n.menu_desc in
+       (select distinct (menudesc)
+          from LDMENUGRPTOMENUA a
+         where menugrpcode = (select a.menugrpcode
+                                   from LDMENUGRPA a
+                                  where a.menugrpname =#{menugrpname})
+           and nodecode = #{submenu} and meddlemenu=#{meddlemenu})
+ group by n.menu_desc, n.menu_name,n.meddle_menu, n.meddle_menu_name,n.sub_menu,n.sub_menu_name,n.upd_time,n.t_s_uid,n.menu_status,n.menu_link,n.menu_index,
+n.par_uid,n.id,n.crt_time
+ order by n.menu_desc asc
+        </select>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    <!--查出用户权限添加的菜单 -->
+    <select id="selectByGrp"  resultMap="sb"  parameterType="com.sinosoft.service.business.db.vo.ldmenuGrpVO">
+<!--      
+   select distinct(n.sub_menu),n.sub_menu_name from menu n 
+   <if test="menugrpcode != null" >
+        where n.sub_menu  not in(select c.nodecode from menu m join LDMENUGRPTOMENUA c on m.sub_menu=c.nodecode and c.menugrpcode=#{menugrpcode})
+   </if> -->
+   
+    select *
+   from menu n where 1=1
+  <if test="menugrpcode != null" >
+ and n.sub_menu in 
+   (select c.nodecode
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                           where a.menugrpcode =#{menugrpcode}
+                               ))
+ and n.meddle_menu in 
+   (select c.meddlemenu
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                            where a.menugrpcode =#{menugrpcode}
+                               ))                          
+                               
+  and n.menu_desc  in
+        (select c.menudesc
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                           where a.menugrpcode =#{menugrpcode}
+                               ))
+  </if>                          
+  <if test="menugrpname != null" >
+ and n.sub_menu in 
+   (select c.nodecode
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                           where  a.menugrpname =#{menugrpname}
+                               ))
+ and n.meddle_menu in 
+   (select c.meddlemenu
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                            where  a.menugrpname =#{menugrpname}
+                               ))                          
+                               
+  and n.menu_desc  in
+        (select c.menudesc
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                            where  a.menugrpname =#{menugrpname}
+                               ))
+                           
+                           
+   </if>
+   <if test="menugrpdescription != null" >
+and n.sub_menu in 
+   (select c.nodecode
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                         where  a.menugrpdescription=#{menugrpdescription}
+                               ))
+ and n.meddle_menu in 
+   (select c.meddlemenu
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                          where  a.menugrpdescription=#{menugrpdescription}
+                               ))                          
+                               
+  and n.menu_desc  in
+        (select c.menudesc
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                           where  a.menugrpdescription=#{menugrpdescription}
+                               ))
+                           
+               
+   </if>
+   <if test="menustate != null" >
+and n.sub_menu in 
+   (select c.nodecode
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                        where  a.menustate=#{menustate}
+                               ))
+ and n.meddle_menu in 
+   (select c.meddlemenu
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                          where  a.menustate=#{menustate}
+                               ))                          
+                               
+  and n.menu_desc  in
+        (select c.menudesc
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                           where  a.menustate=#{menustate}
+                               ))
+                           
+                              
+   </if>
+  order by n.sub_menu, n.meddle_menu, n.menu_desc 
+</select>
+    <delete id="deleteBean" parameterType="String" >
+    delete from MENU
+    where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteLdMenuGrpToMenua" parameterType="com.sinosoft.service.business.ui.ldmenugrptomenua.bean.ldmenugrptomenuaBean">
+     delete from LDMENUGRPTOMENUA where NODECODE=#{nodecode} and MEDDLEMENU=#{meddlemenu} and MENUDESC=#{menuDesc}
+    </delete>
+    <select id="selectMenuByName" resultMap="sb" parameterType="String" >
+    	select * from MENU  where menu_name = #{menuName}
+    </select>
+    <select id="selectMenuAll" parameterType="Integer" resultMap="sb">
+     	select m.*,row_number() over(partition by sub_menu,meddle_menu order by menu_desc) row_number from menu m where SUB_MENU = #{submenu}
+   	
+    	<!-- select * from menu where sub_menu=#{submenu} order by meddle_menu,menu_desc -->
+    	<!--  
+    	 select * from MENU where SUB_MENU = #{submenu} and menu_name in( select menu_name from authority where username='admin')
+    	-->
+    </select>
+    
+    <select id="querysubmenuall"  resultMap="sb" parameterType="java.lang.String">
+    select distinct(SUB_MENU_NAME) ,SUB_MENU
+    	from MENU n where 1=1
+   and n.sub_menu in (select c.nodecode
+           from LDMENUGRPTOMENUA c 
+                                  where c.menugrpcode in (select a.menugrpcode
+                             from LDMENUGRPA a
+                            where a.menugrpcode =
+   (select menugrpcode from ldusertomenugrp where usercode=#{emplid})
+                               ))
+    	group by SUB_MENU_NAME,SUB_MENU order by SUB_MENU ASC
+    
+    </select>
+    <select id="selectsubMenuAll"  resultMap="sb">
+    	select SUB_MENU_NAME,SUB_MENU 
+    	from MENU 
+    	group by SUB_MENU_NAME,SUB_MENU order by SUB_MENU ASC
+    <!--  
+    select SUB_MENU_NAME,SUB_MENU 
+      from MENU 
+      where menu_name in(select menu_name from authority where username='admin')
+      group by SUB_MENU_NAME,SUB_MENU order by SUB_MENU ASC
+    -->
+    </select>
+      <!-- 查询子菜单 -->
+    <select id="selectmeddleMenuAlls" parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean" resultMap="sb">
+    select n.meddle_menu, n.meddle_menu_name
+  from menu n
+ where 1 = 1
+   and n.sub_menu in (#{submenu})
+   and n.meddle_menu in
+       (select distinct (meddlemenu)
+          from LDMENUGRPTOMENUA a
+         where menugrpcode = (select menugrpcode
+                                from ldusertomenugrp
+                               where usercode = #{tSUid})
+           and nodecode = #{submenu})
+ group by n.meddle_menu, n.meddle_menu_name
+ order by n.meddle_menu asc
+    	
+    </select>
+    <select id="selectmeddleMenuAll" parameterType="Integer" resultMap="sb">
+    	select meddle_menu  from menu where sub_menu=#{submenu} group by meddle_menu order by meddle_menu asc 
+
+    </select>
+    
+    <!-- 查询孙菜单 -->
+    <select id="selectMMenuAlls" parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean" resultMap="sb">
+select n.menu_desc, n.menu_name,n.meddle_menu, n.meddle_menu_name,n.sub_menu,n.sub_menu_name,n.upd_time,n.t_s_uid,n.menu_status,n.menu_link,n.menu_index,
+n.par_uid,n.id,n.crt_time
+  from menu n
+ where 1 = 1
+   and n.sub_menu in (#{submenu})
+   and n.meddle_menu in(#{meddlemenu})
+   and n.menu_desc in
+       (select distinct (menudesc)
+          from LDMENUGRPTOMENUA a
+         where menugrpcode = (select menugrpcode
+                                from ldusertomenugrp
+                               where usercode = #{tSUid})
+           and nodecode = #{submenu} and meddlemenu=#{meddlemenu})
+ group by n.menu_desc, n.menu_name,n.meddle_menu, n.meddle_menu_name,n.sub_menu,n.sub_menu_name,n.upd_time,n.t_s_uid,n.menu_status,n.menu_link,n.menu_index,
+n.par_uid,n.id,n.crt_time
+ order by n.menu_desc asc
+    </select>
+    <select id="selectMMenuAll" parameterType="com.sinosoft.service.business.ui.menumanage.bean.MenuAddBean" resultMap="sb">
+    	select * from menu where meddle_menu=#{meddlemenu} and sub_menu=#{submenu} order by menu_desc
+    </select>
+    <select id="selectMeddleMenuOnly" parameterType="Integer" resultMap="sb">
+		select meddle_menu,meddle_menu_name from menu where sub_menu =#{submenu} group by meddle_menu,meddle_menu_name  
+    </select>
+    
+</mapper>

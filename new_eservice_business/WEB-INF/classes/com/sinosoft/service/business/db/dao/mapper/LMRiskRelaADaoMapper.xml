@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LmriskrelaADao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+		<result column="char1" jdbcType="VARCHAR" property="char1" />
+		<result column="char2" jdbcType="VARCHAR" property="char2" />	
+		<result column="riskcode" jdbcType="VARCHAR" property="riskcode" />
+		<result column="relariskcode" jdbcType="VARCHAR" property="relariskcode" />	
+		<result column="relacode" jdbcType="VARCHAR" property="relacode" />
+		<result column="managecomgrp" jdbcType="VARCHAR" property="managecomgrp" />	
+	</resultMap>
+  <sql id="Base_Column_List">
+     riskcode,relariskcode,relacode,managecomgrp,char1,char2
+  </sql>
+	<select id="queryProduct" resultMap="BaseResultMap">
+	select <include refid="Base_Column_List" />  from LMRiskRelaA b where 1=1 and subRiskFlag = 'M'  and checkDefFlag = 'Y' and char6='Y' and checkFlag = 'Y' and sign='S' and insuranceCom=#{insuranceCom,jdbcType=VARCHAR} 
+	</select>
+	
+		
+  	<insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+  	  insert into LMRiskRelaA (riskcode,relariskcode,relacode,managecomgrp,char1,char2 )
+  	  values (#{riskcode,jdbcType=VARCHAR},#{relariskcode,jdbcType=VARCHAR}, #{relacode,jdbcType=VARCHAR},
+      #{managecomgrp,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR})
+  </insert>
+  
+	
+	<select id="selectByAgentCom" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM LMRiskRelaA 
+		  where 1=1
+		 <if test="agentcom != null">
+	      and  riskcode=#{riskcode,jdbcType=VARCHAR}
+	   	</if>  
+	   
+		
+		
+	</select>
+	
+	
+	<select id="select"  resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM LMRiskRelaA 
+	</select>
+
+	  
+  <delete id="deleteByagentcom" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+   delete from  LMRiskRelaA where riskcode=#{riskcode}
+  </delete>
+
+  
+	<update id="updateLacomByAgentcom" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+    update LMRiskRelaA
+    <set>
+      <if test="riskCode != null">
+        riskCode= #{riskCode,jdbcType=VARCHAR},
+      </if>
+       <if test="insuranceCom != null">
+        insuranceCom= #{insuranceCom,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator= #{operator,jdbcType=VARCHAR},
+      </if>
+       <if test="riskVer != null">
+        riskVer = #{riskVer,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name= #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null">
+        linkman= #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null">
+        states= #{states,jdbcType=VARCHAR},
+      </if>
+       <if test="upagentcom != null">
+        upagentcom= #{upagentcom,jdbcType=VARCHAR},
+      </if>
+       <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+       <if test="makedate != null">
+        makedate= #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maketime != null">
+        maketime= #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where agentcom=#{agentcom,jdbcType=VARCHAR}
+
+  </update>	 
+<!-- 审核产品不通过 -->	 
+<update id="updateA"  parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+ update lmriskrelaa set char1='N' ,char2='W' where riskcode=#{riskCode,jdbcType=VARCHAR}
+
+</update>
+
+</mapper>

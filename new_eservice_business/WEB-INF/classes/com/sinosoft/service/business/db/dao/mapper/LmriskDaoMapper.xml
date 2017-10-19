@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LmriskDao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LmriskVo">
+		<result column="char1" jdbcType="VARCHAR" property="char1" />
+		<result column="char2" jdbcType="VARCHAR" property="char2" />	
+		<result column="char3" jdbcType="VARCHAR" property="char3" />
+		<result column="char5" jdbcType="VARCHAR" property="char5" />	
+		<result column="char6" jdbcType="VARCHAR" property="char6" />
+		<result column="checkDefFlag" jdbcType="VARCHAR" property="checkDefFlag" />	
+		<result column="checkFlag" jdbcType="VARCHAR" property="checkFlag" />
+		<result column="destRate" jdbcType="FLOAT" property="destRate" />	
+		<result column="endDate" jdbcType="VARCHAR" property="endDate" />
+    	<result column="insuAccFlag" jdbcType="VARCHAR" property="insuAccFlag" />
+    	<result column="insuranceCom" jdbcType="VARCHAR" property="insuranceCom" />
+   		<result column="mngCom" jdbcType="VARCHAR" property="mngCom" />
+   		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="origRiskCode" jdbcType="VARCHAR" property="origRiskCode" />	
+		<result column="riskCode" jdbcType="VARCHAR" property="riskCode" />
+		<result column="riskName" jdbcType="VARCHAR" property="riskName" />	
+		<result column="riskPeriod" jdbcType="VARCHAR" property="riskPeriod" />
+		<result column="riskProp" jdbcType="VARCHAR" property="riskProp" />	
+		<result column="riskShortName" jdbcType="VARCHAR" property="riskShortName" />
+		<result column="riskType" jdbcType="VARCHAR" property="riskType" />	
+		<result column="riskVer" jdbcType="VARCHAR" property="riskVer" />
+    	<result column="salesChl" jdbcType="VARCHAR" property="salesChl" />
+    	<result column="sign" jdbcType="VARCHAR" property="sign" />
+   		<result column="StartDate" jdbcType="VARCHAR" property="StartDate" />
+   		<result column="submitFlag" jdbcType="VARCHAR" property="submitFlag" />
+        <result column="subRiskFlag" jdbcType="VARCHAR" property="subRiskFlag" />	
+        <result column="subRiskVer" jdbcType="VARCHAR" property="subRiskVer" />	
+        
+		
+	</resultMap>
+   <sql id="Base_Column_List">
+  char1,char2,char3,char4,char5,char6,checkDefFlag,checkFlag,destRate,endDate,insuAccFlag,insuranceCom,mngCom,operator,origRiskCode,
+  riskCode,riskName,riskPeriod,riskProp,riskShortName,riskType,riskVer,salesChl,sign,StartDate,submitFlag,subRiskFlag, subRiskVer
+  </sql>
+	<select id="queryProduct" resultMap="BaseResultMap">
+	select <include refid="Base_Column_List" />  from LMRisk b where 1=1 and subRiskFlag = 'M'  and checkDefFlag = 'Y' and char6='Y' and checkFlag = 'Y' and sign='S' and insuranceCom=#{insuranceCom,jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="selectByAgentCom" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lacom 
+		  where 1=1
+		 <if test="agentcom != null">
+	      and  agentcom=#{agentcom,jdbcType=VARCHAR}
+	   	</if>  
+	   	<if test="managecom != null">
+	      and  managecom=#{managecom,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="states != null">
+	      and  states=#{states,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="makedate != null">
+	      and  makedate=#{makedate,jdbcType=TIMESTAMP}
+	   	</if>      
+		
+		
+	</select>
+	
+	  
+  <delete id="deleteByagentcom" parameterType="com.sinosoft.service.business.db.vo.LmriskVo">
+   delete from  lacom where agentcom=#{agentcom}
+  </delete>
+	
+  	<insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LmriskVo">
+  insert into lmrisk(riskCode,insuranceCom,riskVer,riskName,riskShortName,subRiskFlag,destRate,origRiskCode,riskType,riskProp,riskPeriod,
+      insuaccFlag,startDate,endDate,checkFlag,checkDefFlag,submitFlag,operator,sign,char1,char2,char3,char4,char6,subRiskVer) values
+     (#{riskCode,jdbcType=VARCHAR},#{insuranceCom,jdbcType=VARCHAR}, #{riskVer,jdbcType=VARCHAR},
+      #{riskName,jdbcType=VARCHAR},#{riskShortName,jdbcType=VARCHAR},#{subRiskFlag,jdbcType=VARCHAR},
+      #{destRate,jdbcType=VARCHAR}, #{origRiskCode,jdbcType=VARCHAR},#{riskType,jdbcType=VARCHAR},#{riskProp,jdbcType=VARCHAR},
+      #{riskPeriod,jdbcType=VARCHAR}, #{insuaccFlag,jdbcType=VARCHAR},#{startDate,jdbcType=VARCHAR},#{endDate,jdbcType=VARCHAR},
+      #{checkFlag,jdbcType=VARCHAR},#{checkDefFlag,jdbcType=VARCHAR}, #{submitFlag,jdbcType=VARCHAR},
+      #{operator,jdbcType=VARCHAR},#{sign,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR},
+      #{char3,jdbcType=VARCHAR},#{char4,jdbcType=VARCHAR}, #{char6,jdbcType=VARCHAR},#{subRiskVer,jdbcType=VARCHAR})
+  </insert>
+  
+  
+	<update id="updateLacomByAgentcom" parameterType="com.sinosoft.service.business.db.vo.LmriskVo">
+    update lmrisk
+    <set>
+      <if test="riskCode != null">
+        riskCode= #{riskCode,jdbcType=VARCHAR},
+      </if>
+       <if test="insuranceCom != null">
+        insuranceCom= #{insuranceCom,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator= #{operator,jdbcType=VARCHAR},
+      </if>
+       <if test="riskVer != null">
+        riskVer = #{riskVer,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name= #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null">
+        linkman= #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null">
+        states= #{states,jdbcType=VARCHAR},
+      </if>
+       <if test="upagentcom != null">
+        upagentcom= #{upagentcom,jdbcType=VARCHAR},
+      </if>
+       <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+       <if test="makedate != null">
+        makedate= #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maketime != null">
+        maketime= #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where agentcom=#{agentcom,jdbcType=VARCHAR}
+
+  </update>	 
+	 
+
+</mapper>

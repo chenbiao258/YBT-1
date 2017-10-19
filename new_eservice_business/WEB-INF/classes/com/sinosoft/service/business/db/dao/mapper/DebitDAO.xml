@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.DebitDao">
+
+ 
+ 
+  	
+    
+    <resultMap id="BaseResultMap" type="com.sinosoft.service.business.ui.debit.bean.Debit" >
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="AGE" property="age" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="INCOME" property="income" jdbcType="VARCHAR" />
+  </resultMap>
+   
+    
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="String" >
+    	select * from Debit  where name = #{Name}
+    </select>
+    
+    <select id="selectBySex" resultMap="BaseResultMap" parameterType="String" >
+    	select * from Debit  where sex = #{Sex"}
+    </select>
+    
+    
+</mapper>

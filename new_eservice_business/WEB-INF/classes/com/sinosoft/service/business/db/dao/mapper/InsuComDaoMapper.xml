@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.InsuComDao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.InsuComVo">
+		<result column="agentcom" jdbcType="VARCHAR" property="agentcom" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />	
+	    <result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="channeltype" jdbcType="VARCHAR" property="channeltype" />	
+		<result column="makedate" jdbcType="TIMESTAMP" property="makedate" />
+    	<result column="maketime" jdbcType="VARCHAR" property="maketime" />
+    	<result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+   		<result column="modifytime" jdbcType="VARCHAR" property="modifytime" />
+   		<result column="amend" jdbcType="VARCHAR" property="amend" />	
+   		<result column="cooperationdate" jdbcType="TIMESTAMP" property="cooperationdate" />
+        <result column="licenseStartDate" jdbcType="TIMESTAMP" property="licenseStartDate" />	
+        <result column="states" jdbcType="VARCHAR" property="states" />	
+        
+		
+	</resultMap>
+   <sql id="Base_Column_List">
+    agentcom,remark,amend,cooperationdate,channeltype,name,states,licenseStartDate,operator,makedate,maketime,modifydate,modifytime 
+  </sql>
+  <sql id="Base_Column_List2">
+    agentcom,remark,amend,cooperationdate,channeltype,name,licenseStartDate,operator,makedate,maketime,modifydate,modifytime 
+  </sql>
+   <sql id="Base_Column_List3">
+    agentcom,remark,amend,cooperationdate,name,licenseStartDate,operator,makedate,maketime,modifydate,modifytime 
+  </sql>
+  
+  <select id="selectldcodestates" parameterType="com.sinosoft.service.business.db.vo.LdcodeVo" resultType="java.lang.String">
+   select code from ldcode where codetype=#{codetype} and codename=#{codename}
+  </select>
+	<select id="select" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lacoma 		
+	</select>
+	<select id="selects" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lacom where channeltype='Y'		
+	</select>
+	
+	<select id="selectByAgentCom" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select a.agentcom,a.name,a.cooperationdate,a.channeltype,a.licensestartdate,a.operator,a.remark,(select codename from ldcode where codetype='states'and code=a.states)as states  FROM lacoma a
+		  where 1=1
+		 <if test="agentcom != null">
+	      and  agentcom=#{agentcom,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="states != null">
+	      and  states=#{states,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="cooperationdate != null">
+	      and  cooperationdate=#{cooperationdate,jdbcType=TIMESTAMP}
+	   	</if>      
+   </select>
+   
+   <select id="QueryByAgentComs" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lacom
+		  where 1=1 and channeltype='Y'
+		 <if test="agentcom != null">
+	      and  agentcom=#{agentcom,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="states != null">
+	      and  states=#{states,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="cooperationdate != null">
+	      and  cooperationdate=#{cooperationdate,jdbcType=TIMESTAMP}
+	   	</if>      
+   </select>
+   
+   
+   <select id="QueryByagentcom" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lacom
+		  where 1=1
+		 <if test="agentcom != null">
+	      and  agentcom=#{agentcom,jdbcType=VARCHAR}
+	   	</if>  
+	   
+	   	<if test="states != null">
+	      and  states=#{states,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="cooperationdate != null">
+	      and  cooperationdate=#{cooperationdate,jdbcType=TIMESTAMP}
+	   	</if>      
+   </select>
+   
+   
+   <select id="selectUpdate"  parameterType="java.lang.String" resultMap="BaseResultMap">
+  select <include refid="Base_Column_List3" />,(select codename from ldcode where codetype='states'and code=a.states)as states,(select codename from ldcode where codetype='checkflag'and code=a.channeltype)as channeltype
+    from (select * from lacom union select * from lacoma)
+        a   where 1=1
+      <if test="agentcom != null">
+       and  agentcom=#{agentcom,jdbcType=VARCHAR} 
+      </if>
+       and amend!='N'
+   </select>
+     
+   
+   <select id="QueryAll"  resultMap="BaseResultMap">
+      select <include refid="Base_Column_List" /> from lacom  where  channeltype='Y' and states='3'  and 1 = '1' order by AgentCom
+   </select>
+	
+	  
+  <delete id="deleteByagentcom" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+   delete from  lacom where agentcom=#{agentcom}
+  </delete>
+  
+    <delete id="deleteA" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+   delete from  lacomA where agentcom=#{agentcom}
+  </delete>
+  
+	
+  	<insert id="insert" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+   insert into lacom
+ (agentcom,name,remark,amend,licenseStartDate,cooperationdate,states,operator,channeltype,makedate,maketime,modifydate,modifytime)
+    values (#{agentcom,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{amend,jdbcType=VARCHAR},#{licenseStartDate,jdbcType=TIMESTAMP},#{cooperationdate,jdbcType=TIMESTAMP}, 
+    #{states,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR},#{channeltype,jdbcType=VARCHAR},#{makedate,jdbcType=TIMESTAMP}, #{maketime,jdbcType=VARCHAR},
+    #{modifydate,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=VARCHAR})
+  </insert>
+  
+	
+  	<insert id="insertA" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+   insert into lacoma
+  (agentcom,name,remark,amend,licenseStartDate,cooperationdate,states,operator,channeltype,makedate,maketime,modifydate,modifytime)
+    values (#{agentcom,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{amend,jdbcType=VARCHAR},#{licenseStartDate,jdbcType=TIMESTAMP},#{cooperationdate,jdbcType=TIMESTAMP}, 
+    #{states,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR},#{channeltype,jdbcType=VARCHAR},#{makedate,jdbcType=TIMESTAMP}, #{maketime,jdbcType=VARCHAR},
+    #{modifydate,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  	
+  	<insert id="insertB" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+   insert into lacomb
+  (agentcom,name,remark,amend,licenseStartDate,cooperationdate,states,operator,channeltype,makedate,maketime,modifydate,modifytime)
+    values (#{agentcom,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{amend,jdbcType=VARCHAR},#{licenseStartDate,jdbcType=TIMESTAMP},#{cooperationdate,jdbcType=TIMESTAMP}, 
+    #{states,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR},#{channeltype,jdbcType=VARCHAR},#{makedate,jdbcType=TIMESTAMP}, #{maketime,jdbcType=VARCHAR},
+    #{modifydate,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=VARCHAR})
+  </insert>  
+  
+	     
+   <select id="selectByIc" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo" resultType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    select 
+    *
+    from JOINACCOUNT
+    where 1=1
+    <if test="ic != null">
+     and   IC = #{ic,jdbcType=VARCHAR}
+      </if>
+   
+  </select>
+  
+  <select id="selectByIcA" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo" resultType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    select 
+    *
+    from JOINACCOUNTA
+    where 1=1
+    <if test="ic != null">
+     and   IC = #{ic,jdbcType=VARCHAR}
+      </if>
+   
+  </select>
+  
+  <delete id="deleteJoinByic" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    delete from JOINACCOUNT
+    where IC = #{ic,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteJoinByicA" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    delete from JOINACCOUNTA
+    where IC = #{ic,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertjoin" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    insert into JOINACCOUNT (IC, FUNDNAME, FUNDCODE, 
+      RISKRATING)
+    values (#{ic,jdbcType=VARCHAR}, #{fundname,jdbcType=VARCHAR}, #{fundcode,jdbcType=VARCHAR}, 
+      #{riskrating,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertjoinA" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    insert into JOINACCOUNTA (IC, FUNDNAME, FUNDCODE, 
+      RISKRATING)
+    values (#{ic,jdbcType=VARCHAR}, #{fundname,jdbcType=VARCHAR}, #{fundcode,jdbcType=VARCHAR}, 
+      #{riskrating,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertjoinB" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    insert into JOINACCOUNTB (IC, FUNDNAME, FUNDCODE, 
+      RISKRATING)
+    values (#{ic,jdbcType=VARCHAR}, #{fundname,jdbcType=VARCHAR}, #{fundcode,jdbcType=VARCHAR}, 
+      #{riskrating,jdbcType=VARCHAR})
+  </insert>
+  
+	 
+	<update id="updateLacomByAgentcom" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+    update lacoma
+    <set>
+       <if test="amend != null">
+        amend= #{amend,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark= #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator= #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseStartDate != null">
+        licenseStartDate= #{licenseStartDate,jdbcType=VARCHAR},
+      </if>
+       <if test="cooperationdate != null">
+        cooperationdate= #{cooperationdate,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name= #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null">
+        states= #{states,jdbcType=VARCHAR},
+      </if>
+       <if test="makedate != null">
+        makedate= #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maketime != null">
+        maketime= #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+      <if test="channeltype != null">
+        channeltype= #{channeltype,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where agentcom=#{agentcom,jdbcType=VARCHAR}
+
+  </update>	 
+  
+  
+  
+  <update id="update" parameterType="com.sinosoft.service.business.db.vo.InsuComVo">
+    update lacom
+    <set>
+      <if test="remark != null">
+        remark= #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="amend != null">
+        amend= #{amend,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator= #{operator,jdbcType=VARCHAR},
+      </if>
+       <if test="licenseStartDate != null">
+        licenseStartDate= #{licenseStartDate,jdbcType=VARCHAR},
+      </if>
+       <if test="cooperationdate != null">
+        cooperationdate= #{cooperationdate,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name= #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null">
+        states= #{states,jdbcType=VARCHAR},
+      </if>
+       <if test="makedate != null">
+        makedate= #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maketime != null">
+        maketime= #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+
+      <if test="channeltype != null">
+        channeltype= #{channeltype,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where agentcom=#{agentcom,jdbcType=VARCHAR}
+
+  </update>	 
+	 
+
+</mapper>

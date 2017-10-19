@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.laprodqualiMapper">
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.laprodqualiVo">
+    <id column="riskcode" jdbcType="VARCHAR" property="riskcode" />
+    <id column="QUALIFITYPE" jdbcType="VARCHAR" property="qualifitype" />
+    <result column="FLAG" jdbcType="VARCHAR" property="flag" />
+    <result column="MAKEDATE" jdbcType="DATE" property="makedate" />
+    <result column="MAKETIME" jdbcType="VARCHAR" property="maketime" />
+    <result column="MODIFYDATE" jdbcType="DATE" property="modifydate" />
+    <result column="MODIFYTIME" jdbcType="VARCHAR" property="modifytime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    riskcode, QUALIFITYPE, FLAG, MAKEDATE, MAKETIME, MODIFYDATE, MODIFYTIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.laprodqualiVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LAPRODQUALI
+    where 1=1
+    <if test="riskcode != null">
+      and riskcode = #{riskcode,jdbcType=VARCHAR}
+    </if>
+    <if test="qualifitype != null">
+      and QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.laprodqualiVo">
+    delete from LAPRODQUALI
+    where 1=1
+    <if test="riskcode != null">
+    and riskcode = #{riskcode,jdbcType=VARCHAR}
+    </if>
+    <if test="qualifitype != null">
+      and QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR}
+      </if>
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.laprodqualiVo">
+    insert into LAPRODQUALI (riskcode, QUALIFITYPE, FLAG, 
+      MAKEDATE, MAKETIME, MODIFYDATE, 
+      MODIFYTIME)
+    values (#{riskcode,jdbcType=VARCHAR}, #{qualifitype,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+      #{modifytime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.laprodqualiVo">
+    insert into LAPRODQUALI
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="riskcode != null">
+        riskcode,
+      </if>
+      <if test="qualifitype != null">
+        QUALIFITYPE,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+      <if test="makedate != null">
+        MAKEDATE,
+      </if>
+      <if test="maketime != null">
+        MAKETIME,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="modifytime != null">
+        MODIFYTIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="riskcode != null">
+        #{riskcode,jdbcType=VARCHAR},
+      </if>
+      <if test="qualifitype != null">
+        #{qualifitype,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="makedate != null">
+        #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.laprodqualiVo">
+    update LAPRODQUALI
+    <set>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="makedate != null">
+        MAKEDATE = #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        MAKETIME = #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null">
+        MODIFYTIME = #{modifytime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where riskcode = #{riskcode,jdbcType=VARCHAR}
+      and QUALIFITYPE = #{myqualifitype,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.laprodqualiVo">
+    update LAPRODQUALI
+    set 
+      QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR},
+      FLAG = #{flag,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=DATE},
+      MODIFYTIME = #{modifytime,jdbcType=VARCHAR}
+    where riskcode = #{riskcode,jdbcType=VARCHAR}
+    <if test="myqualifitype != null">
+      and  QUALIFITYPE = #{myqualifitype,jdbcType=VARCHAR}
+    </if>
+    <if test="myqualifitype == null">
+      and  QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR}
+    </if>
+  </update>
+</mapper>

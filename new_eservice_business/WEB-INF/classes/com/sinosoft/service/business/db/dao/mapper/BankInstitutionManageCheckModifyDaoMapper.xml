@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.BankInstitutionCheckModifyDao">
+	
+	<!-- 银行机构审核-->
+	<!-- 查询所有待审核的银行机构 -->
+	<select id="selectAll" resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.CheckSelectBean">
+		select a.comcode,
+       		a.COMNAME as name,
+       		a.satrapName,
+       		decode(a.fax, 'W', '等待审核', 'M', '审核未通过', '审核通过') as status,
+      		a.enddate as endDate,
+       		a.makedate as makeDate
+  		from 
+  			ldcoma a
+		where  
+			a.fax = 'W'
+  			and a.Operator != '888'
+	
+	</select>
+	
+	<!-- 根据条件查询待审核的银行机构 -->
+	<select id="selectByCode"  parameterType="String"
+		resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.CheckSelectBean">
+	
+			select a.comcode,
+       		a.COMNAME as name,
+       		a.satrapName,
+       		decode(a.fax, 'W', '等待审核', 'M', '审核未通过', '审核通过') as status,
+      		a.enddate as endDate,
+       		a.makedate as makeDate
+  		from 
+  			ldcoma a
+		where  
+			a.fax = 'W'
+  			and a.Operator != '888'
+  			and a.comCode = #{bankCode}
+	</select>
+	
+	<!-- 加载form里面的数据 -->
+	<select id="loadFormData" parameterType="String"
+		 resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.SaveInputBean">
+		select 
+	       t.comname as bankName,
+	       t.comcode as bankCode,
+	       decode(t.bankPlace,'E','东区','S','南区','N','北区','') as bankPlace,
+	       (select trim(c.CodeName)
+	          from ldcode c
+	         where trim(c.Code) = trim(t.validflag)
+	           and codetype = 'sign') as bankstatus,
+	       t.operator as operator,
+	       (select cityname from AREACODEFULL where citycode = t.address) as bankCity
+  		from 
+  			ldcoma t
+ 		where  
+ 			t.comCode = #{bankCode}
+	</select>
+	
+	<!-- 加载table的数据 -->
+	<select id="loadTableData" parameterType="String"
+		resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.TableBean">
+		select 
+			 a.agentcom as bankCode,
+		   	 a.comtype as type,
+	     	 a.comDealNo as bankStatus,
+	      	 a.approval as approve,
+	      	 a.makeDate as makedate,
+	      	 a.startDate as startdate,
+	       	 a.endDate as enddate,
+	         a.repalceDate as replacedate,
+	       	 a.comdealinfono as typeName,
+	       	 a.id as id
+ 		from
+ 			 ldcomdealinfoa a
+ 		where
+ 			 a.agentCom = #{bankCode}
+	
+	</select>
+	
+	
+	<!-- 银行信息审核提交 -->
+		<!-- 审核不通过 -->
+		<update id="update">
+			update LDComA set 
+		       Fax    = 'M',
+		       Operator = #{updateData.operator},
+		       MakeDate = #{updateData.makedate},
+		       MakeTime  = #{updateData.maketime},
+		       ModifyDate  = #{updateData.modifydate},
+		       ModifyTime  = #{updateData.modifytime} where ComCode = #{updateData.bankCode}
+		</update>
+		
+		<!-- 审核 通过 -->
+			<!-- 1.删除主表 -->
+			<delete id="deleteldcom" parameterType="String">
+				delete from ldcom where comcode = #{bankCode}
+			</delete>
+			<delete id="deleteldcomdealinfo" parameterType="String">
+				delete from ldcomdealinfo where agentcom = #{bankCode}
+			</delete>
+			
+			<select id="selectCityCode" parameterType="String"
+				resultType="String">
+				select citycode from areaCodeFull where cityname=#{cityName}
+			</select>
+			
+			<!--2.插入主表  -->
+			<insert id="insertldcom" 
+				parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.SaveInputBean">
+				insert into LDCom
+					(ComCode,COMNAME,
+					Address,ZipCode,Phone,
+					Fax,SatrapName,
+					ComCitySize,ComGrade,
+					UpComCode,ValidFlag,Operator,
+					MakeDate,MakeTime,ModifyDate,ModifyTime,
+					bankPlace)
+				values
+					(#{bankCode,jdbcType=VARCHAR},#{bankName,jdbcType=VARCHAR},
+					 #{bankCity,jdbcType=VARCHAR},'','',
+					 'Y','Y',
+					 '','',
+					 '',#{bankStatus,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR},
+					 #{makedate,jdbcType=DATE},#{maketime,jdbcType=VARCHAR},#{modifydate,jdbcType=DATE},#{modifytime,jdbcType=VARCHAR},
+					 #{bankPlace,jdbcType=VARCHAR})
+			</insert>
+			
+			<insert id="insertLDComDealInfo" parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.TableBean">
+				insert into LDComDealInfo
+	  				(ComDealInfoNo,AgentCom,ComType,
+	  				 ComDealNo,MakeDate,StartDate,
+	  				 EndDate,RepalceDate,Status,Approval,id)
+	  			values
+	  				(#{typeName,jdbcType=VARCHAR},#{bankCode,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+					 #{approve,jdbcType=VARCHAR},#{makedate,jdbcType=DATE},#{startdate,jdbcType=DATE},
+					 #{enddate,jdbcType=DATE},#{replacedate,jdbcType=DATE},'Y',#{approve,jdbcType=VARCHAR},
+					 #{id,jdbcType=INTEGER})
+			</insert>
+			<!-- 插入备份表 -->
+			<insert id="insertldcomB" 
+				parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.SaveInputBean">
+				insert into LDComB
+					(ComCode,COMNAME,
+					Address,ZipCode,Phone,
+					Fax,SatrapName,
+					ComCitySize,ComGrade,
+					UpComCode,ValidFlag,Operator,
+					MakeDate,MakeTime,ModifyDate,ModifyTime,
+					bankPlace)
+				values
+					(#{bankCode,jdbcType=VARCHAR},#{bankName,jdbcType=VARCHAR},
+					 #{bankCity,jdbcType=VARCHAR},'','',
+					 'Y','',
+					 '','',
+					 '',#{bankStatus,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR},
+					 #{makedate,jdbcType=DATE},#{maketime,jdbcType=VARCHAR},#{modifydate,jdbcType=DATE},#{modifytime,jdbcType=VARCHAR},
+					 #{bankPlace,jdbcType=VARCHAR})
+			
+			</insert>
+			<insert id="insertLDComDealInfoB" parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.TableBean">
+				insert into LDComDealInfoB
+	  				(ComDealInfoNo,AgentCom,ComType,
+	  				 ComDealNo,MakeDate,StartDate,
+	  				 EndDate,RepalceDate,Status,Approval,id)
+	  			values
+	  				(#{typeName,jdbcType=VARCHAR},#{bankCode,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+					 #{approve,jdbcType=VARCHAR},#{makedate,jdbcType=DATE},#{startdate,jdbcType=DATE},
+					 #{enddate,jdbcType=DATE},#{replacedate,jdbcType=DATE},'Y',#{approve,jdbcType=VARCHAR},
+					 #{id,jdbcType=INTEGER})
+			</insert>
+			
+			<!-- 删除中间表 -->
+			<delete id="deleteldcomA" parameterType="String">
+				delete from ldcoma where comcode = #{bankCode}
+			</delete>
+			<delete id="deleteldcomdealinfoA" parameterType="String">
+				delete from ldcomdealinfoa where agentcom = #{bankCode}
+			</delete>
+			
+			<!-- 查询 MaxNo-->
+			<select id="selectMaxNo" resultType="Integer">
+				select MaxNo from LDMaxNo where notype='CHECKNO' and nolimit='SN' 
+			</select>
+			<!-- 更新MaxNo -->
+			<update id="updateMaxNo">
+				update ldmaxno set maxno = maxno + 1 where notype = 'CHECKNO' and nolimit = 'SN'
+			</update>
+			
+			<!-- 插入数据到check记录表 -->
+			<insert id="insertLCCheckTrace">
+				insert into LCCheckTrace 
+						( CheckNo,CheckedCode,CheckedName,
+						  ComCode,Checker,CheckType,
+						  CheckDate,CheckTime,Bak1 ) 
+				values ( #{MaxNo},#{data.bankCode,jdbcType=VARCHAR},#{data.bankName,jdbcType=VARCHAR},
+						 #{data.bankCode,jdbcType=VARCHAR},#{data.operator,jdbcType=VARCHAR},'6',
+						#{data.makedate,jdbcType=DATE},#{data.maketime,jdbcType=VARCHAR},'Y' )
+			</insert>
+	
+		<!-- 银行机构修改 -->
+		
+		<select id="modifySelectAll" resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ModifySelectBean">
+			select
+		       a.COMNAME  as name,
+		       a.satrapName,
+		       decode(a.fax, 'W', '等待审核', 'M', '审核未通过', '审核通过') as status,
+		       a.enddate as endDate,
+		       a.comcode,
+		       a.makedate as makeDate
+		   from (
+		   		select *
+		          from ldcoma 
+		         where fax = 'M'
+		        union
+		        select *
+		          from ldcom 
+		         where comcode not in(select d.comcode from ldcoma d)
+		         and SatrapName ='Y'
+		         ) a
+		  order by a.comcode
+		</select>
+		
+		<select id="modifySelectByCode" parameterType="String"
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ModifySelectBean">
+			select
+		       a.COMNAME  as name,
+		       a.satrapName,
+		       decode(a.fax, 'W', '等待审核', 'M', '审核未通过', '审核通过') as status,
+		       a.enddate as endDate,
+		       a.comcode,
+		       a.makedate as makeDate
+		   from (
+		   		select *
+		          from ldcoma 
+		         where fax = 'M'
+		        union
+		        select *
+		          from ldcom 
+		         where comcode not in(select d.comcode from ldcoma d)
+		         ) a
+		  where  
+		   		 a.comcode = #{bankCode}
+		  order by a.comcode
+		
+		</select>
+		
+		<!-- 加载 修改的Form审核-->
+		<select id="loadModifyFormData" parameterType="String"
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.SaveInputBean">
+			select 
+			   t.comname as bankName,
+		       t.comcode as bankCode,
+		       t.Address as bankCity,
+		       decode(t.bankPlace,'E','东区','S','南区','N','北区','') as bankPlace,
+			     (select c.CodeName
+			          from ldcode c
+			         where c.Code = t.validflag
+			           and codetype = 'sign') as bankStatus,
+			    t.operator as operator
+			  from (select *
+			          from ldcoma
+			         where fax = 'M'
+			        union
+			        select *
+			          from ldcom
+			         where comcode not in(select comcode from ldcoma)) t
+			 where  t.comCode = #{bankCode}
+		
+		</select>
+		
+		<select id="loadModifyTableData" parameterType="String"
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.TableBean">
+				select 
+				   a.comtype as type,
+			       a.comDealNo as comDealNo,
+			       a.approval as approve,
+			       a.makeDate,
+			       a.startDate,
+			       a.endDate,
+			       a.repalceDate as replacedate,
+			       a.status as bankStatus,
+			       a.comdealinfono as typeName,
+			       a.agentCom as bankCode,
+			       a.id as id
+			  from (select *
+			          from ldcomdealinfoa
+			        union
+			        select *
+			          from ldcomdealinfo
+			         where agentCom not in (select agentCom from ldcomdealinfoa)) a
+			 where a.agentCom = #{bankCode}
+			
+		</select>
+		
+		
+		<!-- 查询当前要修改的CheckStatus -->
+		<select id="selectCheckStatusByComCode" parameterType="String" resultType="Integer">
+			select count(*) from ldcoma where comCode = #{bankCode}
+		</select>
+		
+		<update id="updateldcomA" parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.SaveInputBean">
+			update LDComA set 
+				ComCode=#{bankCode},
+				Name=#{bankName},
+				Address=#{bankCity},
+				Fax='W',
+				ValidFlag=#{bankStatus},
+				Operator=#{operator},
+				ModifyDate=#{modifydate},
+				ModifyTime=#{modifytime} where ComCode=#{bankCode}
+		</update>
+		
+		<update id="updateldcom" parameterType="String">
+			update LDCom set SatrapName = 'M' where comCode = #{bankcode}
+		</update>
+		
+	
+</mapper>

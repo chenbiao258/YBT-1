@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	
+	<!-- 支持注解 -->
+	<context:annotation-config/>
+	
+	<!-- 自动扫描的包 -->
+	<context:component-scan base-package="com.sinosoft" use-default-filters="false">
+		<!-- 通过注解过虑被扫描的类 -->
+		 <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>	
+	</context:component-scan>
+	
+	
+	<bean id="mSocketNetImpl" class="com.sinosoft.service.business.ui.parseXML.utils.XMLImpl" init-method="init">
+		<property name="cClientIp" value="${xmlsocket.ip}" />
+		<property name="port" value="${xmlsocket.port}" />
+	</bean>
+	
+	<bean id="confirmationXMLImpl" class="com.sinosoft.service.business.ui.confirmation.utils.ConfirmationXMLImpl" init-method="init">
+		<property name="cClientIp" value="${xmlsocket.ip}" />
+		<property name="port" value="${xmlsocket.port}" />
+	</bean>
+	<bean id="AnalysisConfirmation" class="com.sinosoft.service.business.ui.confirmation.utils.AnalysisConfirmation" />
+	
+	<bean class="com.sinosoft.service.business.ui.contprint.SpringTool"/>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	     <property name="maxUploadSize" value="50000000" />
+	     <property name="maxInMemorySize" value="5000000" />
+	     <property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+	
+	<bean id="ldapService" class="com.sinosoft.service.api.LdapServiceImpl">
+		<property name="keyStoreResource" value="classpath:ldap/ldap.keystore"/>
+		<property name="keyStorePassword" value="${ldap.keystore.password}"/>
+		<property name="ldapProviderUrl" value="${ldap.provider.url}"/>
+		<property name="ldapSecurityProtocol" value="${ldap.security.protocol}"/>
+		<property name="defaultDomain" value="${ldap.default.domain}"/>
+	</bean>
+	
+	<!-- MQ   -->
+	<!-- <bean id="mqConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory">
+
+		<property name="hostName">
+			<value>133.10.217.5</value>
+		</property>
+		<property name="port">
+			<value>15300</value>
+		</property>
+		<property name="queueManager">
+			<value>DCNL001YBT</value>
+		</property>
+		
+		<property name="channel">
+			<value>CN.YBT.TMP</value>
+		</property>
+
+		
+		<property name="transportType" value="1"></property>
+
+	</bean>
+
+	<bean id="ut_acctinq_send_queue" class="com.ibm.mq.jms.MQQueue">
+		<constructor-arg>
+			<value>CN_YBT.CN_YBT.CN_HUB.YBT_RQST.D1</value>
+		</constructor-arg>
+		<property name="targetClient" value="1"></property>
+	</bean>
+
+	<bean id="ut_acctinq_receive_queue" class="com.ibm.mq.jms.MQQueue">
+		<constructor-arg>
+			<value>CN_YBT.CN_HUB.CN_YBT.YBT_RSP.D1</value>
+		</constructor-arg>
+		<property name="targetClient" value="1"></property>
+	</bean>
+	
+	jms监听线程池
+	<bean id="finacleJmsListenerTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize">
+			<value>5</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>20</value>
+		</property>
+		<property name="queueCapacity">
+			<value>10</value>
+		</property>
+		<property name="threadNamePrefix" value="finacleJmsListener" />
+	</bean>
+
+	spring MQ 配置
+	JMS Queue Connection Factory
+	<bean id="jmsQueueConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<property name="targetConnectionFactory" ref="mqConnectionFactory" />
+		<property name="sessionCacheSize">
+			<value>20</value>
+		</property>
+	</bean>
+	
+	
+	UT查询
+	<bean id="jmsUTSend" name="jmsUTSend"
+		class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsQueueConnectionFactory" />
+		<property name="defaultDestination" ref="ut_acctinq_send_queue" />
+	</bean>
+	
+	
+	<bean id="jmsUTReceive" name="jmsUTReceive"
+		class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsQueueConnectionFactory" />
+		<property name="defaultDestination" ref="ut_acctinq_receive_queue" />
+	</bean>
+	MQ  -->
+	
+</beans>

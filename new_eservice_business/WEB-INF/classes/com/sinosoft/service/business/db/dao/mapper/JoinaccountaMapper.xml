@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.JoinaccountaMapper">
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    <id column="IC" jdbcType="VARCHAR" property="ic" />
+    <id column="FUNDNAME" jdbcType="VARCHAR" property="fundname" />
+    <result column="FUNDCODE" jdbcType="VARCHAR" property="fundcode" />
+    <result column="RISKRATING" jdbcType="VARCHAR" property="riskrating" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    IC, FUNDNAME, FUNDCODE, RISKRATING
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from JOINACCOUNTA
+    where IC = #{ic,jdbcType=VARCHAR}
+      and FUNDNAME = #{fundname,jdbcType=VARCHAR}
+  </select>
+    
+  <delete id="deleteJoinByic" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    delete from JOINACCOUNT
+    where IC = #{ic,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteJoinByicA" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    delete from JOINACCOUNTA
+    where IC = #{ic,jdbcType=VARCHAR}
+  </delete>
+   <select id="selectByIcA" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from JOINACCOUNTA
+    where 1=1
+    <if test="ic != null">
+     and   IC = #{ic,jdbcType=VARCHAR}
+      </if>
+   
+  </select>
+  
+    
+   <select id="selectByIc" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from JOINACCOUNT
+    where 1=1
+    <if test="ic != null">
+     and   IC = #{ic,jdbcType=VARCHAR}
+      </if>
+   
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    delete from JOINACCOUNTA
+    where IC = #{ic,jdbcType=VARCHAR}
+      and FUNDNAME = #{fundname,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    insert into JOINACCOUNTA (IC, FUNDNAME, FUNDCODE, 
+      RISKRATING)
+    values (#{ic,jdbcType=VARCHAR}, #{fundname,jdbcType=VARCHAR}, #{fundcode,jdbcType=VARCHAR}, 
+      #{riskrating,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    insert into JOINACCOUNTA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ic != null">
+        IC,
+      </if>
+      <if test="fundname != null">
+        FUNDNAME,
+      </if>
+      <if test="fundcode != null">
+        FUNDCODE,
+      </if>
+      <if test="riskrating != null">
+        RISKRATING,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ic != null">
+        #{ic,jdbcType=VARCHAR},
+      </if>
+      <if test="fundname != null">
+        #{fundname,jdbcType=VARCHAR},
+      </if>
+      <if test="fundcode != null">
+        #{fundcode,jdbcType=VARCHAR},
+      </if>
+      <if test="riskrating != null">
+        #{riskrating,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    update JOINACCOUNTA
+    <set>
+      <if test="fundcode != null">
+        FUNDCODE = #{fundcode,jdbcType=VARCHAR},
+      </if>
+      <if test="riskrating != null">
+        RISKRATING = #{riskrating,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where IC = #{ic,jdbcType=VARCHAR}
+      and FUNDNAME = #{fundname,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.JoinaccountaVo">
+    update JOINACCOUNTA
+    set FUNDCODE = #{fundcode,jdbcType=VARCHAR},
+      RISKRATING = #{riskrating,jdbcType=VARCHAR}
+    where IC = #{ic,jdbcType=VARCHAR}
+      and FUNDNAME = #{fundname,jdbcType=VARCHAR}
+  </update>
+</mapper>

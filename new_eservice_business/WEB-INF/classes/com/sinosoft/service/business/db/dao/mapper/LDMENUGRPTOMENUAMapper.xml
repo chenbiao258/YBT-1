@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LDMENUGRPTOMENUAMapper">
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    <id column="MENUGRPCODE" jdbcType="VARCHAR" property="menugrpcode" />
+    <id column="NODECODE" jdbcType="VARCHAR" property="nodecode" />
+    <id column="MEDDLEMENU" jdbcType="VARCHAR" property="meddlemenu" />
+    <id column="MENUDESC" jdbcType="VARCHAR" property="menuDesc" />
+    <result column="MAKEDATE" jdbcType="DATE" property="makedate" />
+    <result column="MAKETIME" jdbcType="VARCHAR" property="maketime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MENUGRPCODE, NODECODE, MEDDLEMENU,MENUDESC,MAKEDATE, MAKETIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LDMENUGRPTOMENUA
+    where MENUGRPCODE = #{menugrpcode,jdbcType=VARCHAR}
+      and NODECODE = #{nodecode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectone"  resultMap="BaseResultMap">
+ select n.sub_menu as nodecode,n.meddle_menu as meddlemenu,n.menu_desc as menuDesc from menu n where n.sub_menu 
+ in <foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList}
+    </foreach>
+  </select>
+  <select id="selecttwo" resultMap="BaseResultMap">
+ select n.sub_menu as nodecode,n.meddle_menu as meddlemenu,n.menu_desc as menuDesc from  menu n where n.sub_menu 
+ in <foreach item="AList" index="index" collection="AList"
+                open="(" separator="," close=")"> #{AList}
+    </foreach>
+
+ and n.meddle_menu
+ in <foreach item="BList" index="index" collection="BList"
+                open="(" separator="," close=")"> #{BList}
+    </foreach> 
+  </select>
+    <delete id="deletes" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    delete from LDMENUGRPTOMENUA
+    where MENUGRPCODE in (select menugrpcode from LDMENUGRPA where  menugrpname=#{menugrpcode,jdbcType=VARCHAR}) 
+      and NODECODE = #{nodecode,jdbcType=VARCHAR}
+      and MEDDLEMENU=#{meddlemenu}
+      and MENUDESC=#{menuDesc}
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    delete from LDMENUGRPTOMENUA
+    where MENUGRPCODE = #{menugrpcode,jdbcType=VARCHAR}
+      and NODECODE = #{nodecode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    insert into LDMENUGRPTOMENU (MENUGRPCODE, NODECODE,MEDDLEMENU,MENUDESC, MAKEDATE, 
+      MAKETIME)
+    values (#{menugrpcode,jdbcType=VARCHAR}, #{nodecode,jdbcType=VARCHAR}, #{meddlemenu,jdbcType=VARCHAR}, #{menuDesc,jdbcType=VARCHAR},#{makedate,jdbcType=DATE}, 
+      #{maketime,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertA" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    insert into LDMENUGRPTOMENUA(MENUGRPCODE, NODECODE,MEDDLEMENU,MENUDESC, MAKEDATE, 
+      MAKETIME)
+    values (#{menugrpcode,jdbcType=VARCHAR}, #{nodecode,jdbcType=VARCHAR}, #{meddlemenu,jdbcType=VARCHAR}, #{menuDesc,jdbcType=VARCHAR},#{makedate,jdbcType=DATE}, 
+      #{maketime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    insert into LDMENUGRPTOMENUA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menugrpcode != null">
+        MENUGRPCODE,
+      </if>
+      <if test="nodecode != null">
+        NODECODE,
+      </if>
+      <if test="makedate != null">
+        MAKEDATE,
+      </if>
+      <if test="maketime != null">
+        MAKETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menugrpcode != null">
+        #{menugrpcode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodecode != null">
+        #{nodecode,jdbcType=VARCHAR},
+      </if>
+      <if test="makedate != null">
+        #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        #{maketime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    update LDMENUGRPTOMENUA
+    <set>
+      <if test="makedate != null">
+        MAKEDATE = #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        MAKETIME = #{maketime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MENUGRPCODE = #{menugrpcode,jdbcType=VARCHAR}
+      and NODECODE = #{nodecode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LDMENUGRPTOMENUAVo">
+    update LDMENUGRPTOMENUA
+    set MAKEDATE = #{makedate,jdbcType=DATE},
+      MAKETIME = #{maketime,jdbcType=VARCHAR}
+    where MENUGRPCODE = #{menugrpcode,jdbcType=VARCHAR}
+      and NODECODE = #{nodecode,jdbcType=VARCHAR}
+  </update>
+</mapper>

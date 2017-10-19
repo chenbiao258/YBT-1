@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LdcustomeraddressDao">
+
+
+
+<insert id="addLdcustomeraddress" parameterType="com.sinosoft.service.business.ui.CustomerID.bean.Ldcustomeraddress" >
+    insert into LDCUSTOMERADDRESS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ldcustomerno != null" >
+        LDCUSTOMERNO,
+      </if>
+      <if test="cifid != null" >
+        CIFID,
+      </if>
+      <if test="residentialaddresstype != null" >
+        RESIDENTIALADDRESSTYPE,
+      </if>
+      <if test="residentialprovince != null" >
+        RESIDENTIALPROVINCE,
+      </if>
+      <if test="residentialcity != null" >
+        RESIDENTIALCITY,
+      </if>
+      <if test="residentialdistrict != null" >
+        RESIDENTIALDISTRICT,
+      </if>
+      <if test="residentialdetailedaddress != null" >
+        RESIDENTIALDETAILEDADDRESS,
+      </if>
+      <if test="residentialpostcode != null" >
+        RESIDENTIALPOSTCODE,
+      </if>
+      <if test="contactaddresstype != null" >
+        CONTACTADDRESSTYPE,
+      </if>
+      <if test="contactprovince != null" >
+        CONTACTPROVINCE,
+      </if>
+      <if test="contactcity != null" >
+        CONTACTCITY,
+      </if>
+      <if test="contactdistrict != null" >
+        CONTACTDISTRICT,
+      </if>
+      <if test="contactdetailedaddress != null" >
+        CONTACTDETAILEDADDRESS,
+      </if>
+      <if test="contactpostcode != null" >
+        CONTACTPOSTCODE,
+      </if>
+      <if test="homeaddresstype != null" >
+        HOMEADDRESSTYPE,
+      </if>
+      <if test="homeprovince != null" >
+        HOMEPROVINCE,
+      </if>
+      <if test="homecity != null" >
+        HOMECITY,
+      </if>
+      <if test="homedistrict != null" >
+        HOMEDISTRICT,
+      </if>
+      <if test="homedetailedaddress != null" >
+        HOMEDETAILEDADDRESS,
+      </if>
+      <if test="homepostcode != null" >
+        HOMEPOSTCODE,
+      </if>
+      <if test="permanentaddresstype != null" >
+        PERMANENTADDRESSTYPE,
+      </if>
+      <if test="permanentprovince != null" >
+        PERMANENTPROVINCE,
+      </if>
+      <if test="permanentcity != null" >
+        PERMANENTCITY,
+      </if>
+      <if test="permanentdistrict != null" >
+        PERMANENTDISTRICT,
+      </if>
+      <if test="permanentdetailedaddress != null" >
+        PERMANENTDETAILEDADDRESS,
+      </if>
+      <if test="permanentpostcode != null" >
+        PERMANENTPOSTCODE,
+      </if>
+      <if test="previouaddresstype != null" >
+        PREVIOUADDRESSTYPE,
+      </if>
+      <if test="previouprovince != null" >
+        PREVIOUPROVINCE,
+      </if>
+      <if test="previoucity != null" >
+        PREVIOUCITY,
+      </if>
+      <if test="previoudistrict != null" >
+        PREVIOUDISTRICT,
+      </if>
+      <if test="previoudetailedaddress != null" >
+        PREVIOUDETAILEDADDRESS,
+      </if>
+      <if test="previoupostcode != null" >
+        PREVIOUPOSTCODE,
+      </if>
+      <if test="previoucompany != null" >
+        PREVIOUCOMPANY,
+      </if>
+      <if test="previoucompanyaddress != null" >
+        PREVIOUCOMPANYADDRESS,
+      </if>
+      <if test="previouposition != null" >
+        PREVIOUPOSITION,
+      </if>
+      <if test="previouindustrytype != null" >
+        PREVIOUINDUSTRYTYPE,
+      </if>
+      <if test="previouoccupation != null" >
+        PREVIOUOCCUPATION,
+      </if>
+      <if test="previouemailaddress != null" >
+        PREVIOUEMAILADDRESS,
+      </if>
+      <if test="previouincome != null" >
+        PREVIOUINCOME,
+      </if>
+      <if test="previoumaritalstatus != null" >
+        PREVIOUMARITALSTATUS,
+      </if>
+      <if test="previouheight != null" >
+        PREVIOUHEIGHT,
+      </if>
+      <if test="previouweight != null" >
+        PREVIOUWEIGHT,
+      </if>
+      <if test="previouincomesource != null" >
+        PREVIOUINCOMESOURCE,
+      </if>
+      <if test="previouwealthsource != null" >
+        PREVIOUWEALTHSOURCE,
+      </if>
+      <if test="previoutelephonesource != null" >
+        PREVIOUTELEPHONESOURCE,
+      </if>
+      <if test="previouhealthcare != null" >
+        PREVIOUHEALTHCARE,
+      </if>
+      <if test="previoufamilyincome != null" >
+        PREVIOUFAMILYINCOME,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ldcustomerno != null" >
+        #{ldcustomerno,jdbcType=VARCHAR},
+      </if>
+      <if test="cifid != null" >
+        #{cifid,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialaddresstype != null" >
+        #{residentialaddresstype,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialprovince != null" >
+        #{residentialprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialcity != null" >
+        #{residentialcity,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialdistrict != null" >
+        #{residentialdistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialdetailedaddress != null" >
+        #{residentialdetailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialpostcode != null" >
+        #{residentialpostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactaddresstype != null" >
+        #{contactaddresstype,jdbcType=VARCHAR},
+      </if>
+      <if test="contactprovince != null" >
+        #{contactprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="contactcity != null" >
+        #{contactcity,jdbcType=VARCHAR},
+      </if>
+      <if test="contactdistrict != null" >
+        #{contactdistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="contactdetailedaddress != null" >
+        #{contactdetailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactpostcode != null" >
+        #{contactpostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="homeaddresstype != null" >
+        #{homeaddresstype,jdbcType=VARCHAR},
+      </if>
+      <if test="homeprovince != null" >
+        #{homeprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="homecity != null" >
+        #{homecity,jdbcType=VARCHAR},
+      </if>
+      <if test="homedistrict != null" >
+        #{homedistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="homedetailedaddress != null" >
+        #{homedetailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="homepostcode != null" >
+        #{homepostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentaddresstype != null" >
+        #{permanentaddresstype,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentprovince != null" >
+        #{permanentprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentcity != null" >
+        #{permanentcity,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentdistrict != null" >
+        #{permanentdistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentdetailedaddress != null" >
+        #{permanentdetailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="permanentpostcode != null" >
+        #{permanentpostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="previouaddresstype != null" >
+        #{previouaddresstype,jdbcType=VARCHAR},
+      </if>
+      <if test="previouprovince != null" >
+        #{previouprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="previoucity != null" >
+        #{previoucity,jdbcType=VARCHAR},
+      </if>
+      <if test="previoudistrict != null" >
+        #{previoudistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="previoudetailedaddress != null" >
+        #{previoudetailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="previoupostcode != null" >
+        #{previoupostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="previoucompany != null" >
+        #{previoucompany,jdbcType=VARCHAR},
+      </if>
+      <if test="previoucompanyaddress != null" >
+        #{previoucompanyaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="previouposition != null" >
+        #{previouposition,jdbcType=VARCHAR},
+      </if>
+      <if test="previouindustrytype != null" >
+        #{previouindustrytype,jdbcType=VARCHAR},
+      </if>
+      <if test="previouoccupation != null" >
+        #{previouoccupation,jdbcType=VARCHAR},
+      </if>
+      <if test="previouemailaddress != null" >
+        #{previouemailaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="previouincome != null" >
+        #{previouincome,jdbcType=VARCHAR},
+      </if>
+      <if test="previoumaritalstatus != null" >
+        #{previoumaritalstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="previouheight != null" >
+        #{previouheight,jdbcType=VARCHAR},
+      </if>
+      <if test="previouweight != null" >
+        #{previouweight,jdbcType=VARCHAR},
+      </if>
+      <if test="previouincomesource != null" >
+        #{previouincomesource,jdbcType=VARCHAR},
+      </if>
+      <if test="previouwealthsource != null" >
+        #{previouwealthsource,jdbcType=VARCHAR},
+      </if>
+      <if test="previoutelephonesource != null" >
+        #{previoutelephonesource,jdbcType=VARCHAR},
+      </if>
+      <if test="previouhealthcare != null" >
+        #{previouhealthcare,jdbcType=VARCHAR},
+      </if>
+       <if test="previoufamilyincome != null" >
+        #{previoufamilyincome,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+<select id="select"  resultType="String">
+  	  select SEQ_LDCUSTOMERNO.nextval from dual
+</select>
+
+
+
+<delete id="deleteLdcustomeraddress">
+      delete  from ldcustomeraddress where CIFID = #{cifid,jdbcType=VARCHAR}
+</delete>
+
+
+
+
+
+
+
+
+</mapper>

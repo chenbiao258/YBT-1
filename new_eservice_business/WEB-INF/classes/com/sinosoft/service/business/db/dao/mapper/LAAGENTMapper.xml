@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LAAGENTMapper">
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LaagentVO">
+    <id column="STAFFID" jdbcType="VARCHAR" property="staffid" />
+    <result column="REGION" jdbcType="VARCHAR" property="region" />
+    <result column="LOCATIONCODE" jdbcType="VARCHAR" property="locationcode" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="SUBBRANCH" jdbcType="VARCHAR" property="subbranch" />
+    <result column="COMPANYNAME" jdbcType="VARCHAR" property="companyname" />
+    <result column="DEPARTMENT" jdbcType="VARCHAR" property="department" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PREFERREDFIRSTNAME" jdbcType="VARCHAR" property="preferredfirstname" />
+    <result column="JOBCODE" jdbcType="VARCHAR" property="jobcode" />
+    <result column="POSITIONTITLE" jdbcType="VARCHAR" property="positiontitle" />
+    <result column="CHECKFLAG" jdbcType="VARCHAR" property="checkflag" />
+      <result column="SALESROLE" jdbcType="VARCHAR" property="salesrole" />
+    <result column="ACTNRSNEFFDT" jdbcType="DATE" property="actnrsneffdt" />
+    <result column="HIREDATE" jdbcType="DATE" property="hiredate" />
+    <result column="REHIREDATE" jdbcType="DATE" property="rehiredate" />
+  </resultMap>
+ <sql id="Base_Column_List">
+    STAFFID, REGION, LOCATIONCODE, CITY, SUBBRANCH, COMPANYNAME, DEPARTMENT, NAME, PREFERREDFIRSTNAME, 
+    JOBCODE, POSITIONTITLE, CHECKFLAG,SALESROLE, ACTNRSNEFFDT, HIREDATE, REHIREDATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LaagentVO" resultMap="BaseResultMap">
+    select   <include refid="Base_Column_List" />
+  	from laagent a
+ 	where 1 = 1 
+
+    <if test="regionid != null">
+    	 and a.region = (select region from region where regionid =#{regionid}) 
+    </if>
+    <if test="locationid != null">
+    	and a.locationcode=(select locationcode from locationcode where locationid =#{locationid}) 
+    </if>
+    <if test="subbranchid != null">
+   		and a.subbranch=(select subbranch from subbranch where subbranchid =#{subbranchid}) 
+    </if>
+    <if test="cityid != null">
+       and a.city=(select city from ldcity where cityid =#{cityid}) 
+    </if>
+     <if test="companynameid != null">
+       and a.companyname=(select companyname from companyname where companynameid =#{companynameid}) 
+    </if>
+    <if test="departmentid != null">
+       and a.department=(select department from department where departmentid = #{departmentid}) 
+    </if>
+    <if test="staffid != null">
+       and a.staffid=#{staffid}
+    </if>
+    <if test="checkflag != null">
+       and a.checkflag=#{checkflag}
+    </if>
+  </select>
+  
+  
+    <select id="selectByPrimaryKeyA" parameterType="com.sinosoft.service.business.db.vo.LaagentVO" resultMap="BaseResultMap">
+    select   <include refid="Base_Column_List" />
+  	from laagenta a
+ 	where 1 = 1 
+
+    <if test="regionid != null">
+    	 and a.region = (select region from region where regionid =#{regionid}) 
+    </if>
+    <if test="locationid != null">
+    	and a.locationcode=(select locationcode from locationcode where locationid =#{locationid}) 
+    </if>
+    <if test="subbranchid != null">
+   		and a.subbranch=(select subbranch from subbranch where subbranchid =#{subbranchid}) 
+    </if>
+    <if test="cityid != null">
+       and a.city=(select city from ldcity where cityid =#{cityid}) 
+    </if>
+     <if test="companynameid != null">
+       and a.companyname=(select companyname from companyname where companynameid =#{companynameid}) 
+    </if>
+    <if test="departmentid != null">
+       and a.department=(select department from department where departmentid = #{departmentid}) 
+    </if>
+    <if test="staffid != null">
+       and a.staffid=#{staffid}
+    </if>
+ 
+  </select>
+  
+  <select id="SelectByRegionAll" resultType="com.sinosoft.service.business.ui.publicBean.bean.RegionBean">
+    select * from Region
+  </select>
+  
+  <select id="queryUser"  parameterType="com.sinosoft.service.business.db.vo.SYSUserVo" resultType="com.sinosoft.service.business.db.vo.SYSUserVo">
+  select * form LDUser
+  where  UserCode=#{UserCode,jdbcType=VARCHAR}
+  </select>
+  <select id="queryUserA"  parameterType="com.sinosoft.service.business.db.vo.SYSUserVo" resultType="com.sinosoft.service.business.db.vo.SYSUserVo">
+  select * form LDUsera
+  where  UserCode=#{UserCode,jdbcType=VARCHAR}
+  </select>
+  
+   <delete id="deleteUser" parameterType="com.sinosoft.service.business.db.vo.SYSUserVo">
+   delete from LDUser where UserCode=#{UserCode,jdbcType=VARCHAR}
+   </delete>
+      <delete id="deleteUserA" parameterType="com.sinosoft.service.business.db.vo.SYSUserVo">
+   delete from LDUsera where UserCode=#{UserCode,jdbcType=VARCHAR}
+   </delete>
+   <insert id="insertUser" parameterType="com.sinosoft.service.business.db.vo.SYSUserVo">
+  	 insert into LDUser( UserCode,UserName,ComCode,UserDescription,UserState,SuperPopedomFlag,LockState,UseFlag,Operator,Password,MakeDate,MakeTime )
+     values 
+      (#{UserCode,jdbcType=VARCHAR}, #{UserName,jdbcType=VARCHAR}, #{ComCode,jdbcType=VARCHAR}, 
+      #{UserDescription,jdbcType=VARCHAR}, #{UserState,jdbcType=VARCHAR}, #{SuperPopedomFlag,jdbcType=VARCHAR}, 
+	  #{LockState,jdbcType=VARCHAR}, #{UseFlag,jdbcType=VARCHAR}, 
+      #{Operator,jdbcType=VARCHAR}, #{Password,jdbcType=VARCHAR}, #{MakeDate,jdbcType=TIMESTAMP}, #{MakeTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertUserB" parameterType="com.sinosoft.service.business.db.vo.SYSUserVo">
+  	 insert into LDUserb( UserCode,UserName,ComCode,UserDescription,UserState,SuperPopedomFlag,LockState,UseFlag,Operator,Password,MakeDate,MakeTime )
+     values 
+      (#{UserCode,jdbcType=VARCHAR}, #{UserName,jdbcType=VARCHAR}, #{ComCode,jdbcType=VARCHAR}, 
+      #{UserDescription,jdbcType=VARCHAR}, #{UserState,jdbcType=VARCHAR}, #{SuperPopedomFlag,jdbcType=VARCHAR}, 
+	  #{LockState,jdbcType=VARCHAR}, #{UseFlag,jdbcType=VARCHAR}, 
+      #{Operator,jdbcType=VARCHAR}, #{Password,jdbcType=VARCHAR}, #{MakeDate,jdbcType=TIMESTAMP}, #{MakeTime,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertUserA" parameterType="com.sinosoft.service.business.db.vo.SYSUserVo">
+  	 insert into LDUserA ( UserCode,UserName,ComCode,UserDescription,UserState,SuperPopedomFlag,LockState,UseFlag,Operator,Password,MakeDate,MakeTime )
+     values 
+      (#{UserCode,jdbcType=VARCHAR}, #{UserName,jdbcType=VARCHAR}, #{ComCode,jdbcType=VARCHAR}, 
+      #{UserDescription,jdbcType=VARCHAR}, #{UserState,jdbcType=VARCHAR}, #{SuperPopedomFlag,jdbcType=VARCHAR}, 
+	  #{LockState,jdbcType=VARCHAR}, #{UseFlag,jdbcType=VARCHAR}, 
+      #{Operator,jdbcType=VARCHAR}, #{Password,jdbcType=VARCHAR}, #{MakeDate,jdbcType=TIMESTAMP}, #{MakeTime,jdbcType=VARCHAR})
+  </insert>
+    
+    
+  <select id="SelectByRegionId" resultType="com.sinosoft.service.business.ui.publicBean.bean.RegionBean" parameterType="java.lang.String">
+    select * from Region 
+  </select>
+  
+  
+
+  <select id="selectByCityId" resultType="com.sinosoft.service.business.ui.publicBean.bean.CityBean" >
+    select * from ldcity
+  </select>
+  
+    <select id="selectByCompanyNameId" resultType="com.sinosoft.service.business.ui.publicBean.bean.CompanyNameBean" parameterType="java.lang.String">
+   select * from companyname where cityid=#{cityid}
+  </select>
+  
+  
+  <select id="SelectBySubbranchId" resultType="com.sinosoft.service.business.ui.publicBean.bean.SubbranchBean" parameterType="java.lang.String">
+    select * from Subbranch
+  </select>
+  
+    <select id="selectByDepartmentId" resultType="com.sinosoft.service.business.ui.publicBean.bean.DepartmentBean" parameterType="java.lang.String">
+   select * from department  where companynameid=#{companynameid}
+  </select>
+  
+    
+  <select id="selectByLocationCodeId" resultType="com.sinosoft.service.business.ui.publicBean.bean.LocationCodeBean" parameterType="java.lang.String">
+   select * from LocationCode 
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LAAGENTA
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="delete" parameterType="java.lang.String">
+    delete from LAAGENT
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LaagentVO">
+    insert into LAAGENT(STAFFID, REGION, LOCATIONCODE, 
+      CITY, SUBBRANCH, COMPANYNAME, 
+      DEPARTMENT, NAME, PREFERREDFIRSTNAME, 
+      JOBCODE, POSITIONTITLE, CHECKFLAG, SALESROLE,
+      ACTNRSNEFFDT, HIREDATE, REHIREDATE
+      )
+    values (#{staffid,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{locationcode,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{subbranch,jdbcType=VARCHAR}, #{companyname,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{preferredfirstname,jdbcType=VARCHAR}, 
+      #{jobcode,jdbcType=VARCHAR}, #{positiontitle,jdbcType=VARCHAR}, #{checkflag,jdbcType=VARCHAR}, #{salesrole,jdbcType=VARCHAR}, 
+      #{actnrsneffdt,jdbcType=DATE}, #{hiredate,jdbcType=DATE}, #{rehiredate,jdbcType=DATE}
+      )
+  </insert>
+  
+  
+  
+  
+  
+   <insert id="insertA" parameterType="com.sinosoft.service.business.db.vo.LaagentVO">
+    insert into LAAGENTA (STAFFID, REGION, LOCATIONCODE, 
+      CITY, SUBBRANCH, COMPANYNAME, 
+      DEPARTMENT, NAME, PREFERREDFIRSTNAME, 
+      JOBCODE, POSITIONTITLE, CHECKFLAG, SALESROLE,
+      ACTNRSNEFFDT, HIREDATE, REHIREDATE
+      )
+    values (#{staffid,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{locationcode,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{subbranch,jdbcType=VARCHAR}, #{companyname,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{preferredfirstname,jdbcType=VARCHAR}, 
+      #{jobcode,jdbcType=VARCHAR}, #{positiontitle,jdbcType=VARCHAR}, #{checkflag,jdbcType=VARCHAR},#{salesrole,jdbcType=VARCHAR}, 
+      #{actnrsneffdt,jdbcType=DATE}, #{hiredate,jdbcType=DATE}, #{rehiredate,jdbcType=DATE}
+      )
+  </insert>
+  
+     <insert id="insertB" parameterType="com.sinosoft.service.business.db.vo.LaagentVO">
+    insert into LAAGENTB(STAFFID, REGION, LOCATIONCODE, 
+      CITY, SUBBRANCH, COMPANYNAME, 
+      DEPARTMENT, NAME, PREFERREDFIRSTNAME, 
+      JOBCODE, POSITIONTITLE, CHECKFLAG, SALESROLE,
+      ACTNRSNEFFDT, HIREDATE, REHIREDATE
+      )
+    values (#{staffid,jdbcType=VARCHAR}, #{region,jdbcType=VARCHAR}, #{locationcode,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{subbranch,jdbcType=VARCHAR}, #{companyname,jdbcType=VARCHAR}, 
+      #{department,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{preferredfirstname,jdbcType=VARCHAR}, 
+      #{jobcode,jdbcType=VARCHAR}, #{positiontitle,jdbcType=VARCHAR}, #{checkflag,jdbcType=VARCHAR}, #{salesrole,jdbcType=VARCHAR}, 
+      #{actnrsneffdt,jdbcType=DATE}, #{hiredate,jdbcType=DATE}, #{rehiredate,jdbcType=DATE}
+      )
+  </insert>
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.LaagentVO">
+    insert into LAAGENTA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="staffid != null">
+        STAFFID,
+      </if>
+      <if test="region != null">
+        REGION,
+      </if>
+      <if test="locationcode != null">
+        LOCATIONCODE,
+      </if>
+      <if test="city != null">
+        CITY,
+      </if>
+      <if test="subbranch != null">
+        SUBBRANCH,
+      </if>
+      <if test="companyname != null">
+        COMPANYNAME,
+      </if>
+      <if test="department != null">
+        DEPARTMENT,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="preferredfirstname != null">
+        PREFERREDFIRSTNAME,
+      </if>
+      <if test="jobcode != null">
+        JOBCODE,
+      </if>
+      <if test="positiontitle != null">
+        POSITIONTITLE,
+      </if>
+      <if test="checkflag != null">
+        CHECKFLAG,
+      </if>
+      <if test="actnrsneffdt != null">
+        ACTNRSNEFFDT,
+      </if>
+      <if test="hiredate != null">
+        HIREDATE,
+      </if>
+      <if test="rehiredate != null">
+        REHIREDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="staffid != null">
+        #{staffid,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="locationcode != null">
+        #{locationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="subbranch != null">
+        #{subbranch,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="preferredfirstname != null">
+        #{preferredfirstname,jdbcType=VARCHAR},
+      </if>
+      <if test="jobcode != null">
+        #{jobcode,jdbcType=VARCHAR},
+      </if>
+      <if test="positiontitle != null">
+        #{positiontitle,jdbcType=VARCHAR},
+      </if>
+      <if test="checkflag != null">
+        #{checkflag,jdbcType=VARCHAR},
+      </if>
+      <if test="actnrsneffdt != null">
+        #{actnrsneffdt,jdbcType=DATE},
+      </if>
+      <if test="hiredate != null">
+        #{hiredate,jdbcType=DATE},
+      </if>
+      <if test="rehiredate != null">
+        #{rehiredate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.LaagentVO">
+    update LAAGENTA
+    <set>
+      <if test="region != null">
+        REGION = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="locationcode != null">
+        LOCATIONCODE = #{locationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="subbranch != null">
+        SUBBRANCH = #{subbranch,jdbcType=VARCHAR},
+      </if>
+      <if test="companyname != null">
+        COMPANYNAME = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        DEPARTMENT = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="preferredfirstname != null">
+        PREFERREDFIRSTNAME = #{preferredfirstname,jdbcType=VARCHAR},
+      </if>
+      <if test="jobcode != null">
+        JOBCODE = #{jobcode,jdbcType=VARCHAR},
+      </if>
+      <if test="positiontitle != null">
+        POSITIONTITLE = #{positiontitle,jdbcType=VARCHAR},
+      </if>
+      <if test="checkflag != null">
+        CHECKFLAG = #{checkflag,jdbcType=VARCHAR},
+      </if>
+      <if test="actnrsneffdt != null">
+        ACTNRSNEFFDT = #{actnrsneffdt,jdbcType=DATE},
+      </if>
+      <if test="hiredate != null">
+        HIREDATE = #{hiredate,jdbcType=DATE},
+      </if>
+      <if test="rehiredate != null">
+        REHIREDATE = #{rehiredate,jdbcType=DATE},
+      </if>
+    </set>
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LaagentVO">
+    update LAAGENTA
+    set REGION = #{region,jdbcType=VARCHAR},
+      LOCATIONCODE = #{locationcode,jdbcType=VARCHAR},
+      CITY = #{city,jdbcType=VARCHAR},
+      SUBBRANCH = #{subbranch,jdbcType=VARCHAR},
+      COMPANYNAME = #{companyname,jdbcType=VARCHAR},
+      DEPARTMENT = #{department,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      PREFERREDFIRSTNAME = #{preferredfirstname,jdbcType=VARCHAR},
+      JOBCODE = #{jobcode,jdbcType=VARCHAR},
+      POSITIONTITLE = #{positiontitle,jdbcType=VARCHAR},
+      CHECKFLAG = #{checkflag,jdbcType=VARCHAR},
+      ACTNRSNEFFDT = #{actnrsneffdt,jdbcType=DATE},
+      HIREDATE = #{hiredate,jdbcType=DATE},
+      REHIREDATE = #{rehiredate,jdbcType=DATE}
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </update>
+</mapper>

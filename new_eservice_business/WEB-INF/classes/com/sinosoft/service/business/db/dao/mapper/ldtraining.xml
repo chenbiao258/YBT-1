@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.ldtrainingDao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.ldtrainingVo">
+    <result column="courseCode" jdbcType="TIMESTAMP" property="courseCode" />
+    <result column="courseTitle" jdbcType="VARCHAR" property="courseTitle" />
+  </resultMap>
+  <sql id="Base_Column_List">
+   courseCode,courseTitle
+  </sql>
+  
+  <select id="selectByQualifitype" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo" resultMap="BaseResultMap">
+  	select
+		<include refid="Base_Column_List" /> 
+		from ldtraining
+		where 1=1
+		<if test="courseCode != null">
+        and   courseCode = #{courseCode} 
+        </if>
+        <if test="courseTitle != null">
+       and courseTitle = #{courseTitle} 
+        </if>
+     
+		
+  </select>
+    <select id="selectBystaffid" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo" resultMap="BaseResultMap">
+  	select
+		<include refid="Base_Column_List" /> 
+		from latraining
+		where staffid = #{staffid} 
+  </select>
+  
+     <select id="selectAllstaffid" resultMap="BaseResultMap">
+  	select
+		distinct(staffid) 
+		from latraining
+  </select>
+  
+   <select id="download" parameterType="String" resultMap="BaseResultMap">
+  	select
+		<include refid="Base_Column_List" /> 
+		from latraining
+		where staffid=#{staffid}<!-- in <foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList}</foreach> -->
+
+  </select>
+  
+  
+     <select id="countdownload"  resultType="Integer">
+  	select
+		count(distinct(staffid))
+		from latraining
+		<!-- where id in <foreach item="AList" index="index" collection="list"
+                open="(" separator="," close=")"> #{AList}</foreach>
+ -->
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+       select distinct(staffid) from  latraining
+  </select>
+  
+   <select id="selectBytypeAndinfoAll" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />  from laqualiinfo where qualifitype=#{qualifitype} and qualiinfo=#{qualiinfo}
+  </select>
+  
+  
+  <delete id="deleteBytypeAndinfo" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo">
+   delete from  latraining 
+   where 1=1
+    <if test="staffid != null">
+      and  staffid= #{staffid,jdbcType=VARCHAR}
+      </if>
+      <if test="courseCode != null">
+      and  courseCode = #{courseCode,jdbcType=VARCHAR}
+      </if>
+      <if test="courseTitle != null">
+      and  courseTitle= #{courseTitle,jdbcType=TIMESTAMP}
+      </if>
+      <if test="id != null">
+      and   id = #{id} 
+      </if>
+     
+  </delete>
+  
+  <select id="select" resultMap="BaseResultMap">
+  	select * from t_sys_user
+  </select>
+  
+  <select id="queryByUserCode" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from t_sys_user
+		where "user_code" = #{userCode} 
+	   		 
+	</select>
+	
+	<select id="queryByUserCodeAndName" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from t_sys_user
+		where "user_code" = #{userCode} and "user_name" = #{userName}
+	    
+	</select>
+
+
+
+<insert id="insertjob" parameterType="com.sinosoft.service.business.ui.latraining.bean.JobCodeBean">
+   insert into jobcode
+  (jobcode,salesrole1,salesrole2)
+    values (#{jobcode,jdbcType=VARCHAR},
+    #{salesrole1,jdbcType=VARCHAR},#{salesrole2,jdbcType=VARCHAR})
+  </insert>
+
+
+  	<insert id="insert" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo">
+   insert into ldtraining
+  (courseCode,courseTitle)
+    values (#{courseCode,jdbcType=VARCHAR},#{courseTitle,jdbcType=VARCHAR})
+  </insert>
+	 
+
+	 
+	 
+	<update id="updateLaqualiinfoByQualifitype" parameterType="com.sinosoft.service.business.db.vo.ldtrainingVo">
+    update laqualiinfo
+    <set>
+      <if test="qualiinfo != null">
+        qualiinfo= #{qualiinfo,jdbcType=VARCHAR},
+      </if>
+       <if test="flag != null">
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where qualifitype=#{qualifitype,jdbcType=VARCHAR} and qualiinfo=#{qualiinfo,jdbcType=VARCHAR}
+
+  </update>	 
+	 
+</mapper>

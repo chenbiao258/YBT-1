@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.service.business.db.dao.ImpartContentVoMapper" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.ImpartContentVo" >
+    <id column="CONTNOIMPARTCODE" property="contnoimpartcode" jdbcType="VARCHAR" />
+    <result column="TRANSNO" property="transno" jdbcType="VARCHAR" />
+    <result column="CONTNO" property="contno" jdbcType="VARCHAR" />
+    <result column="INSUREDCOMPANY" property="insuredcompany" jdbcType="VARCHAR" />
+    <result column="IMPARTCODE" property="impartcode" jdbcType="VARCHAR" />
+    <result column="INSUREDIMPART" property="insuredimpart" jdbcType="VARCHAR" />
+    <result column="OWNERIMPART" property="ownerimpart" jdbcType="VARCHAR" />
+    <result column="INSUREDYESORNO" property="insuredyesorno" jdbcType="VARCHAR" />
+    <result column="OWNERYESORNO" property="owneryesorno" jdbcType="VARCHAR" />
+    <result column="IMPARTNO" property="impartNo" jdbcType="VARCHAR" />
+    <result column="INSUREDYESORNOIMPART" property="insuredyesornoimpart" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CONTNOIMPARTCODE, TRANSNO, CONTNO, INSUREDCOMPANY, IMPARTCODE, INSUREDIMPART, OWNERIMPART, 
+    INSUREDYESORNO, OWNERYESORNO,IMPARTNO,INSUREDYESORNOIMPART
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from IMPARTCONTENT
+    where TRANSNO = #{transno,jdbcType=VARCHAR} order by IMPARTCODE
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from IMPARTCONTENT
+       where TRANSNO = #{transno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.ImpartContentVo" >
+    insert into IMPARTCONTENT (CONTNOIMPARTCODE, TRANSNO, CONTNO, 
+      INSUREDCOMPANY, IMPARTCODE, INSUREDIMPART, 
+      OWNERIMPART, INSUREDYESORNO, OWNERYESORNO,IMPARTNO,INSUREDYESORNOIMPART
+      )
+    values (#{contnoimpartcode,jdbcType=VARCHAR}, #{transno,jdbcType=VARCHAR}, #{contno,jdbcType=VARCHAR}, 
+      #{insuredcompany,jdbcType=VARCHAR}, #{impartcode,jdbcType=VARCHAR}, #{insuredimpart,jdbcType=VARCHAR}, 
+      #{ownerimpart,jdbcType=VARCHAR}, #{insuredyesorno,jdbcType=VARCHAR}, #{owneryesorno,jdbcType=VARCHAR}
+        #{impartNo,jdbcType=VARCHAR},  #{insuredyesornoimpart,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.ImpartContentVo" >
+    insert into IMPARTCONTENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contnoimpartcode != null" >
+        CONTNOIMPARTCODE,
+      </if>
+      <if test="transno != null" >
+        TRANSNO,
+      </if>
+      <if test="contno != null" >
+        CONTNO,
+      </if>
+      <if test="insuredcompany != null" >
+        INSUREDCOMPANY,
+      </if>
+      <if test="impartcode != null" >
+        IMPARTCODE,
+      </if>
+      <if test="insuredimpart != null" >
+        INSUREDIMPART,
+      </if>
+      <if test="ownerimpart != null" >
+        OWNERIMPART,
+      </if>
+      <if test="insuredyesorno != null" >
+        INSUREDYESORNO,
+      </if>
+      <if test="owneryesorno != null" >
+        OWNERYESORNO,
+      </if>
+     
+       <if test="impartNo != null" >
+        IMPARTNO,
+      </if>
+      <if test="insuredyesornoimpart != null" >
+        INSUREDYESORNOIMPART,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contnoimpartcode != null" >
+        #{contnoimpartcode,jdbcType=VARCHAR},
+      </if>
+      <if test="transno != null" >
+        #{transno,jdbcType=VARCHAR},
+      </if>
+      <if test="contno != null" >
+        #{contno,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredcompany != null" >
+        #{insuredcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="impartcode != null" >
+        #{impartcode,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredimpart != null" >
+        #{insuredimpart,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerimpart != null" >
+        #{ownerimpart,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredyesorno != null" >
+        #{insuredyesorno,jdbcType=VARCHAR},
+      </if>
+      <if test="owneryesorno != null" >
+        #{owneryesorno,jdbcType=VARCHAR},
+      </if>
+          <if test="impartNo != null" >
+        #{impartNo,jdbcType=VARCHAR},
+      </if>
+          <if test="insuredyesornoimpart != null" >
+        #{insuredyesornoimpart,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.ImpartContentVo" >
+    update IMPARTCONTENT
+    <set >
+      <if test="transno != null" >
+        TRANSNO = #{transno,jdbcType=VARCHAR},
+      </if>
+      <if test="contno != null" >
+        CONTNO = #{contno,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredcompany != null" >
+        INSUREDCOMPANY = #{insuredcompany,jdbcType=VARCHAR},
+      </if>
+      <if test="impartcode != null" >
+        IMPARTCODE = #{impartcode,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredimpart != null" >
+        INSUREDIMPART = #{insuredimpart,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerimpart != null" >
+        OWNERIMPART = #{ownerimpart,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredyesorno != null" >
+        INSUREDYESORNO = #{insuredyesorno,jdbcType=VARCHAR},
+      </if>
+      <if test="owneryesorno != null" >
+        OWNERYESORNO = #{owneryesorno,jdbcType=VARCHAR},
+      </if>
+      <if test="impartNo != null" >
+        IMPARTNO = #{impartNo,jdbcType=VARCHAR},
+      </if>
+      <if test="owneryesorno != null" >
+        INSUREDYESORNOIMPART = #{insuredyesornoimpart,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CONTNOIMPARTCODE = #{contnoimpartcode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.ImpartContentVo" >
+    update IMPARTCONTENT
+    set TRANSNO = #{transno,jdbcType=VARCHAR},
+      CONTNO = #{contno,jdbcType=VARCHAR},
+      INSUREDCOMPANY = #{insuredcompany,jdbcType=VARCHAR},
+      IMPARTCODE = #{impartcode,jdbcType=VARCHAR},
+      INSUREDIMPART = #{insuredimpart,jdbcType=VARCHAR},
+      OWNERIMPART = #{ownerimpart,jdbcType=VARCHAR},
+      INSUREDYESORNO = #{insuredyesorno,jdbcType=VARCHAR},
+      OWNERYESORNO = #{owneryesorno,jdbcType=VARCHAR},
+       IMPARTNO = #{impartNo,jdbcType=VARCHAR},
+        INSUREDYESORNOIMPART = #{insuredyesornoimpart,jdbcType=VARCHAR}
+    where CONTNOIMPARTCODE = #{contnoimpartcode,jdbcType=VARCHAR}
+  </update>
+</mapper>

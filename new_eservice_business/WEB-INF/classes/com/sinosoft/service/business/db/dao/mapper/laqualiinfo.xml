@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LaqualiinfoDao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LaqualiinfoVo">
+    <id column="qualifitype" jdbcType="VARCHAR" property="qualifitype" />
+    <result column="certificate" jdbcType="VARCHAR" property="certificate" />
+    
+    <result column="certificateCode" jdbcType="VARCHAR" property="certificateCode" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="makedate" jdbcType="TIMESTAMP" property="makedate" />
+    <result column="maketime" jdbcType="VARCHAR" property="maketime" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifytime" jdbcType="VARCHAR" property="modifytime" />
+   
+  </resultMap>
+  <sql id="Base_Column_List">
+    qualifitype,certificate,certificateCode,flag,makedate,maketime,modifydate,modifytime
+  </sql>
+  
+   <select id="selectByemplID" parameterType="com.sinosoft.service.business.db.vo.SYSUserVo" resultMap="BaseResultMap">
+  	select i.* from laqualiinfo i where i.certificatecode in(select a.* from((select  a.certificatecode from laqualiinfo a where a.certificatecode in(select l.licensescode from laqualidetails l where l.staffid=#{staffid}))
+union(select  a.certificatecode from laqualiinfo a where a.certificatecode  in(select l.licensescode from externalgifts l where l.staffid=#{staffid})
+))a)
+  </select>
+  
+  <select id="selectAllBean" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+  	select
+	<include refid="Base_Column_List" /> 
+		from laqualiinfo
+		where qualifitype = #{qualifitype} 
+  </select>
+  
+  <select id="selectBytypeAndinfo" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultType="java.lang.Integer">
+        select count(*) from laqualiinfo where qualifitype=#{qualifitype} and certificate=#{certificate}
+  </select>
+  
+   <select id="selectBytypeAndinfoAll" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />  from laqualiinfo where qualifitype=#{qualifitype} and certificate=#{certificate}
+  </select>
+  
+  <select id="selectA" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+       select <include refid="Base_Column_List" />  from laqualiinfo where qualifitype=#{qualifitype}
+  </select>
+  
+    <select id="appendtype"  resultMap="BaseResultMap">
+     select distinct(a.qualifitype),a.makedate from laqualiinfo a
+       where a.qualifitype not in <foreach item="type" index="index" collection="array"
+                open="(" separator="," close=")"> #{type}</foreach>
+   </select>
+  
+  <select id="selectalls" resultMap="BaseResultMap">
+       select distinct(qualifitype) from laqualiinfo
+  </select>
+  
+   <select id="selectBycertificatecode" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+    select * from laqualiinfo l where l.qualifitype=#{qualifitype} and l.certificatecode in (select a.licensescode from laqualidetails a where a.staffid=#{staffid})
+    union
+    select * from laqualiinfo l where l.qualifitype=#{qualifitype} and l.certificatecode in (select a.licensescode from externalgifts a where a.staffid=#{staffid})
+   </select>
+   
+  <!--   <select id="selectByNotcertificatecode" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+    select * from laqualiinfo l where l.qualifitype=#{qualifitype} and l.certificatecode not in (select a.licensescode from laqualidetails a where a.staffid=#{staffid})
+    union
+    select * from laqualiinfo l where l.qualifitype=#{qualifitype} and l.certificatecode not in (select a.licensescode from externalgifts a where a.staffid=#{staffid})
+   </select> -->
+     <select id="selectByNotcertificatecode" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+    select * from laqualiinfo l where l.qualifitype=#{qualifitype} and l.certificatecode not in (select a.licensescode from laqualidetails a where a.staffid=#{staffid})
+    </select>
+    <select id="selectByNotcertificatecodes" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+    select * from laqualiinfo l where l.qualifitype=#{qualifitype} and l.certificatecode not in (select a.licensescode from externalgifts a where a.staffid=#{staffid})
+   </select>
+   
+   <select id="selectByissuedate" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultType="com.sinosoft.service.business.db.vo.laqualidetailsVo">
+    select * from( select * from laqualidetails a where a.staffid=#{staffid} and a.licensescode=#{certificateCode} 
+     union
+     select * from externalgifts e where e.staffid=#{staffid} and e.licensescode =#{certificateCode})s order by issuedate desc
+     </select>
+   <select id="QueryCount" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultType="com.sinosoft.service.business.db.vo.laqualidetailsVo">
+  
+  select distinct(s.licensescode),s.staffid,s.issuedate from  laqualidetails  s where   s.staffid=#{staffid} and s.licensescode in(select l.certificatecode from laqualiinfo l where l.qualifitype=#{qualifitype})
+  union select distinct(e.licensescode),e.staffid,e.issuedate from externalgifts e where  e.staffid=#{staffid} and e.licensescode in(select l.certificatecode from laqualiinfo l where l.qualifitype=#{qualifitype})
+  order by issuedate desc
+   </select>
+  
+  <delete id="deleteBytypeAndinfo" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo">
+   delete from  laqualiinfo where qualifitype=#{qualifitype} and certificate=#{certificate}
+  </delete>
+  
+  <select id="select" resultMap="BaseResultMap">
+  	select * from t_sys_user
+  </select>
+  
+  <select id="queryByUserCode" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from t_sys_user
+		where "user_code" = #{userCode} 
+	   		 
+	</select>
+	
+	<select id="queryByUserCodeAndName" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from t_sys_user
+		where "user_code" = #{userCode} and "user_name" = #{userName}
+	    
+	</select>
+	
+
+	
+	<select id="selectUidList" resultType="java.lang.String">
+  		select "uid" from t_sys_user
+  	</select>
+  	
+  	<insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo">
+   insert into laqualiinfo
+  (qualifitype, certificate,certificateCode,flag, makedate, maketime,modifydate,modifytime)
+    values (#{qualifitype,jdbcType=VARCHAR}, #{certificate,jdbcType=VARCHAR},#{certificateCode,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR},#{makedate,jdbcType=TIMESTAMP}, #{maketime,jdbcType=VARCHAR},#{modifydate,jdbcType=TIMESTAMP}, #{modifytime,jdbcType=VARCHAR})
+  </insert>
+	 
+
+	 
+	 
+	<update id="updateLaqualiinfoByQualifitype" parameterType="com.sinosoft.service.business.db.vo.LaqualiinfoVo">
+    update laqualiinfo
+    <set>
+      <if test="certificate != null">
+        certificate= #{certificate,jdbcType=VARCHAR},
+      </if>
+       <if test="flag != null">
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where qualifitype=#{qualifitype,jdbcType=VARCHAR} and certificate=#{certificate,jdbcType=VARCHAR}
+
+  </update>	 
+	 
+</mapper>

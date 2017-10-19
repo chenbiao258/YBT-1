@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.UserMapper">
+
+	<select id="getRoles" resultType="String" parameterType="String">
+		select a.rolename from t_role a,t_user_role b where a.id=b.role_id and b.user_name='admin'
+	</select>
+	
+	<select id="getPermissions" parameterType="String" resultType="String">
+		select a.permissionname from t_permission a,t_user_role b where a.roleid = b.role_id and b.user_name = 'admin'
+	</select>
+
+</mapper>

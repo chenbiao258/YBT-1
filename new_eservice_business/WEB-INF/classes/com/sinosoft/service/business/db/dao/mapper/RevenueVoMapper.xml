@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.service.business.db.dao.RevenueVoMapper" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.RevenueVo" >
+   <id column="TRANSNO" property="transno" jdbcType="VARCHAR" />
+    <result column="STATEMENT" property="statement" jdbcType="VARCHAR" />
+    <result column="FIRSTNAME" property="firstname" jdbcType="VARCHAR" />
+    <result column="LASTNAME" property="lastname" jdbcType="VARCHAR" />
+    <result column="LIVINGADDRESS" property="livingaddress" jdbcType="VARCHAR" />
+    <result column="CNNATIVEHEATH" property="cnnativeheath" jdbcType="VARCHAR" />
+    <result column="ENNATIVEHEATH" property="ennativeheath" jdbcType="VARCHAR" />
+    <result column="TIVEHEATH" property="tiveheath" jdbcType="CHAR" />
+    <result column="REASON1" property="reason1" jdbcType="CHAR" />
+    <result column="REASON2" property="reason2" jdbcType="CHAR" />
+    <result column="REASON2DESC" property="reason2desc" jdbcType="VARCHAR" />
+    <result column="BAK1" property="bak1" jdbcType="VARCHAR" />
+    <result column="BAK2" property="bak2" jdbcType="VARCHAR" />
+    <result column="BAK3" property="bak3" jdbcType="VARCHAR" />
+    <result column="LIVEHEATH" property="liveheath" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TRANSNO, STATEMENT, FIRSTNAME, LASTNAME, LIVINGADDRESS, CNNATIVEHEATH, ENNATIVEHEATH, 
+    TIVEHEATH, REASON1, REASON2, REASON2DESC, BAK1, BAK2, BAK3,LIVEHEATH
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from REVENUE
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from REVENUE
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.RevenueVo" >
+    insert into REVENUE (TRANSNO, STATEMENT, FIRSTNAME, 
+      LASTNAME, LIVINGADDRESS, CNNATIVEHEATH, 
+      ENNATIVEHEATH, TIVEHEATH, REASON1, 
+      REASON2, REASON2DESC, BAK1, 
+      BAK2, BAK3,LIVEHEATH)
+    values (#{transno,jdbcType=VARCHAR}, #{statement,jdbcType=VARCHAR}, #{firstname,jdbcType=VARCHAR}, 
+      #{lastname,jdbcType=VARCHAR}, #{livingaddress,jdbcType=VARCHAR}, #{cnnativeheath,jdbcType=VARCHAR}, 
+      #{ennativeheath,jdbcType=VARCHAR}, #{tiveheath,jdbcType=CHAR}, #{reason1,jdbcType=CHAR}, 
+      #{reason2,jdbcType=CHAR}, #{reason2desc,jdbcType=VARCHAR}, #{bak1,jdbcType=VARCHAR}, 
+      #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR},#{liveheath,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.RevenueVo" >
+    insert into REVENUE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transno != null" >
+        TRANSNO,
+      </if>
+      <if test="statement != null" >
+        STATEMENT,
+      </if>
+      <if test="firstname != null" >
+        FIRSTNAME,
+      </if>
+      <if test="lastname != null" >
+        LASTNAME,
+      </if>
+      <if test="livingaddress != null" >
+        LIVINGADDRESS,
+      </if>
+      <if test="cnnativeheath != null" >
+        CNNATIVEHEATH,
+      </if>
+      <if test="ennativeheath != null" >
+        ENNATIVEHEATH,
+      </if>
+      <if test="tiveheath != null" >
+        TIVEHEATH,
+      </if>
+      <if test="reason1 != null" >
+        REASON1,
+      </if>
+      <if test="reason2 != null" >
+        REASON2,
+      </if>
+      <if test="reason2desc != null" >
+        REASON2DESC,
+      </if>
+      <if test="bak1 != null" >
+        BAK1,
+      </if>
+      <if test="bak2 != null" >
+        BAK2,
+      </if>
+      <if test="bak3 != null" >
+        BAK3,
+      </if>
+       <if test="liveheath != null" >
+        LIVEHEATH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transno != null" >
+        #{transno,jdbcType=VARCHAR},
+      </if>
+      <if test="statement != null" >
+        #{statement,jdbcType=VARCHAR},
+      </if>
+      <if test="firstname != null" >
+        #{firstname,jdbcType=VARCHAR},
+      </if>
+      <if test="lastname != null" >
+        #{lastname,jdbcType=VARCHAR},
+      </if>
+      <if test="livingaddress != null" >
+        #{livingaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cnnativeheath != null" >
+        #{cnnativeheath,jdbcType=VARCHAR},
+      </if>
+      <if test="ennativeheath != null" >
+        #{ennativeheath,jdbcType=VARCHAR},
+      </if>
+      <if test="tiveheath != null" >
+        #{tiveheath,jdbcType=CHAR},
+      </if>
+      <if test="reason1 != null" >
+        #{reason1,jdbcType=CHAR},
+      </if>
+      <if test="reason2 != null" >
+        #{reason2,jdbcType=CHAR},
+      </if>
+      <if test="reason2desc != null" >
+        #{reason2desc,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null" >
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        #{bak3,jdbcType=VARCHAR},
+      </if>
+       <if test="liveheath != null" >
+        #{liveheath,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.RevenueVo" >
+    update REVENUE
+    <set >
+      <if test="statement != null" >
+        STATEMENT = #{statement,jdbcType=VARCHAR},
+      </if>
+      <if test="firstname != null" >
+        FIRSTNAME = #{firstname,jdbcType=VARCHAR},
+      </if>
+      <if test="lastname != null" >
+        LASTNAME = #{lastname,jdbcType=VARCHAR},
+      </if>
+      <if test="livingaddress != null" >
+        LIVINGADDRESS = #{livingaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="cnnativeheath != null" >
+        CNNATIVEHEATH = #{cnnativeheath,jdbcType=VARCHAR},
+      </if>
+      <if test="ennativeheath != null" >
+        ENNATIVEHEATH = #{ennativeheath,jdbcType=VARCHAR},
+      </if>
+      <if test="tiveheath != null" >
+        TIVEHEATH = #{tiveheath,jdbcType=CHAR},
+      </if>
+      <if test="reason1 != null" >
+        REASON1 = #{reason1,jdbcType=CHAR},
+      </if>
+      <if test="reason2 != null" >
+        REASON2 = #{reason2,jdbcType=CHAR},
+      </if>
+      <if test="reason2desc != null" >
+        REASON2DESC = #{reason2desc,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null" >
+        BAK1 = #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        BAK2 = #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        BAK3 = #{bak3,jdbcType=VARCHAR},
+      </if>
+       <if test="liveheath != null" >
+        LIVEHEATH = #{liveheath,jdbcType=CHAR},
+      </if>
+    </set>
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.RevenueVo" >
+    update REVENUE
+    set STATEMENT = #{statement,jdbcType=VARCHAR},
+      FIRSTNAME = #{firstname,jdbcType=VARCHAR},
+      LASTNAME = #{lastname,jdbcType=VARCHAR},
+      LIVINGADDRESS = #{livingaddress,jdbcType=VARCHAR},
+      CNNATIVEHEATH = #{cnnativeheath,jdbcType=VARCHAR},
+      ENNATIVEHEATH = #{ennativeheath,jdbcType=VARCHAR},
+      TIVEHEATH = #{tiveheath,jdbcType=CHAR},
+      REASON1 = #{reason1,jdbcType=CHAR},
+      REASON2 = #{reason2,jdbcType=CHAR},
+      REASON2DESC = #{reason2desc,jdbcType=VARCHAR},
+      BAK1 = #{bak1,jdbcType=VARCHAR},
+      BAK2 = #{bak2,jdbcType=VARCHAR},
+      BAK3 = #{bak3,jdbcType=VARCHAR},
+       LIVEHEATH = #{liveheath,jdbcType=CHAR}
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+  </update>
+</mapper>

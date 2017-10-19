@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.service.business.db.dao.ProvinceVoMapper" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.ProvinceVo" >
+    <id column="PROVINCEID" property="provinceid" jdbcType="DECIMAL" />
+    <result column="PROVINCENAME" property="provincename" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PROVINCEID, PROVINCENAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PROVINCE
+    where PROVINCEID = #{provinceid,jdbcType=DECIMAL}
+  </select>
+  
+   
+  
+     <select id="selectProvince"  resultType="com.sinosoft.service.business.db.vo.ProvinceVo" >
+  	  select <include refid="Base_Column_List" /> from province
+   </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PROVINCE
+    where PROVINCEID = #{provinceid,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.ProvinceVo" >
+    insert into PROVINCE (PROVINCEID, PROVINCENAME)
+    values (#{provinceid,jdbcType=DECIMAL}, #{provincename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.ProvinceVo" >
+    insert into PROVINCE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="provinceid != null" >
+        PROVINCEID,
+      </if>
+      <if test="provincename != null" >
+        PROVINCENAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="provinceid != null" >
+        #{provinceid,jdbcType=DECIMAL},
+      </if>
+      <if test="provincename != null" >
+        #{provincename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.ProvinceVo" >
+    update PROVINCE
+    <set >
+      <if test="provincename != null" >
+        PROVINCENAME = #{provincename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PROVINCEID = #{provinceid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.ProvinceVo" >
+    update PROVINCE
+    set PROVINCENAME = #{provincename,jdbcType=VARCHAR}
+    where PROVINCEID = #{provinceid,jdbcType=DECIMAL}
+  </update>
+</mapper>

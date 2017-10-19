@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.service.business.db.dao.LCAccountInfoVoMapper" >
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LCAccountInfoVo" >
+    <id column="TRANSNO" property="transno" jdbcType="VARCHAR" />
+    <id column="PROPOSALCONTNO" property="proposalcontno" jdbcType="VARCHAR" />
+    <id column="RISKCODE" property="riskcode" jdbcType="VARCHAR" />
+    <id column="ACCNO" property="accno" jdbcType="VARCHAR" />
+    <result column="INSURCECOM" property="insurcecom" jdbcType="VARCHAR" />
+    <result column="ACCRATE" property="accrate" jdbcType="VARCHAR" />
+    <result column="BAK1" property="bak1" jdbcType="VARCHAR" />
+    <result column="BAK2" property="bak2" jdbcType="VARCHAR" />
+    <result column="BAK3" property="bak3" jdbcType="VARCHAR" />
+    <result column="BAK4" property="bak4" jdbcType="VARCHAR" />
+    <result column="BAK5" property="bak5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TRANSNO, PROPOSALCONTNO, RISKCODE, ACCNO, INSURCECOM, ACCRATE, BAK1, BAK2, BAK3, 
+    BAK4, BAK5
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String" >
+    select 
+    <include refid="Base_Column_List" />
+    from LCACCOUNTINFO
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+     
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LCAccountInfoVo" >
+    delete from LCACCOUNTINFO
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+     
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LCAccountInfoVo" >
+    insert into LCACCOUNTINFO (TRANSNO, PROPOSALCONTNO, RISKCODE, 
+      ACCNO, INSURCECOM, ACCRATE, 
+      BAK1, BAK2, BAK3, BAK4, 
+      BAK5)
+    values (#{transno,jdbcType=VARCHAR}, #{proposalcontno,jdbcType=VARCHAR}, #{riskcode,jdbcType=VARCHAR}, 
+      #{accno,jdbcType=VARCHAR}, #{insurcecom,jdbcType=VARCHAR}, #{accrate,jdbcType=VARCHAR}, 
+      #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, 
+      #{bak5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.LCAccountInfoVo" >
+    insert into LCACCOUNTINFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="transno != null" >
+        TRANSNO,
+      </if>
+      <if test="proposalcontno != null" >
+        PROPOSALCONTNO,
+      </if>
+      <if test="riskcode != null" >
+        RISKCODE,
+      </if>
+      <if test="accno != null" >
+        ACCNO,
+      </if>
+      <if test="insurcecom != null" >
+        INSURCECOM,
+      </if>
+      <if test="accrate != null" >
+        ACCRATE,
+      </if>
+      <if test="bak1 != null" >
+        BAK1,
+      </if>
+      <if test="bak2 != null" >
+        BAK2,
+      </if>
+      <if test="bak3 != null" >
+        BAK3,
+      </if>
+      <if test="bak4 != null" >
+        BAK4,
+      </if>
+      <if test="bak5 != null" >
+        BAK5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="transno != null" >
+        #{transno,jdbcType=VARCHAR},
+      </if>
+      <if test="proposalcontno != null" >
+        #{proposalcontno,jdbcType=VARCHAR},
+      </if>
+      <if test="riskcode != null" >
+        #{riskcode,jdbcType=VARCHAR},
+      </if>
+      <if test="accno != null" >
+        #{accno,jdbcType=VARCHAR},
+      </if>
+      <if test="insurcecom != null" >
+        #{insurcecom,jdbcType=VARCHAR},
+      </if>
+      <if test="accrate != null" >
+        #{accrate,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null" >
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="bak4 != null" >
+        #{bak4,jdbcType=VARCHAR},
+      </if>
+      <if test="bak5 != null" >
+        #{bak5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.LCAccountInfoVo" >
+    update LCACCOUNTINFO
+    <set >
+      <if test="insurcecom != null" >
+        INSURCECOM = #{insurcecom,jdbcType=VARCHAR},
+      </if>
+      <if test="accrate != null" >
+        ACCRATE = #{accrate,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null" >
+        BAK1 = #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        BAK2 = #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        BAK3 = #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="bak4 != null" >
+        BAK4 = #{bak4,jdbcType=VARCHAR},
+      </if>
+      <if test="bak5 != null" >
+        BAK5 = #{bak5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+      and PROPOSALCONTNO = #{proposalcontno,jdbcType=VARCHAR}
+      and RISKCODE = #{riskcode,jdbcType=VARCHAR}
+      and ACCNO = #{accno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LCAccountInfoVo" >
+    update LCACCOUNTINFO
+    set INSURCECOM = #{insurcecom,jdbcType=VARCHAR},
+      ACCRATE = #{accrate,jdbcType=VARCHAR},
+      BAK1 = #{bak1,jdbcType=VARCHAR},
+      BAK2 = #{bak2,jdbcType=VARCHAR},
+      BAK3 = #{bak3,jdbcType=VARCHAR},
+      BAK4 = #{bak4,jdbcType=VARCHAR},
+      BAK5 = #{bak5,jdbcType=VARCHAR}
+    where TRANSNO = #{transno,jdbcType=VARCHAR}
+      and PROPOSALCONTNO = #{proposalcontno,jdbcType=VARCHAR}
+      and RISKCODE = #{riskcode,jdbcType=VARCHAR}
+      and ACCNO = #{accno,jdbcType=VARCHAR}
+  </update>
+</mapper>

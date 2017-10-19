@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LDQUALIINFOADAOMapper">
+  <resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    <id column="STAFFID" jdbcType="VARCHAR" property="staffid" />
+    <result column="QUALIFITYPE" jdbcType="VARCHAR" property="qualifitype" />
+    <result column="LESSOUS" jdbcType="VARCHAR" property="lessous" />
+    <result column="HOUR" jdbcType="TIMESTAMP" property="hour" />
+    <result column="MAKEDATE" jdbcType="DATE" property="makedate" />
+    <result column="MAKETIME" jdbcType="VARCHAR" property="maketime" />
+    <result column="MODIFYDATE" jdbcType="DATE" property="modifydate" />
+    <result column="MODIFYTIME" jdbcType="VARCHAR" property="modifytime" />
+    <result column="STATES" jdbcType="VARCHAR" property="states" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    STAFFID, QUALIFITYPE, LESSOUS,STATES, HOUR, MAKEDATE, MAKETIME, MODIFYDATE, MODIFYTIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LDQUALIINFOA
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="QueryType" resultMap="BaseResultMap"  parameterType="java.lang.String">
+      select distinct(qualifitype),states from LDQUALIINFOA where staffid=#{staffid}
+  </select>
+  
+  <select id="QueryByqualifitype" resultMap="BaseResultMap"  parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    select <include refid="Base_Column_List" /> from LDQUALIINFOA where qualifitype=#{qualifitype} and staffid=#{staffid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from LDQUALIINFOA
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    insert into LDQUALIINFO(STAFFID, QUALIFITYPE, LESSOUS, STATES,
+      HOUR, MAKEDATE, MAKETIME, 
+      MODIFYDATE, MODIFYTIME)
+    values (#{staffid,jdbcType=VARCHAR}, #{qualifitype,jdbcType=VARCHAR}, #{lessous,jdbcType=VARCHAR}, #{states,jdbcType=VARCHAR},
+      #{hour,jdbcType=TIMESTAMP}, #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, 
+      #{modifydate,jdbcType=DATE}, #{modifytime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertA" parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    insert into LDQUALIINFOA (STAFFID, QUALIFITYPE, LESSOUS,STATES, 
+      HOUR, MAKEDATE, MAKETIME, 
+      MODIFYDATE, MODIFYTIME)
+    values (#{staffid,jdbcType=VARCHAR}, #{qualifitype,jdbcType=VARCHAR}, #{lessous,jdbcType=VARCHAR}, #{states,jdbcType=VARCHAR},
+      #{hour,jdbcType=TIMESTAMP}, #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, 
+      #{modifydate,jdbcType=DATE}, #{modifytime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    insert into LDQUALIINFOA
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="staffid != null">
+        STAFFID,
+      </if>
+      <if test="qualifitype != null">
+        QUALIFITYPE,
+      </if>
+      <if test="lessous != null">
+        LESSOUS,
+      </if>
+        <if test="states != null">
+        STATES,
+      </if>
+      <if test="hour != null">
+        HOUR,
+      </if>
+      <if test="makedate != null">
+        MAKEDATE,
+      </if>
+      <if test="maketime != null">
+        MAKETIME,
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE,
+      </if>
+      <if test="modifytime != null">
+        MODIFYTIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="staffid != null">
+        #{staffid,jdbcType=VARCHAR},
+      </if>
+      <if test="qualifitype != null">
+        #{qualifitype,jdbcType=VARCHAR},
+      </if>
+      <if test="lessous != null">
+        #{lessous,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null">
+        #{states,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null">
+        #{hour,jdbcType=TIMESTAMP},
+      </if>
+      <if test="makedate != null">
+        #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    update LDQUALIINFOA
+    <set>
+      <if test="qualifitype != null">
+        QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR},
+      </if>
+      <if test="lessous != null">
+        LESSOUS = #{lessous,jdbcType=VARCHAR},
+      </if>
+       <if test="states != null">
+        STATES = #{states,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null">
+        HOUR = #{hour,jdbcType=TIMESTAMP},
+      </if>
+      <if test="makedate != null">
+        MAKEDATE = #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        MAKETIME = #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null">
+        MODIFYTIME = #{modifytime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  
+  
+  
+  
+   <update id="update" parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    update LDQUALIINFOA
+    <set>
+     
+       <if test="states != null">
+        STATES = #{states,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null">
+        HOUR = #{hour,jdbcType=TIMESTAMP},
+      </if>
+      <if test="makedate != null">
+        MAKEDATE = #{makedate,jdbcType=DATE},
+      </if>
+      <if test="maketime != null">
+        MAKETIME = #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        MODIFYDATE = #{modifydate,jdbcType=DATE},
+      </if>
+      <if test="modifytime != null">
+        MODIFYTIME = #{modifytime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+     <if test="qualifitype != null">
+      and  QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR}
+      </if>
+      <if test="lessous != null">
+      and    LESSOUS = #{lessous,jdbcType=VARCHAR}
+      </if>
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.sinosoft.service.business.db.vo.LDQUALIINFOAVO">
+    update LDQUALIINFOA
+    set QUALIFITYPE = #{qualifitype,jdbcType=VARCHAR},
+      LESSOUS = #{lessous,jdbcType=VARCHAR},
+      STATES = #{states,jdbcType=VARCHAR},
+      HOUR = #{hour,jdbcType=TIMESTAMP},
+      MAKEDATE = #{makedate,jdbcType=DATE},
+      MAKETIME = #{maketime,jdbcType=VARCHAR},
+      MODIFYDATE = #{modifydate,jdbcType=DATE},
+      MODIFYTIME = #{modifytime,jdbcType=VARCHAR}
+    where STAFFID = #{staffid,jdbcType=VARCHAR}
+  </update>
+</mapper>

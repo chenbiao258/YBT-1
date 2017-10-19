@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.NewContApplyDao">
+	
+	<resultMap id="ResultMap" type="com.sinosoft.service.business.ui.newcont.bean.lccont">
+		<result column="PROPOSALCONTNO" jdbcType="VARCHAR" property="proposalcontno" />
+		<result column="bankcode" jdbcType="VARCHAR" property="bankcode" />
+		<result column="polapplydate" jdbcType="VARCHAR" property="polapplydate" />
+		<result column="Operator" jdbcType="VARCHAR" property="operator" />
+		<result column="appntname" jdbcType="VARCHAR" property="appntname" />
+		<result column="cardflag" jdbcType="VARCHAR" property="cardflag" />
+		<result column="insurancecom" jdbcType="VARCHAR" property="insurancecom" />
+		<result column="transno" jdbcType="VARCHAR" property="transno" />
+	</resultMap>
+	
+	<update id="cancelInsure">
+	 	update lccont set appflag =#{appflag} where CONTNO = #{contNo}
+	</update>
+	
+	
+	
+	<!-- 投保单查询 -->
+	<select id="querylccont" resultMap="ResultMap">
+		select PROPOSALCONTNO,
+               polapplydate,
+               Operator,
+               appntname,
+               transno,
+               grpcontno,
+                decode(a.appflag,
+                      '01',
+                      '未试算',
+                      '02',
+                      '试算成功 ',
+                      '03',
+                      '扣款成功',
+                      '04',
+                      '犹豫期申请中',
+                      '05',
+                      '犹豫期退保成功',
+                      '06',
+                      '撤单成功',
+                      '07',
+                      '取消投保',
+                      '08',
+                      '保险公司返回为非实时保单',
+                      '09',
+                      '非实时申请',
+                      '10',
+                      '试算失败',
+                      '未知') as appflag,
+               insurancecom,
+               decode(EXECUTECOM,
+                      'CCICHM101',
+                      '财产险',
+                      'TOPUP',
+                      '投连追加',
+                      '传统寿险') as executecom
+          from lccont a
+          
+          
+          <where>
+          		a.forceUWReason is null
+          		<if test="contNo != null and contNo != ''">
+          			and PROPOSALCONTNO like concat(#{contNo},'%')
+        	    </if>
+          		
+          		 <if test="contNo == '' and operator != ''" >
+          			and operator = #{operator}
+         		 </if>
+         		 
+				<if test="grpcontNo != null and grpcontNo != ''">
+					and GRPCONTNO = #{grpcontNo}
+				</if>
+				<!--  
+				<if test="transactionNo != null and transactionNo != ''">
+					and AGENTBANKCODE = #{transactionNo}
+				</if> 
+				-->
+				<if test="tBRBirth != null" >
+					and PolApplyDate = #{tBRBirth,jdbcType=DATE}
+				</if>
+         		 
+          </where>
+          	order by transno desc
+           <!-- 	-->
+	</select>
+	
+	
+	<!-- 投保单复制模块 -->
+	
+		<select id="MAxNo" resultType="String">
+			select MaxNo from LDMaxNo where notype='CUSTOMERNO' and nolimit='SN'
+		</select>
+		
+		<update id="updateMAxNo">
+			update ldmaxno set maxno = maxno + 1 where notype = 'CUSTOMERNO' and nolimit = 'SN'
+		</update>
+		
+		<select id="RequestUUID" resultType="String">
+			select RequestUUID.nextval from dual
+		</select>
+		
+		<!--  
+		<select id="selectLCCont" 
+			resultType="com.sinosoft.service.business.ui.newcont.bean.lccont">
+			select * from LCCont where ProposalContNo = #{ProposalContNo}
+		</select>
+		
+		
+		
+		<select id="selectLCContByTransNo" 
+			resultType="com.sinosoft.service.business.ui.newcont.bean.lccont">
+			select * from lccont where TransNo = #{TransNo}
+		</select>
+		
+		<select id="newTransactionID" resultType="Integer">
+			select SEQ_SERVICE_REQUEST_ID.nextval from dual
+		</select>
+		
+		<select id="selectLCPol" resultType="com.sinosoft.service.business.ui.newcont.bean.LCPol">
+			select * from LCPol where TransNo=#{TransNo}		
+		</select>
+		
+		<select id="selectLCPol2" resultType="com.sinosoft.service.business.ui.newcont.bean.LCPol">
+			select * from LCPol where TransNo=#{TransNo} 
+			and riskcode in(select riskcode from lmrisk where subriskflag =  'M')
+		
+		</select>
+		
+		<select id="selectLCBnf" 
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCBnf">
+			select * from LCBnf where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCAppnt"
+			resultType="com.sinosoft.service.business.db.vo.LCAppntVo">
+			select * from LCAppnt where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCAddress"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.lcaddress">
+			select * from LCAddress where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCAddress2"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.lcaddress">
+			select  * from LCADDRESS where TRANSNO = #{TransNo,jdbcType=VARCHAR} 
+			and CUSTOMERNO=#{customerno,jdbcType=VARCHAR}
+   			 and ADDRESSNO=0
+		</select>
+		
+		<select id="selectLCAddress3"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.lcaddress">
+			select * from LCAddress where TransNo=#{TransNo} and ADDRESSNO=1
+		</select>
+		
+		<select id="selectLCInsured"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCInsured">
+			select * from LCInsured where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCInsuredAux"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCInsuredAux">
+			select * from LCInsuredAux where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCPolExtraPrem"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCPolExtraPrem">
+			select * from LCPolExtraPrem where PrtNo=#{PrtNo}
+		</select>
+		
+		<select id="selectLCCustomerImpart"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCCustomerImpart">
+			select * from LCCustomerImpart where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCAccount"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCAccount">
+			select * from LCAccount where CustomerNo=#{TransNo}
+		</select>
+		
+		<select id="selectLCAccountInfo"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.LCAccountInfo">
+			select * from LCAccountInfo where TransNo=#{TransNo}
+		</select>
+		
+		<select id="selectImpartContent"
+			resultType="com.sinosoft.service.business.ui.newcont.bean.ImpartContent">
+			select * from ImpartContent where ContNo=#{ContNo}
+		</select>
+		
+		
+			<insert id="isnertLCCont" parameterType="com.sinosoft.service.business.ui.newcont.bean.lccont">
+		     insert into LCCONT (TRANSNO, PROPOSALCONTNO, GRPCONTNO, 
+		      CONTNO, PRTNO, CONTTYPE, 
+		      FAMILYTYPE, FAMILYID, POLTYPE, 
+		      CARDFLAG, MANAGECOM, EXECUTECOM, 
+		      AGENTCOM, AGENTCODE, AGENTGROUP, 
+		      AGENTCODE1, AGENTTYPE, INSURANCECOM, 
+		      INSURANCEMANAGECOM, SALECHNL, HANDLER, 
+		      PASSWORD, APPNTNO, APPNTNAME, 
+		      APPNTSEX, APPNTBIRTHDAY, APPNTIDTYPE, 
+		      APPNTIDNO, INSUREDNO, INSUREDNAME, 
+		      INSUREDSEX, INSUREDBIRTHDAY, INSUREDIDTYPE, 
+		      INSUREDIDNO, PAYINTV, PAYMODE, 
+		      PAYLOCATION, DISPUTEDFLAG, OUTPAYFLAG, 
+		      GETPOLMODE, SIGNCOM, SIGNDATE, 
+		      SIGNTIME, CONSIGNNO, BANKCODE, 
+		      BANKACCNO, ACCNAME, PRINTCOUNT, 
+		      LOSTTIMES, LANG, CURRENCY, 
+		      REMARK, PEOPLES, MULT, 
+		      PREM, AMNT, SUMPREM, 
+		      DIF, PAYTODATE, FIRSTPAYDATE, 
+		      CVALIDATE, INPUTOPERATOR, INPUTDATE, 
+		      INPUTTIME, APPROVEFLAG, APPROVECODE, 
+		      APPROVEDATE, APPROVETIME, UWFLAG, 
+		      UWOPERATOR, UWDATE, UWTIME, 
+		      APPFLAG, POLAPPLYDATE, GETPOLDATE, 
+		      GETPOLTIME, CUSTOMGETPOLDATE, STATE, 
+		      FIRSTTRIALOPERATOR, FIRSTTRIALDATE, FIRSTTRIALTIME, 
+		      RECEIVEOPERATOR, RECEIVEDATE, RECEIVETIME, 
+		      TEMPFEENO, SELLTYPE, FORCEUWFLAG, 
+		      FORCEUWREASON, NEWBANKCODE, NEWBANKACCNO, 
+		      NEWACCNAME, NEWPAYMODE, AGENTBANKCODE, 
+		      BANKAGENT, ORGANCOMCODE, OPERATOR, 
+		      MAKEDATE, MAKETIME, MODIFYDATE, 
+		      MODIFYTIME)
+		    values (#{transno,jdbcType=VARCHAR}, #{proposalcontno,jdbcType=VARCHAR}, #{grpcontno,jdbcType=VARCHAR}, 
+		      #{contno,jdbcType=VARCHAR}, #{prtno,jdbcType=VARCHAR}, #{conttype,jdbcType=VARCHAR}, 
+		      #{familytype,jdbcType=VARCHAR}, #{familyid,jdbcType=VARCHAR}, #{poltype,jdbcType=VARCHAR}, 
+		      #{cardflag,jdbcType=VARCHAR}, #{managecom,jdbcType=VARCHAR}, #{executecom,jdbcType=VARCHAR}, 
+		      #{agentcom,jdbcType=VARCHAR}, #{agentcode,jdbcType=VARCHAR}, #{agentgroup,jdbcType=VARCHAR}, 
+		      #{agentcode1,jdbcType=VARCHAR}, #{agenttype,jdbcType=VARCHAR}, #{insurancecom,jdbcType=VARCHAR}, 
+		      #{insurancemanagecom,jdbcType=VARCHAR}, #{salechnl,jdbcType=VARCHAR}, #{handler,jdbcType=VARCHAR}, 
+		      #{password,jdbcType=VARCHAR}, #{appntno,jdbcType=VARCHAR}, #{appntname,jdbcType=VARCHAR}, 
+		      #{appntsex,jdbcType=VARCHAR}, #{appntbirthday,jdbcType=DATE}, #{appntidtype,jdbcType=VARCHAR}, 
+		      #{appntidno,jdbcType=VARCHAR}, #{insuredno,jdbcType=VARCHAR}, #{insuredname,jdbcType=VARCHAR}, 
+		      #{insuredsex,jdbcType=VARCHAR}, #{insuredbirthday,jdbcType=DATE}, #{insuredidtype,jdbcType=VARCHAR}, 
+		      #{insuredidno,jdbcType=VARCHAR}, #{payintv,jdbcType=DECIMAL}, #{paymode,jdbcType=VARCHAR}, 
+		      #{paylocation,jdbcType=VARCHAR}, #{disputedflag,jdbcType=VARCHAR}, #{outpayflag,jdbcType=VARCHAR}, 
+		      #{getpolmode,jdbcType=VARCHAR}, #{signcom,jdbcType=VARCHAR}, #{signdate,jdbcType=DATE}, 
+		      #{signtime,jdbcType=VARCHAR}, #{consignno,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+		      #{bankaccno,jdbcType=VARCHAR}, #{accname,jdbcType=VARCHAR}, #{printcount,jdbcType=DECIMAL}, 
+		      #{losttimes,jdbcType=DECIMAL}, #{lang,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, 
+		      #{remark,jdbcType=VARCHAR}, #{peoples,jdbcType=DECIMAL}, #{mult,jdbcType=DECIMAL}, 
+		      #{prem,jdbcType=DECIMAL}, #{amnt,jdbcType=DECIMAL}, #{sumprem,jdbcType=DECIMAL}, 
+		      #{dif,jdbcType=DECIMAL}, #{paytodate,jdbcType=DATE}, #{firstpaydate,jdbcType=DATE}, 
+		      #{cvalidate,jdbcType=DATE}, #{inputoperator,jdbcType=VARCHAR}, #{inputdate,jdbcType=DATE}, 
+		      #{inputtime,jdbcType=VARCHAR}, #{approveflag,jdbcType=VARCHAR}, #{approvecode,jdbcType=VARCHAR}, 
+		      #{approvedate,jdbcType=DATE}, #{approvetime,jdbcType=VARCHAR}, #{uwflag,jdbcType=VARCHAR}, 
+		      #{uwoperator,jdbcType=VARCHAR}, #{uwdate,jdbcType=DATE}, #{uwtime,jdbcType=VARCHAR}, 
+		      #{appflag,jdbcType=VARCHAR}, #{polapplydate,jdbcType=DATE}, #{getpoldate,jdbcType=DATE}, 
+		      #{getpoltime,jdbcType=VARCHAR}, #{customgetpoldate,jdbcType=DATE}, #{state,jdbcType=VARCHAR}, 
+		      #{firsttrialoperator,jdbcType=VARCHAR}, #{firsttrialdate,jdbcType=DATE}, #{firsttrialtime,jdbcType=VARCHAR}, 
+		      #{receiveoperator,jdbcType=VARCHAR}, #{receivedate,jdbcType=DATE}, #{receivetime,jdbcType=VARCHAR}, 
+		      #{tempfeeno,jdbcType=VARCHAR}, #{selltype,jdbcType=VARCHAR}, #{forceuwflag,jdbcType=VARCHAR}, 
+		      #{forceuwreason,jdbcType=VARCHAR}, #{newbankcode,jdbcType=VARCHAR}, #{newbankaccno,jdbcType=VARCHAR}, 
+		      #{newaccname,jdbcType=VARCHAR}, #{newpaymode,jdbcType=VARCHAR}, #{agentbankcode,jdbcType=VARCHAR}, 
+		      #{bankagent,jdbcType=VARCHAR}, #{organcomcode,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+		      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+		      #{modifytime,jdbcType=VARCHAR})
+  			</insert>
+		
+		
+			<insert id="insertLCPol" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCPol"> 
+				insert into LCPOL (POLNO, TRANSNO, GRPCONTNO, 
+			      GRPPOLNO, CONTNO, PROPOSALNO, 
+			      PRTNO, CONTTYPE, POLTYPEFLAG, 
+			      MAINPOLNO, MASTERPOLNO, KINDCODE, 
+			      RISKCODE, RISKVERSION, MANAGECOM, 
+			      AGENTCOM, AGENTTYPE, AGENTCODE, 
+			      AGENTGROUP, AGENTCODE1, INSURANCECOM, 
+			      INSURANCEMANAGECOM, SALECHNL, HANDLER, 
+			      INSUREDNO, INSUREDNAME, INSUREDSEX, 
+			      INSUREDBIRTHDAY, INSUREDAPPAGE, INSUREDPEOPLES, 
+			      OCCUPATIONTYPE, APPNTNO, APPNTNAME, 
+			      CVALIDATE, SIGNCOM, SIGNDATE, 
+			      SIGNTIME, FIRSTPAYDATE, PAYENDDATE, 
+			      PAYTODATE, GETSTARTDATE, ENDDATE, 
+			      ACCIENDDATE, GETYEARFLAG, GETYEAR, 
+			      PAYENDYEARFLAG, PAYENDYEAR, INSUYEARFLAG, 
+			      INSUYEAR, ACCIYEARFLAG, ACCIYEAR, 
+			      GETSTARTTYPE, SPECIFYVALIDATE, PAYMODE, 
+			      PAYLOCATION, PAYINTV, PAYYEARS, 
+			      YEARS, MANAGEFEERATE, FLOATRATE, 
+			      PREMTOAMNT, MULT, STANDPREM, 
+			      PREM, SUMPREM, AMNT, 
+			      RISKAMNT, LEAVINGMONEY, ENDORSETIMES, 
+			      CLAIMTIMES, LIVETIMES, RENEWCOUNT, 
+			      LASTGETDATE, LASTLOANDATE, LASTREGETDATE, 
+			      LASTEDORDATE, LASTREVDATE, RNEWFLAG, 
+			      STOPFLAG, EXPIRYFLAG, AUTOPAYFLAG, 
+			      INTERESTDIFFLAG, SUBFLAG, BNFFLAG, 
+			      HEALTHCHECKFLAG, IMPARTFLAG, REINSUREFLAG, 
+			      AGENTPAYFLAG, AGENTGETFLAG, LIVEGETMODE, 
+			      DEADGETMODE, BONUSGETMODE, BONUSMAN, 
+			      DEADFLAG, SMOKEFLAG, REMARK, 
+			      APPROVEFLAG, APPROVECODE, APPROVEDATE, 
+			      APPROVETIME, UWFLAG, UWCODE, 
+			      UWDATE, UWTIME, POLAPPLYDATE, 
+			      APPFLAG, POLSTATE, STANDBYFLAG1, 
+			      STANDBYFLAG2, STANDBYFLAG3, WAITPERIOD, 
+			      GETFORM, GETBANKCODE, GETBANKACCNO, 
+			      GETACCNAME, KEEPVALUEOPT, PAYRULECODE, 
+			      ASCRIPTIONRULECODE, AUTOPUBACCFLAG, ASCRIPTIONFLAG, 
+			      INVESTRULECODE, UINTLINKVALIFLAG, OPERATOR, 
+			      MAKEDATE, MAKETIME, MODIFYDATE, 
+			      MODIFYTIME, BONUSPAYMODE, GETINTV, 
+			      GETSTARTAGE, GETENDAGE, FULLBONUSGETMODE, 
+			      AUTORENEWFLAG, SETFLAG, SETCYCLEFLAG, 
+			      SETCYCLE, SETNO, SETMONEY, 
+			      BAK1, BAK2, BAK3, BAK4, 
+			      BAK5)
+			    values (#{polno,jdbcType=VARCHAR}, #{transno,jdbcType=VARCHAR}, #{grpcontno,jdbcType=VARCHAR}, 
+			      #{grppolno,jdbcType=VARCHAR}, #{contno,jdbcType=VARCHAR}, #{proposalno,jdbcType=VARCHAR}, 
+			      #{prtno,jdbcType=VARCHAR}, #{conttype,jdbcType=VARCHAR}, #{poltypeflag,jdbcType=VARCHAR}, 
+			      #{mainpolno,jdbcType=VARCHAR}, #{masterpolno,jdbcType=VARCHAR}, #{kindcode,jdbcType=VARCHAR}, 
+			      #{riskcode,jdbcType=VARCHAR}, #{riskversion,jdbcType=VARCHAR}, #{managecom,jdbcType=VARCHAR}, 
+			      #{agentcom,jdbcType=VARCHAR}, #{agenttype,jdbcType=VARCHAR}, #{agentcode,jdbcType=VARCHAR}, 
+			      #{agentgroup,jdbcType=VARCHAR}, #{agentcode1,jdbcType=VARCHAR}, #{insurancecom,jdbcType=VARCHAR}, 
+			      #{insurancemanagecom,jdbcType=VARCHAR}, #{salechnl,jdbcType=VARCHAR}, #{handler,jdbcType=VARCHAR}, 
+			      #{insuredno,jdbcType=VARCHAR}, #{insuredname,jdbcType=VARCHAR}, #{insuredsex,jdbcType=VARCHAR}, 
+			      #{insuredbirthday,jdbcType=DATE}, #{insuredappage,jdbcType=DECIMAL}, #{insuredpeoples,jdbcType=DECIMAL}, 
+			      #{occupationtype,jdbcType=VARCHAR}, #{appntno,jdbcType=VARCHAR}, #{appntname,jdbcType=VARCHAR}, 
+			      #{cvalidate,jdbcType=DATE}, #{signcom,jdbcType=VARCHAR}, #{signdate,jdbcType=DATE}, 
+			      #{signtime,jdbcType=VARCHAR}, #{firstpaydate,jdbcType=DATE}, #{payenddate,jdbcType=DATE}, 
+			      #{paytodate,jdbcType=DATE}, #{getstartdate,jdbcType=DATE}, #{enddate,jdbcType=DATE}, 
+			      #{accienddate,jdbcType=DATE}, #{getyearflag,jdbcType=VARCHAR}, #{getyear,jdbcType=DECIMAL}, 
+			      #{payendyearflag,jdbcType=VARCHAR}, #{payendyear,jdbcType=DECIMAL}, #{insuyearflag,jdbcType=VARCHAR}, 
+			      #{insuyear,jdbcType=DECIMAL}, #{acciyearflag,jdbcType=VARCHAR}, #{acciyear,jdbcType=DECIMAL}, 
+			      #{getstarttype,jdbcType=VARCHAR}, #{specifyvalidate,jdbcType=VARCHAR}, #{paymode,jdbcType=VARCHAR}, 
+			      #{paylocation,jdbcType=VARCHAR}, #{payintv,jdbcType=DECIMAL}, #{payyears,jdbcType=DECIMAL}, 
+			      #{years,jdbcType=DECIMAL}, #{managefeerate,jdbcType=FLOAT}, #{floatrate,jdbcType=DECIMAL}, 
+			      #{premtoamnt,jdbcType=VARCHAR}, #{mult,jdbcType=DECIMAL}, #{standprem,jdbcType=DECIMAL}, 
+			      #{prem,jdbcType=DECIMAL}, #{sumprem,jdbcType=DECIMAL}, #{amnt,jdbcType=DECIMAL}, 
+			      #{riskamnt,jdbcType=DECIMAL}, #{leavingmoney,jdbcType=DECIMAL}, #{endorsetimes,jdbcType=DECIMAL}, 
+			      #{claimtimes,jdbcType=DECIMAL}, #{livetimes,jdbcType=DECIMAL}, #{renewcount,jdbcType=DECIMAL}, 
+			      #{lastgetdate,jdbcType=DATE}, #{lastloandate,jdbcType=DATE}, #{lastregetdate,jdbcType=DATE}, 
+			      #{lastedordate,jdbcType=DATE}, #{lastrevdate,jdbcType=DATE}, #{rnewflag,jdbcType=VARCHAR}, 
+			      #{stopflag,jdbcType=VARCHAR}, #{expiryflag,jdbcType=VARCHAR}, #{autopayflag,jdbcType=VARCHAR}, 
+			      #{interestdifflag,jdbcType=VARCHAR}, #{subflag,jdbcType=VARCHAR}, #{bnfflag,jdbcType=VARCHAR}, 
+			      #{healthcheckflag,jdbcType=VARCHAR}, #{impartflag,jdbcType=VARCHAR}, #{reinsureflag,jdbcType=VARCHAR}, 
+			      #{agentpayflag,jdbcType=VARCHAR}, #{agentgetflag,jdbcType=VARCHAR}, #{livegetmode,jdbcType=VARCHAR}, 
+			      #{deadgetmode,jdbcType=VARCHAR}, #{bonusgetmode,jdbcType=VARCHAR}, #{bonusman,jdbcType=VARCHAR}, 
+			      #{deadflag,jdbcType=VARCHAR}, #{smokeflag,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+			      #{approveflag,jdbcType=VARCHAR}, #{approvecode,jdbcType=VARCHAR}, #{approvedate,jdbcType=DATE}, 
+			      #{approvetime,jdbcType=VARCHAR}, #{uwflag,jdbcType=VARCHAR}, #{uwcode,jdbcType=VARCHAR}, 
+			      #{uwdate,jdbcType=DATE}, #{uwtime,jdbcType=VARCHAR}, #{polapplydate,jdbcType=DATE}, 
+			      #{appflag,jdbcType=VARCHAR}, #{polstate,jdbcType=VARCHAR}, #{standbyflag1,jdbcType=VARCHAR}, 
+			      #{standbyflag2,jdbcType=VARCHAR}, #{standbyflag3,jdbcType=VARCHAR}, #{waitperiod,jdbcType=DECIMAL}, 
+			      #{getform,jdbcType=VARCHAR}, #{getbankcode,jdbcType=VARCHAR}, #{getbankaccno,jdbcType=VARCHAR}, 
+			      #{getaccname,jdbcType=VARCHAR}, #{keepvalueopt,jdbcType=VARCHAR}, #{payrulecode,jdbcType=VARCHAR}, 
+			      #{ascriptionrulecode,jdbcType=VARCHAR}, #{autopubaccflag,jdbcType=VARCHAR}, #{ascriptionflag,jdbcType=VARCHAR}, 
+			      #{investrulecode,jdbcType=VARCHAR}, #{uintlinkvaliflag,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+			      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+			      #{modifytime,jdbcType=VARCHAR}, #{bonuspaymode,jdbcType=VARCHAR}, #{getintv,jdbcType=VARCHAR}, 
+			      #{getstartage,jdbcType=VARCHAR}, #{getendage,jdbcType=VARCHAR}, #{fullbonusgetmode,jdbcType=VARCHAR}, 
+			      #{autorenewflag,jdbcType=VARCHAR}, #{setflag,jdbcType=VARCHAR}, #{setcycleflag,jdbcType=VARCHAR}, 
+			      #{setcycle,jdbcType=VARCHAR}, #{setno,jdbcType=VARCHAR}, #{setmoney,jdbcType=VARCHAR}, 
+			      #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, 
+			      #{bak5,jdbcType=VARCHAR})
+			
+			</insert>
+			
+			
+			<insert id="insertLCAppnt" parameterType="com.sinosoft.service.business.db.vo.LCAppntVo">
+				insert into LCAPPNT (TRANSNO, CONTNO, GRPCONTNO, 
+			      PRTNO, APPNTNO, APPNTGRADE, 
+			      APPNTNAME, APPNTSEX, APPNTBIRTHDAY, 
+			      APPNTTYPE, ADDRESSNO, IDTYPE, 
+			      IDNO, NATIVEPLACE, NATIONALITY, 
+			      RGTADDRESS, MARRIAGE, MARRIAGEDATE, 
+			      HEALTH, STATURE, AVOIRDUPOIS, 
+			      DEGREE, CREDITGRADE, BANKCODE, 
+			      BANKACCNO, ACCNAME, JOINCOMPANYDATE, 
+			      STARTWORKDATE, POSITION, SALARY, 
+			      OCCUPATIONTYPE, OCCUPATIONCODE, WORKTYPE, 
+			      PLURALITYTYPE, SMOKEFLAG, BMI, 
+			      LICENSE, LICENSETYPE, MANAGECOM, 
+			      INSURANCECOM, INSURANCEMANAGECOM, OPERATOR, 
+			      MAKEDATE, MAKETIME, MODIFYDATE, 
+			      MODIFYTIME)
+			    values (#{transno,jdbcType=VARCHAR}, #{contno,jdbcType=VARCHAR}, #{grpcontno,jdbcType=VARCHAR}, 
+			      #{prtno,jdbcType=VARCHAR}, #{appntno,jdbcType=VARCHAR}, #{appntgrade,jdbcType=VARCHAR}, 
+			      #{appntname,jdbcType=VARCHAR}, #{appntsex,jdbcType=VARCHAR}, #{appntbirthday,jdbcType=DATE}, 
+			      #{appnttype,jdbcType=VARCHAR}, #{addressno,jdbcType=VARCHAR}, #{idtype,jdbcType=VARCHAR}, 
+			      #{idno,jdbcType=VARCHAR}, #{nativeplace,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, 
+			      #{rgtaddress,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, #{marriagedate,jdbcType=DATE}, 
+			      #{health,jdbcType=VARCHAR}, #{stature,jdbcType=DECIMAL}, #{avoirdupois,jdbcType=DECIMAL}, 
+			      #{degree,jdbcType=VARCHAR}, #{creditgrade,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+			      #{bankaccno,jdbcType=VARCHAR}, #{accname,jdbcType=VARCHAR}, #{joincompanydate,jdbcType=DATE}, 
+			      #{startworkdate,jdbcType=DATE}, #{position,jdbcType=VARCHAR}, #{salary,jdbcType=DECIMAL}, 
+			      #{occupationtype,jdbcType=VARCHAR}, #{occupationcode,jdbcType=VARCHAR}, #{worktype,jdbcType=VARCHAR}, 
+			      #{pluralitytype,jdbcType=VARCHAR}, #{smokeflag,jdbcType=VARCHAR}, #{bmi,jdbcType=DECIMAL}, 
+			      #{license,jdbcType=VARCHAR}, #{licensetype,jdbcType=VARCHAR}, #{managecom,jdbcType=VARCHAR}, 
+			      #{insurancecom,jdbcType=VARCHAR}, #{insurancemanagecom,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+			      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+			      #{modifytime,jdbcType=VARCHAR})
+			
+			</insert>	
+			
+			<insert id="LCAddress" parameterType="com.sinosoft.service.business.ui.newcont.bean.lcaddress">
+				 insert into LCADDRESS (TRANSNO, CUSTOMERNO, ADDRESSNO, 
+			      POSTALADDRESS, ZIPCODE, PHONE, 
+			      FAX, HOMEADDRESS, HOMEZIPCODE, 
+			      HOMEPHONE, HOMEFAX, COMPANYADDRESS, 
+			      COMPANYZIPCODE, COMPANYPHONE, COMPANYFAX, 
+			      MOBILE, MOBILECHS, EMAIL, 
+			      BP, MOBILE2, MOBILECHS2, 
+			      EMAIL2, BP2, GRPNAME, 
+			      PROVINCE, CITY, COUNTY, 
+			      HOMEPROVINCE, HOMECITY, HOMECOUNTY, 
+			      COMPANYPROVINCE, COMPANYCITY, COMPANYCOUNTY, 
+			      COMPANYREGISTATE, COMPANYFAREOPERATION, 
+			      OPERATOR, MAKEDATE, MAKETIME, 
+			      MODIFYDATE, MODIFYTIME)
+			    values (#{transno,jdbcType=VARCHAR}, #{customerno,jdbcType=VARCHAR}, #{addressno,jdbcType=DECIMAL}, 
+			      #{postaladdress,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+			      #{fax,jdbcType=VARCHAR}, #{homeaddress,jdbcType=VARCHAR}, #{homezipcode,jdbcType=VARCHAR}, 
+			      #{homephone,jdbcType=VARCHAR}, #{homefax,jdbcType=VARCHAR}, #{companyaddress,jdbcType=VARCHAR}, 
+			      #{companyzipcode,jdbcType=VARCHAR}, #{companyphone,jdbcType=VARCHAR}, #{companyfax,jdbcType=VARCHAR}, 
+			      #{mobile,jdbcType=VARCHAR}, #{mobilechs,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+			      #{bp,jdbcType=VARCHAR}, #{mobile2,jdbcType=VARCHAR}, #{mobilechs2,jdbcType=VARCHAR}, 
+			      #{email2,jdbcType=VARCHAR}, #{bp2,jdbcType=VARCHAR}, #{grpname,jdbcType=VARCHAR}, 
+			      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, 
+			      #{homeprovince,jdbcType=VARCHAR}, #{homecity,jdbcType=VARCHAR}, #{homecounty,jdbcType=VARCHAR}, 
+			      #{companyprovince,jdbcType=VARCHAR}, #{companycity,jdbcType=VARCHAR}, #{companycounty,jdbcType=VARCHAR}, 
+			      #{companyregistate,jdbcType=VARCHAR}, #{companyfareoperation,jdbcType=VARCHAR}, 
+			      #{operator,jdbcType=VARCHAR}, #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, 
+			      #{modifydate,jdbcType=DATE}, #{modifytime,jdbcType=VARCHAR})
+			</insert>
+			
+			
+			<insert id="insertLCInsured" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCInsured">
+				 insert into LCINSURED (TRANSNO, INSUREDNO, GRPCONTNO, 
+			      CONTNO, PRTNO, APPNTNO, 
+			      MANAGECOM, EXECUTECOM, INSURANCECOM, 
+			      INSURANCEMANAGECOM, FAMILYID, RELATIONTOMAININSURED, 
+			      RELATIONTOAPPNT, ADDRESSNO, SEQUENCENO, 
+			      NAME, SEX, BIRTHDAY, IDTYPE, 
+			      IDNO, NATIVEPLACE, NATIONALITY, 
+			      RGTADDRESS, MARRIAGE, MARRIAGEDATE, 
+			      HEALTH, STATURE, AVOIRDUPOIS, 
+			      DEGREE, CREDITGRADE, BANKCODE, 
+			      BANKACCNO, ACCNAME, JOINCOMPANYDATE, 
+			      STARTWORKDATE, POSITION, SALARY, 
+			      OCCUPATIONTYPE, OCCUPATIONCODE, WORKTYPE, 
+			      PLURALITYTYPE, SMOKEFLAG, CONTPLANCODE, 
+			      INSUREDSTAT, UWFLAG, UWCODE, 
+			      UWDATE, UWTIME, BMI, INSUREDPEOPLES, 
+			      LICENSE, LICENSETYPE, CUSTOMERSEQNO, 
+			      SOCIALINSUNO, ORGANCOMCODE, OPERATOR, 
+			      MAKEDATE, MAKETIME, MODIFYDATE, 
+			      MODIFYTIME)
+			    values (#{transno,jdbcType=VARCHAR}, #{insuredno,jdbcType=VARCHAR}, #{grpcontno,jdbcType=VARCHAR}, 
+			      #{contno,jdbcType=VARCHAR}, #{prtno,jdbcType=VARCHAR}, #{appntno,jdbcType=VARCHAR}, 
+			      #{managecom,jdbcType=VARCHAR}, #{executecom,jdbcType=VARCHAR}, #{insurancecom,jdbcType=VARCHAR}, 
+			      #{insurancemanagecom,jdbcType=VARCHAR}, #{familyid,jdbcType=VARCHAR}, #{relationtomaininsured,jdbcType=VARCHAR}, 
+			      #{relationtoappnt,jdbcType=VARCHAR}, #{addressno,jdbcType=VARCHAR}, #{sequenceno,jdbcType=VARCHAR}, 
+			      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{idtype,jdbcType=VARCHAR}, 
+			      #{idno,jdbcType=VARCHAR}, #{nativeplace,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, 
+			      #{rgtaddress,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, #{marriagedate,jdbcType=DATE}, 
+			      #{health,jdbcType=VARCHAR}, #{stature,jdbcType=DECIMAL}, #{avoirdupois,jdbcType=DECIMAL}, 
+			      #{degree,jdbcType=VARCHAR}, #{creditgrade,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+			      #{bankaccno,jdbcType=VARCHAR}, #{accname,jdbcType=VARCHAR}, #{joincompanydate,jdbcType=DATE}, 
+			      #{startworkdate,jdbcType=DATE}, #{position,jdbcType=VARCHAR}, #{salary,jdbcType=DECIMAL}, 
+			      #{occupationtype,jdbcType=VARCHAR}, #{occupationcode,jdbcType=VARCHAR}, #{worktype,jdbcType=VARCHAR}, 
+			      #{pluralitytype,jdbcType=VARCHAR}, #{smokeflag,jdbcType=VARCHAR}, #{contplancode,jdbcType=VARCHAR}, 
+			      #{insuredstat,jdbcType=VARCHAR}, #{uwflag,jdbcType=VARCHAR}, #{uwcode,jdbcType=VARCHAR}, 
+			      #{uwdate,jdbcType=DATE}, #{uwtime,jdbcType=VARCHAR}, #{bmi,jdbcType=DECIMAL}, #{insuredpeoples,jdbcType=DECIMAL}, 
+			      #{license,jdbcType=VARCHAR}, #{licensetype,jdbcType=VARCHAR}, #{customerseqno,jdbcType=DECIMAL}, 
+			      #{socialinsuno,jdbcType=VARCHAR}, #{organcomcode,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+			      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+			      #{modifytime,jdbcType=VARCHAR})
+			
+			</insert>
+			
+			<insert id="insertLCInsuredAux" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCInsuredAux">
+				 insert into LCINSUREDAUX (TRANSNO, INSUREDNO, GRPCONTNO, 
+			      CONTNO, PRTNO, APPNTNO, 
+			      MANAGECOM, EXECUTECOM, INSURANCECOM, 
+			      INSURANCEMANAGECOM, FAMILYID, RELATIONTOMAININSURED, 
+			      RELATIONTOAPPNT, ADDRESSNO, SEQUENCENO, 
+			      NAME, SEX, BIRTHDAY, IDTYPE, 
+			      IDNO, NATIVEPLACE, NATIONALITY, 
+			      RGTADDRESS, MARRIAGE, MARRIAGEDATE, 
+			      HEALTH, STATURE, AVOIRDUPOIS, 
+			      DEGREE, CREDITGRADE, BANKCODE, 
+			      BANKACCNO, ACCNAME, JOINCOMPANYDATE, 
+			      STARTWORKDATE, POSITION, SALARY, 
+			      OCCUPATIONTYPE, OCCUPATIONCODE, WORKTYPE, 
+			      PLURALITYTYPE, SMOKEFLAG, CONTPLANCODE, 
+			      INSUREDSTATU, UWFLAG, UWCODE, 
+			      UWDATE, UWTIME, BMI, INSUREDPEOPLES, 
+			      LICENSE, LICENSETYPE, CUSTOMERSEQNO, 
+			      SOCIALINSUNO, ORGANCOMCODE, OPERATOR, 
+			      MAKEDATE, MAKETIME, MODIFYDATE, 
+			      MODIFYTIME)
+			    values (#{transno,jdbcType=VARCHAR}, #{insuredno,jdbcType=VARCHAR}, #{grpcontno,jdbcType=VARCHAR}, 
+			      #{contno,jdbcType=VARCHAR}, #{prtno,jdbcType=VARCHAR}, #{appntno,jdbcType=VARCHAR}, 
+			      #{managecom,jdbcType=VARCHAR}, #{executecom,jdbcType=VARCHAR}, #{insurancecom,jdbcType=VARCHAR}, 
+			      #{insurancemanagecom,jdbcType=VARCHAR}, #{familyid,jdbcType=VARCHAR}, #{relationtomaininsured,jdbcType=VARCHAR}, 
+			      #{relationtoappnt,jdbcType=VARCHAR}, #{addressno,jdbcType=VARCHAR}, #{sequenceno,jdbcType=VARCHAR}, 
+			      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{idtype,jdbcType=VARCHAR}, 
+			      #{idno,jdbcType=VARCHAR}, #{nativeplace,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, 
+			      #{rgtaddress,jdbcType=VARCHAR}, #{marriage,jdbcType=VARCHAR}, #{marriagedate,jdbcType=DATE}, 
+			      #{health,jdbcType=VARCHAR}, #{stature,jdbcType=DECIMAL}, #{avoirdupois,jdbcType=DECIMAL}, 
+			      #{degree,jdbcType=VARCHAR}, #{creditgrade,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+			      #{bankaccno,jdbcType=VARCHAR}, #{accname,jdbcType=VARCHAR}, #{joincompanydate,jdbcType=DATE}, 
+			      #{startworkdate,jdbcType=DATE}, #{position,jdbcType=VARCHAR}, #{salary,jdbcType=DECIMAL}, 
+			      #{occupationtype,jdbcType=VARCHAR}, #{occupationcode,jdbcType=VARCHAR}, #{worktype,jdbcType=VARCHAR}, 
+			      #{pluralitytype,jdbcType=VARCHAR}, #{smokeflag,jdbcType=VARCHAR}, #{contplancode,jdbcType=VARCHAR}, 
+			      #{insuredstatu,jdbcType=VARCHAR}, #{uwflag,jdbcType=VARCHAR}, #{uwcode,jdbcType=VARCHAR}, 
+			      #{uwdate,jdbcType=DATE}, #{uwtime,jdbcType=VARCHAR}, #{bmi,jdbcType=DECIMAL}, #{insuredpeoples,jdbcType=DECIMAL}, 
+			      #{license,jdbcType=VARCHAR}, #{licensetype,jdbcType=VARCHAR}, #{customerseqno,jdbcType=DECIMAL}, 
+			      #{socialinsuno,jdbcType=VARCHAR}, #{organcomcode,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+			      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+			      #{modifytime,jdbcType=VARCHAR})
+			
+			</insert>
+			
+			<insert id="insertImpartContent" parameterType="com.sinosoft.service.business.ui.newcont.bean.ImpartContent">
+
+				 insert into IMPARTCONTENT (CONTNOIMPARTCODE, TRANSNO, CONTNO, 
+			      INSUREDCOMPANY, IMPARTCODE, INSUREDIMPART, 
+			      OWNERIMPART, INSUREDYESORNO, OWNERYESORNO
+			      )
+			    values (#{contnoimpartcode,jdbcType=VARCHAR}, #{transno,jdbcType=VARCHAR}, #{contno,jdbcType=VARCHAR}, 
+			      #{insuredcompany,jdbcType=VARCHAR}, #{impartcode,jdbcType=VARCHAR}, #{insuredimpart,jdbcType=VARCHAR}, 
+			      #{ownerimpart,jdbcType=VARCHAR}, #{insuredyesorno,jdbcType=VARCHAR}, #{owneryesorno,jdbcType=VARCHAR}
+			      )
+			
+			</insert>
+			
+			<insert id="insertLCCustomerImpart" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCCustomerImpart">
+			
+				insert into LCCUSTOMERIMPART (TRANSNO, GRPCONTNO, PROPOSALCONTNO, 
+			      IMPARTVER, IMPARTCODE, CUSTOMERNO, 
+			      CUSTOMERNOTYPE, CONTNO, PRTNO, 
+			      IMPARTCONTENT, IMPARTPARAMMODLE, UWCLAIMFLG, 
+			      PRTFLAG, OPERATOR, MAKEDATE, 
+			      MAKETIME, MODIFYDATE, MODIFYTIME
+			      )
+			    values (#{transno,jdbcType=VARCHAR}, #{grpcontno,jdbcType=VARCHAR}, #{proposalcontno,jdbcType=VARCHAR}, 
+			      #{impartver,jdbcType=VARCHAR}, #{impartcode,jdbcType=VARCHAR}, #{customerno,jdbcType=VARCHAR}, 
+			      #{customernotype,jdbcType=VARCHAR}, #{contno,jdbcType=VARCHAR}, #{prtno,jdbcType=VARCHAR}, 
+			      #{impartcontent,jdbcType=VARCHAR}, #{impartparammodle,jdbcType=VARCHAR}, #{uwclaimflg,jdbcType=VARCHAR}, 
+			      #{prtflag,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{makedate,jdbcType=DATE}, 
+			      #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, #{modifytime,jdbcType=VARCHAR}
+			      )
+			
+			</insert>
+			
+			<insert id="insertLCBnf" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCBnf">
+				insert into LCBNF (POLNO, INSUREDNO, BNFNO, 
+			      BNFGRADE, TRANSNO, CONTNO, 
+			      BNFTYPE, RELATIONTOINSURED, BNFLOT, 
+			      CUSTOMERNO, NAME, SEX, 
+			      BIRTHDAY, IDTYPE, IDNO, 
+			      GETFORM, GETBANKCODE, GETBANKACCNO, 
+			      GETACCNAME, OPERATOR, MAKEDATE, 
+			      MAKETIME, MODIFYDATE, MODIFYTIME
+			      )
+			    values (#{polno,jdbcType=VARCHAR}, #{insuredno,jdbcType=VARCHAR}, #{bnfno,jdbcType=DECIMAL}, 
+			      #{bnfgrade,jdbcType=VARCHAR}, #{transno,jdbcType=VARCHAR}, #{contno,jdbcType=VARCHAR}, 
+			      #{bnftype,jdbcType=VARCHAR}, #{relationtoinsured,jdbcType=VARCHAR}, #{bnflot,jdbcType=DECIMAL}, 
+			      #{customerno,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+			      #{birthday,jdbcType=DATE}, #{idtype,jdbcType=VARCHAR}, #{idno,jdbcType=VARCHAR}, 
+			      #{getform,jdbcType=VARCHAR}, #{getbankcode,jdbcType=VARCHAR}, #{getbankaccno,jdbcType=VARCHAR}, 
+			      #{getaccname,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{makedate,jdbcType=DATE}, 
+			      #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, #{modifytime,jdbcType=VARCHAR}
+			      )
+			</insert>
+			
+			<insert id="insertLCAddress" parameterType="com.sinosoft.service.business.ui.newcont.bean.lcaddress">
+				insert into LCADDRESS (TRANSNO, CUSTOMERNO, ADDRESSNO, 
+			      POSTALADDRESS, ZIPCODE, PHONE, 
+			      FAX, HOMEADDRESS, HOMEZIPCODE, 
+			      HOMEPHONE, HOMEFAX, COMPANYADDRESS, 
+			      COMPANYZIPCODE, COMPANYPHONE, COMPANYFAX, 
+			      MOBILE, MOBILECHS, EMAIL, 
+			      BP, MOBILE2, MOBILECHS2, 
+			      EMAIL2, BP2, GRPNAME, 
+			      PROVINCE, CITY, COUNTY, 
+			      HOMEPROVINCE, HOMECITY, HOMECOUNTY, 
+			      COMPANYPROVINCE, COMPANYCITY, COMPANYCOUNTY, 
+			      COMPANYREGISTATE, COMPANYFAREOPERATION, 
+			      OPERATOR, MAKEDATE, MAKETIME, 
+			      MODIFYDATE, MODIFYTIME)
+			    values (#{transno,jdbcType=VARCHAR}, #{customerno,jdbcType=VARCHAR}, #{addressno,jdbcType=DECIMAL}, 
+			      #{postaladdress,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+			      #{fax,jdbcType=VARCHAR}, #{homeaddress,jdbcType=VARCHAR}, #{homezipcode,jdbcType=VARCHAR}, 
+			      #{homephone,jdbcType=VARCHAR}, #{homefax,jdbcType=VARCHAR}, #{companyaddress,jdbcType=VARCHAR}, 
+			      #{companyzipcode,jdbcType=VARCHAR}, #{companyphone,jdbcType=VARCHAR}, #{companyfax,jdbcType=VARCHAR}, 
+			      #{mobile,jdbcType=VARCHAR}, #{mobilechs,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+			      #{bp,jdbcType=VARCHAR}, #{mobile2,jdbcType=VARCHAR}, #{mobilechs2,jdbcType=VARCHAR}, 
+			      #{email2,jdbcType=VARCHAR}, #{bp2,jdbcType=VARCHAR}, #{grpname,jdbcType=VARCHAR}, 
+			      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, 
+			      #{homeprovince,jdbcType=VARCHAR}, #{homecity,jdbcType=VARCHAR}, #{homecounty,jdbcType=VARCHAR}, 
+			      #{companyprovince,jdbcType=VARCHAR}, #{companycity,jdbcType=VARCHAR}, #{companycounty,jdbcType=VARCHAR}, 
+			      #{companyregistate,jdbcType=VARCHAR}, #{companyfareoperation,jdbcType=VARCHAR}, 
+			      #{operator,jdbcType=VARCHAR}, #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, 
+			      #{modifydate,jdbcType=DATE}, #{modifytime,jdbcType=VARCHAR})
+			</insert>
+			
+			
+			<insert id="insertLCAccount" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCAccount">
+				 insert into LCACCOUNT (CUSTOMERNO, BANKCODE, BANKACCNO, 
+			      ACCKIND, ACCNAME, OPERATOR, 
+			      MAKEDATE, MAKETIME, MODIFYDATE, 
+			      MODIFYTIME)
+			    values (#{customerno,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, #{bankaccno,jdbcType=VARCHAR}, 
+			      #{acckind,jdbcType=VARCHAR}, #{accname,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+			      #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, #{modifydate,jdbcType=DATE}, 
+			      #{modifytime,jdbcType=VARCHAR})
+			
+			</insert>
+			
+			<insert id="insertLCAccountInfo" parameterType="com.sinosoft.service.business.ui.newcont.bean.LCAccountInfo">
+				 insert into LCACCOUNTINFO (TRANSNO, PROPOSALCONTNO, RISKCODE, 
+			      ACCNO, INSURCECOM, ACCRATE, 
+			      BAK1, BAK2, BAK3, BAK4, 
+			      BAK5)
+			    values (#{transno,jdbcType=VARCHAR}, #{proposalcontno,jdbcType=VARCHAR}, #{riskcode,jdbcType=VARCHAR}, 
+			      #{accno,jdbcType=VARCHAR}, #{insurcecom,jdbcType=VARCHAR}, #{accrate,jdbcType=VARCHAR}, 
+			      #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, 
+			      #{bak5,jdbcType=VARCHAR})
+			
+			</insert>
+			-->
+			
+			<!-- 投保单影像上传 -->
+			<select id="contImageSelect" resultType="com.sinosoft.service.business.db.vo.ContImageManageVo">
+				select 
+				a.proposalcontno as proposalcontno,
+				a.appntname as appntname,
+				(select name from lacom where agentcom=a.insurancecom) as insuranceName,
+				a.insurancecom as agentCode,
+				c.comname as comName, 
+				c.comcode as comcode,
+				e.emplid as emplid,
+				
+				(select modifiedname from lduploaddoc where prtno = a.proposalcontno ) as modifiedName,
+				(select docname from lduploaddoc where prtno = a.proposalcontno ) as docName,
+				(select path from lduploaddoc where prtno = a.proposalcontno ) as path
+				from lccont a,ldcom c,lduser e 
+				where  c.comcode = a.managecom and e.emplid = a.agentcode  
+				and e.emplID =#{operator}
+				
+				<if test="contNo !=null and contNo != ''">
+					and a.proposalcontno = #{contNo}
+				</if>
+				<if test="tBRBirth != null" >
+					and a.PolApplyDate = #{tBRBirth,jdbcType=DATE}
+				</if>
+			</select>
+			
+			<insert id="insertLduploaddoc" parameterType="com.sinosoft.service.business.ui.ContUpload.bean.lduploaddoc">
+				insert into LDUPLOADDOC (DOCID, PATH, DOCNAME, 
+			      MODIFIEDNAME, MAKEDATE, MAKETIME, 
+			      CODETYPE, COMCODE, AGENTCODE, 
+			      PRTNO, REMARK, DOCSIZE, 
+			      CONTENTTYPE, OPERATOR, BAK1, 
+			      BAK2, BAK3, BAK4, BAK5
+			      )
+			    values (Doc_id_seq.Nextval, #{path,jdbcType=VARCHAR}, #{docname,jdbcType=VARCHAR}, 
+			      #{modifiedname,jdbcType=VARCHAR}, #{makedate,jdbcType=DATE}, #{maketime,jdbcType=VARCHAR}, 
+			      #{codetype,jdbcType=VARCHAR}, #{comcode,jdbcType=VARCHAR}, #{agentcode,jdbcType=VARCHAR}, 
+			      #{prtno,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{docsize,jdbcType=VARCHAR}, 
+			      #{contenttype,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{bak1,jdbcType=VARCHAR}, 
+			      #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, #{bak5,jdbcType=VARCHAR}
+     			 )
+			</insert>
+			
+			<delete id="deleteLduploaddoc" parameterType="String">
+				delete from LDUPLOADDOC where PRTNO=#{contNo}
+			
+			</delete>
+			
+		
+
+</mapper>

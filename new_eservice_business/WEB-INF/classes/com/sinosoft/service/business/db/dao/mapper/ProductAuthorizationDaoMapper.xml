@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.ProductAuthorizationDao">
+	<!-- 查询银行网点 -->
+	<select id="loadBankPlaces" resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ProductAuthorizationBean">
+		select comcode as code,comname as name  from ldcom  where validflag='1'
+	</select>
+	
+	<!-- 查询保险公司 -->
+	<select id="loadInsuranceCompany"  parameterType="String"
+		resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ProductAuthorizationBean">
+		select 
+			agentCom as code, name
+  		from lacom
+ 		where states = '3'
+   			and agentCom not in (select distinct (insuranceCom)
+                          from LAAuthorizeA
+                         where authorobj = #{BankPlaceCode})
+	</select>
+	
+	
+	<select id="selectLaauthorize" resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.laauthorize">
+		select * from Laauthorize where InsuranceCom =#{InsuranceCom} and AuthorObj =#{AuthorObj}
+	</select>
+	
+	
+	<!-- 查询授权的 -->
+	<select id="selectAuthorization" 
+		resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ProductAuthorizationInsuranceTypeBean">
+		select 
+			distinct (a.riskcode) as riskCode, 
+			a.risktype, 
+			a.riskname, 
+			b.AuthorFlow
+ 		from lmrisk a, laauthorize b
+ 		where a.riskcode in (select riskcode
+                        from laauthorize
+                       where AuthorObj = #{BankPlaceCode}
+                         and a.InsuranceCom = #{InsuranceCom})
+	</select>
+	
+	<!-- 查询未授权成功的 -->
+	<select id="selectNotAuthorization"
+		resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ProductAuthorizationInsuranceTypeBean">
+		select 
+			a.riskcode, 
+			a.risktype, 
+			a.riskname
+ 		from LMRisk a
+ 		where  riskcode not in (select riskcode
+                          from laauthorize
+                         where AuthorObj = #{BankPlaceCode}
+                        union
+                        select riskcode
+                          from laauthorizea
+                         where branchtype2 = 'W'
+                           and AuthorObj = #{BankPlaceCode})
+  		 and a.InsuranceCom = #{InsuranceCom}
+	</select>
+	
+	
+	<!-- 授权操作 -->
+		<!-- 1.查询是否过期 -->
+		<select id="selectIsExpired" resultType="java.util.HashMap">
+			select startdate, enddate
+	 		from LDComDealInfo
+	 		<where>
+			   agentcom = #{AuthorObj}
+			   and comtype = '0'
+	   		   and #{date} &gt;= startdate
+			   and #{date} &lt;= enddate
+			</where> 
+		</select>
+		<!-- 2.先删除 -->
+		<delete id="delete" 
+			parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.GrantBean">
+			delete from laauthorizea where  insurancecom = #{insuranceCompany} 
+				and authorobj =#{bankPlaceCode} 
+		</delete>
+		
+		<!-- 3.插入 -->
+		<insert id="save" 
+			parameterType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.GrantBean">
+			insert into laauthorizea 
+			   (RiskCode,InsuranceCom,AuthorObj,
+				AuthorType,AuthorFlow,AuthorEndDate,
+				Operator,BranchType,RiskType,
+				BranchAttr,BranchType2,ISNULLPRODUCT )
+			 values 
+			   (#{riskCode,jdbcType=VARCHAR},#{insuranceCompany,jdbcType=VARCHAR},#{bankPlaceCode,jdbcType=VARCHAR},
+			   '2',#{authorFlow,jdbcType=VARCHAR},#{authorEndDate,jdbcType=DATE},
+			   #{operator,jdbcType=VARCHAR},'3',#{riskType,jdbcType=VARCHAR},'Y','W',#{isNullProduct,jdbcType=VARCHAR} )
+		</insert>
+	
+		<update id="updateIsNullProduct">
+			update laauthorizea set ISNULLPRODUCT = 'Y' where 
+			INSURANCECOM = #{InsuranceCom} and authorobj = #{AuthorObj}
+		</update>
+		
+	
+	
+	<!-- 网点授权审批 -->
+		<select id="loadBanks" 
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ProductAuthorizationBean">
+			select
+				distinct(b.comcode) as code, 
+				 b.comname  as name
+  			from laauthorizea a, ldcom b
+			where a.authorobj = b.comcode
+			   and a.BRANCHTYPE2 = 'W'
+			   <!--  and a.OPERATOR != #{userCode}-->
+		
+		</select>
+		
+		
+		<select id="selectCheckProduct" parameterType="String"
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.ProductAuthorizationBean">
+			select 
+				 agentcom as code,
+				 name
+			  from lacom a
+			where  a.agentcom in (select distinct insurancecom
+			                        from laauthorizea
+			                       where authorobj = #{bankCode})
+			and states = '3'
+		</select>
+	
+		<select id="loadFrom" 
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.LoadFormBean">
+			select 
+				a.agentcom as insuranceCode, 
+				a.name as insuranceName, 
+				b.comcode as bankCode, 
+				b.comname as bankName
+  			from lacom a, ldcom b
+ 			where  a.agentcom = #{InsuranceCode}
+		    and a.states = '3'
+		    and b.comcode = #{BankPlaceCode}
+		    and b.validflag = '1'
+		</select>
+		
+		<select id="loadTable" 
+			resultType="com.sinosoft.service.business.ui.bankInstitutionManage.bean.GrantBean">
+			select 
+				a.riskcode, 
+				a.riskname, 
+				b.branchattr as riskType
+		 	from lmrisk a, laauthorizea b
+			where  a.riskcode = b.riskcode
+		   and b.insurancecom = #{InsuranceCode}
+		   and b.authorobj = #{BankPlaceCode}
+		   and b.ISNULLPRODUCT = 'N'
+		</select>
+		
+		
+		<!-- 审批提交 -->
+		<!-- 不通过 -->
+			<delete id="deleteLaauthorizea">
+				delete from laauthorizea  where INSURANCECOM=#{insuranceCompany} and AUTHOROBJ=#{BankPlaceCode}
+			</delete>
+	
+			<!-- 插入 -->
+			<insert id="insertLCCheckTrace">
+				insert into LCCheckTrace 
+					(CheckNo,CheckedCode,CheckedName,
+					 ComCode,CheckDes,CheckType,
+					 CheckDate,CheckTime,Bak1 )
+				 values 
+				 	(#{maxNo},#{data.insuranceCode,jdbcType=VARCHAR},'产品销售网点审批',
+				 	#{data.bankCode,jdbcType=VARCHAR},'','7',
+				 	#{currentDate,jdbcType=DATE},#{currentTime,jdbcType=VARCHAR},#{data.checkStatus,jdbcType=VARCHAR} )
+			</insert>
+	
+		<!-- 通过 -->
+			<!-- 删除主表 -->
+			<delete id="deleteLaauthorize">
+				delete from laauthorize  where INSURANCECOM=#{insuranceCompany} and AUTHOROBJ=#{BankPlaceCode}
+			</delete>
+			<!-- 插入主表 -->
+			<insert id="insertLaauthorize">
+				insert into laauthorize 
+					( RiskCode,InsuranceCom,AuthorObj,
+					  AuthorType,AuthorFlow,AuthorEndDate,
+					  Operator,BranchType,RiskType,
+					  BranchAttr,BranchType2,ISNULLPRODUCT )
+				values 
+					( #{data.riskCode,jdbcType=VARCHAR},#{data.insuranceCode,jdbcType=VARCHAR},#{data.bankCode,jdbcType=VARCHAR},
+					'2','01',#{data.authorEndDate,jdbcType=DATE},
+					#{data.operator,jdbcType=VARCHAR},'3','03',
+					'Y','Y', #{data.isNullProduct,jdbcType=VARCHAR})
+			</insert>
+			<!-- 插入备份表 -->
+			<insert id="insertLaauthorizeB">
+				insert into laauthorizeB 
+					( RiskCode,InsuranceCom,AuthorObj,
+					  AuthorType,AuthorFlow,AuthorEndDate,
+					  Operator,BranchType,RiskType,
+					  BranchAttr,BranchType2,ISNULLPRODUCT  )
+				values 
+					( #{data.riskCode,jdbcType=VARCHAR},#{data.insuranceCode,jdbcType=VARCHAR},#{data.bankCode,jdbcType=VARCHAR},
+					'2','01',#{data.authorEndDate,jdbcType=DATE},
+					#{data.operator,jdbcType=VARCHAR},'3','03',
+					'Y','W' ,#{data.isNullProduct,jdbcType=VARCHAR})
+			</insert>
+	
+	
+</mapper>

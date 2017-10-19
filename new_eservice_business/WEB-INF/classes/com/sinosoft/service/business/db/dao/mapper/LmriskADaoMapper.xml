@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.LmriskADao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.LmriskAVo">
+		<result column="char1" jdbcType="VARCHAR" property="char1" />
+		<result column="char2" jdbcType="VARCHAR" property="char2" />	
+		<result column="char3" jdbcType="VARCHAR" property="char3" />
+		<result column="char5" jdbcType="VARCHAR" property="char5" />	
+		<result column="char6" jdbcType="VARCHAR" property="char6" />
+		<result column="checkDefFlag" jdbcType="VARCHAR" property="checkDefFlag" />	
+		<result column="checkFlag" jdbcType="VARCHAR" property="checkFlag" />
+		<result column="destRate" jdbcType="FLOAT" property="destRate" />	
+		<result column="endDate" jdbcType="VARCHAR" property="endDate" />
+    	<result column="insuAccFlag" jdbcType="VARCHAR" property="insuAccFlag" />
+    	<result column="insuranceCom" jdbcType="VARCHAR" property="insuranceCom" />
+   		<result column="mngCom" jdbcType="VARCHAR" property="mngCom" />
+   		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="origRiskCode" jdbcType="VARCHAR" property="origRiskCode" />	
+		<result column="riskCode" jdbcType="VARCHAR" property="riskCode" />
+		<result column="riskName" jdbcType="VARCHAR" property="riskName" />	
+		<result column="riskPeriod" jdbcType="VARCHAR" property="riskPeriod" />
+		<result column="riskProp" jdbcType="VARCHAR" property="riskProp" />	
+		<result column="riskShortName" jdbcType="VARCHAR" property="riskShortName" />
+		<result column="riskType" jdbcType="VARCHAR" property="riskType" />	
+		<result column="riskVer" jdbcType="VARCHAR" property="riskVer" />
+    	<result column="salesChl" jdbcType="VARCHAR" property="salesChl" />
+    	<result column="sign" jdbcType="VARCHAR" property="sign" />
+   		<result column="StartDate" jdbcType="VARCHAR" property="StartDate" />
+   		<result column="submitFlag" jdbcType="VARCHAR" property="submitFlag" />
+        <result column="subRiskFlag" jdbcType="VARCHAR" property="subRiskFlag" />	
+        <result column="subRiskVer" jdbcType="VARCHAR" property="subRiskVer" />	
+        <result column="risk" jdbcType="VARCHAR" property="risk" />	
+     </resultMap>
+     
+     <resultMap id="BaseResultMapAll" type="com.sinosoft.service.business.db.vo.LmriskAndLdcodeVo">
+		<result column="char1" jdbcType="VARCHAR" property="char1" />
+		<result column="char2" jdbcType="VARCHAR" property="char2" />	
+		<result column="char3" jdbcType="VARCHAR" property="char3" />
+		<result column="char5" jdbcType="VARCHAR" property="char5" />	
+		<result column="char6" jdbcType="VARCHAR" property="char6" />
+		<result column="checkDefFlag" jdbcType="VARCHAR" property="checkDefFlag" />	
+		<result column="checkFlag" jdbcType="VARCHAR" property="checkFlag" />
+		<result column="destRate" jdbcType="FLOAT" property="destRate" />	
+		<result column="endDate" jdbcType="VARCHAR" property="endDate" />
+    	<result column="insuAccFlag" jdbcType="VARCHAR" property="insuAccFlag" />
+    	<result column="insuranceCom" jdbcType="VARCHAR" property="insuranceCom" />
+   		<result column="mngCom" jdbcType="VARCHAR" property="mngCom" />
+   		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="origRiskCode" jdbcType="VARCHAR" property="origRiskCode" />	
+		<result column="riskCode" jdbcType="VARCHAR" property="riskCode" />
+		<result column="riskName" jdbcType="VARCHAR" property="riskName" />	
+		<result column="riskPeriod" jdbcType="VARCHAR" property="riskPeriod" />
+		<result column="riskProp" jdbcType="VARCHAR" property="riskProp" />	
+		<result column="riskShortName" jdbcType="VARCHAR" property="riskShortName" />
+		<result column="riskType" jdbcType="VARCHAR" property="riskType" />	
+		<result column="riskVer" jdbcType="VARCHAR" property="riskVer" />
+    	<result column="salesChl" jdbcType="VARCHAR" property="salesChl" />
+    	<result column="sign" jdbcType="VARCHAR" property="sign" />
+   		<result column="StartDate" jdbcType="VARCHAR" property="StartDate" />
+   		<result column="submitFlag" jdbcType="VARCHAR" property="submitFlag" />
+        <result column="subRiskFlag" jdbcType="VARCHAR" property="subRiskFlag" />	
+        <result column="subRiskVer" jdbcType="VARCHAR" property="subRiskVer" />	
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="codetype" jdbcType="VARCHAR" property="codetype" />
+        <result column="codename" jdbcType="VARCHAR" property="codename" />
+        <result column="codealias" jdbcType="VARCHAR" property="codealias" />
+        <result column="comcode" jdbcType="VARCHAR" property="comcode" />
+        <result column="othersign" jdbcType="VARCHAR" property="othersign" />
+     </resultMap>
+   <resultMap id="BaseResultDefMap" type="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo">
+		<result column="char1" jdbcType="VARCHAR" property="char1" />
+		<result column="char2" jdbcType="VARCHAR" property="char2" />	
+		<result column="riskcode" jdbcType="VARCHAR" property="riskcode" />
+		<result column="riskver" jdbcType="VARCHAR" property="riskver" />	
+		<result column="dutycode" jdbcType="VARCHAR" property="dutycode" />
+		<result column="othercode" jdbcType="VARCHAR" property="othercode" />	
+		<result column="ctrltype" jdbcType="VARCHAR" property="ctrltype" />
+		<result column="paramstype" jdbcType="FLOAT" property="paramstype" />	
+		<result column="paramscode" jdbcType="VARCHAR" property="paramscode" />
+    	<result column="paramsname" jdbcType="VARCHAR" property="paramsname" />
+    	
+	</resultMap>
+	<resultMap id="BaseResultRelaMap" type="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+		<result column="char1" jdbcType="VARCHAR" property="char1" />
+		<result column="char2" jdbcType="VARCHAR" property="char2" />	
+		<result column="riskcode" jdbcType="VARCHAR" property="riskcode" />
+		<result column="relariskcode" jdbcType="VARCHAR" property="relariskcode" />	
+		<result column="relacode" jdbcType="VARCHAR" property="relacode" />
+		<result column="managecomgrp" jdbcType="VARCHAR" property="managecomgrp" />	
+	</resultMap>
+   <sql id="Base_Column_List">
+  char1,char2,char3,char4,char5,char6,checkDefFlag,checkFlag,destRate,endDate,insuAccFlag,insuranceCom,mngCom,operator,origRiskCode,
+  riskCode,riskName,riskPeriod,riskProp,riskShortName,riskType,riskVer,salesChl,sign,StartDate,submitFlag,subRiskFlag, subRiskVer,risk
+  </sql>
+  
+  <sql id="Base_Column_List_rela">
+     riskcode,relariskcode,relacode,managecomgrp,char1,char2
+  </sql>
+  
+  <sql id="Base_Column_List_param">
+     riskcode,riskver,dutycode,othercode,ctrltype,paramstype,paramscode,paramsname,char1,char2 
+  </sql>
+	<select id="queryProduct" resultMap="BaseResultMap">
+	select riskCode,riskName  from LMRisk b where 1=1 and subRiskFlag = 'M'  and checkDefFlag = 'Y' and char6='Y' and checkFlag = 'Y' and sign='S' and insuranceCom=#{insuranceCom,jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="queryProductByCode" resultMap="BaseResultMapAll">
+select r.insurancecom,r.riskcode,r.riskname,'','','',r.StartDate,r.EndDate,r.subriskver
+,(select a.name from lacom a where a.agentcom=r.insurancecom ) as name
+,(select codename from ldcode where codetype = 'checkrisk' and trim(code) = r.checkflag) as checkFlag,
+(select codename from ldcode where codetype = 'subriskflag' and trim(code) = r.subriskflag) as subriskflag,
+   (select codename from ldcode  where codetype = 'riskinputtype' and trim(code) = r.risktype) as risktype,
+   (select codename from ldcode  where codetype = 'checkriskdef' and trim(code) = r.checkdefflag) as checkdefflag,
+   r.riskshortname,r.submitflag,r.char1,(select codename from ldcode where code=r.char1 and codetype='calculateprem') as codetype
+,r.char2,(select codename from ldcode where trim(code)=trim(r.char2) and codetype='yesno'),
+r.RISKVER,(select codename from ldcode where trim(code)=trim(r.char3) and codetype='jgriskinputtype'),r.char3,
+(select codename from ldcode where trim(code)=trim(r.char3) and codetype=#{insuranceCom,jdbcType=VARCHAR})as code,
+r.char4,r.char5 ,r.char6 ,r.riskprop, r.operator,r.risk from lmrisk  r where      r.riskcode=#{riskCode,jdbcType=VARCHAR}
+
+
+
+	</select>
+	<!-- 根据riskCode查询参数 -->
+	<select id="QueryParam"  parameterType="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo"  resultMap="BaseResultDefMap">
+	  select a.*
+  from (select * from LMRiskParamsDef where riskcode not in(select riskcode from lmriska)union select * from LMRiskParamsDefA)
+   a   where 1=1
+		and  riskCode=#{riskCode,jdbcType=TIMESTAMP}
+	</select>
+		<select id="QueryParamDef"  parameterType="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo"  resultMap="BaseResultDefMap">
+	  select  <include refid="Base_Column_List_param" />  from LMRiskParamsDef where riskCode=#{riskCode,jdbcType=TIMESTAMP}
+	</select>
+	<!-- 根据riskCode查询附加险 -->
+	<select id="QueryRela"  parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo"  resultMap="BaseResultRelaMap">
+	  select  <include refid="Base_Column_List_rela" />  from LMRiskRelaA where relariskcode=#{riskCode,jdbcType=TIMESTAMP}
+	</select>
+	<select id="selectRiskcode" resultMap="BaseResultMap">
+	  select riskcode from lmrisk
+	</select>
+	<select id="selectByLmriskA" parameterType="java.lang.String" resultMap="BaseResultMap">
+	
+	select  <include refid="Base_Column_List" /> from lmriska 
+  where 1=1
+		 <if test="insuranceCom != null">
+	      and  insuranceCom=#{insuranceCom,jdbcType=VARCHAR}
+	   	</if>  
+	   	<if test="riskPeriod != null">
+	      and  riskPeriod=#{riskPeriod,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="StartDate != null">
+	      and  StartDate=#{StartDate,jdbcType=TIMESTAMP}
+	   	</if>    
+	   	<if test="endDate != null">
+	      and  endDate=#{endDate,jdbcType=TIMESTAMP}
+	   	</if>
+	   	<if test="riskType != null">
+	      and  riskType=#{riskType,jdbcType=VARCHAR}
+	   	</if>      
+	</select>
+	
+	<select id="selectByAgentComa" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lmriskA 
+		  where 1=1
+		 <if test="insuranceCom != null">
+	      and  insuranceCom=#{insuranceCom,jdbcType=VARCHAR}
+	   	</if>  
+	   	<if test="riskPeriod != null">
+	      and  riskPeriod=#{riskPeriod,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="StartDate != null">
+	      and  StartDate=#{StartDate,jdbcType=TIMESTAMP}
+	   	</if>    
+	   	<if test="endDate != null">
+	      and  endDate=#{endDate,jdbcType=TIMESTAMP}
+	   	</if>
+	   	<if test="riskType != null">
+	      and  riskType=#{riskType,jdbcType=VARCHAR}
+	   	</if>      
+		
+	</select>
+	
+	<select id="selectinsuancecom" resultMap="BaseResultMap">
+	  select distinct(insurancecom) from lmrisk
+	</select>
+	<select id="selectByAgentCom" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select a.RiskCode,a.RiskName,(select b.name from lacom  b where  b.agentcom=a.insurancecom ) as insuranceCom,
+  (select codename from ldcode  where codetype = 'subriskflag' and trim(code) = a.SubRiskFlag) as subRiskFlag,
+  (select codename from ldcode  where codetype = 'riskinputtype' and trim(code) = a.RiskType) as riskType,
+  (select codename from ldcode  where codetype = 'checkrisk' and trim(code) = a.checkdefflag ) as checkFlag,
+  (select codename from ldcode  where codetype = 'checkriskdef' and trim(code) = a.checkdefflag) as checkDefFlag,a.insurancecom as insuAccFlag
+  from (select * from lmrisk where riskcode not in(select riskcode from lmriska)union select * from lmriska where checkdefflag='W')
+   a   where 1=1
+		 <if test="insuranceCom != null">
+	      and  insuranceCom=#{insuranceCom,jdbcType=VARCHAR}
+	   	</if>  
+	   	<if test="riskPeriod != null">
+	      and  riskPeriod=#{riskPeriod,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="StartDate != null">
+	      and  StartDate=#{StartDate,jdbcType=TIMESTAMP}
+	   	</if>    
+	   	<if test="endDate != null">
+	      and  endDate=#{endDate,jdbcType=TIMESTAMP}
+	   	</if>
+	   	<if test="riskType != null">
+	      and  riskType=#{riskType,jdbcType=VARCHAR}
+	   	</if>      
+		order by a.riskcode
+	</select>
+	
+	
+	
+	<select id="selectByAgentComs" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select a.*
+  from (select * from lmrisk where riskcode not in(select riskcode from lmriska)union select * from lmriska)
+   a   where 1=1
+		
+	<if test="riskCode != null">
+	      and  riskCode=#{riskCode,jdbcType=VARCHAR}
+	   	</if>      
+
+	</select>
+	<select id="selectByRiskCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select <include refid="Base_Column_List" />  FROM lmriska
+		  where 1=1
+		 <if test="riskCode != null">
+	      and  riskCode=#{riskCode,jdbcType=VARCHAR}
+	   	</if>  
+	</select>
+	<select id="selectByParam" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />  FROM lmrisk
+		  where 1=1
+		 <if test="insuranceCom != null">
+	      and  insuranceCom=#{insuranceCom,jdbcType=VARCHAR}
+	   	</if>  
+	   	<if test="riskPeriod != null">
+	      and  riskPeriod=#{riskPeriod,jdbcType=VARCHAR}
+	   	</if>    
+	   	<if test="StartDate != null">
+	      and  StartDate=#{StartDate,jdbcType=TIMESTAMP}
+	   	</if>    
+	   	<if test="endDate != null">
+	      and  endDate=#{endDate,jdbcType=TIMESTAMP}
+	   	</if>
+	   	<if test="riskCode != null">
+	      and  riskCode=#{riskCode,jdbcType=VARCHAR}
+	   	</if>      
+		
+	</select>
+	
+	
+	  
+  <delete id="deleteByagentcom" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+   delete from  lmriskA where agentcom=#{agentcom}
+  </delete>
+	
+  	<insert id="insert" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+  insert into lmriskA(riskCode,risk,insuranceCom,riskVer,riskName,riskShortName,subRiskFlag,destRate,origRiskCode,riskType,riskProp,riskPeriod,
+      insuAccFlag,startDate,endDate,checkFlag,checkDefFlag,submitFlag,operator,sign,char1,char2,char3,char4,char5,char6,subRiskVer) values
+     (#{riskCode,jdbcType=VARCHAR},#{risk,jdbcType=VARCHAR},#{insuranceCom,jdbcType=VARCHAR}, #{riskVer,jdbcType=VARCHAR},
+      #{riskName,jdbcType=VARCHAR},#{riskShortName,jdbcType=VARCHAR},#{subRiskFlag,jdbcType=VARCHAR},
+      #{destRate,jdbcType=VARCHAR}, #{origRiskCode,jdbcType=VARCHAR},#{riskType,jdbcType=VARCHAR},#{riskProp,jdbcType=VARCHAR},
+      #{riskPeriod,jdbcType=VARCHAR}, #{insuAccFlag,jdbcType=VARCHAR},#{startDate,jdbcType=VARCHAR},#{endDate,jdbcType=VARCHAR},
+      #{checkFlag,jdbcType=VARCHAR},#{checkDefFlag,jdbcType=VARCHAR}, #{submitFlag,jdbcType=VARCHAR},
+      #{operator,jdbcType=VARCHAR},#{sign,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR},
+      #{char3,jdbcType=VARCHAR},#{char4,jdbcType=VARCHAR}, #{char5,jdbcType=VARCHAR}, #{char6,jdbcType=VARCHAR}, #{subRiskVer,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  
+  	<insert id="add" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+  insert into lmrisk(riskCode,risk,insuranceCom,riskVer,riskName,riskShortName,subRiskFlag,destRate,origRiskCode,riskType,riskProp,riskPeriod,
+      insuAccFlag,startDate,endDate,checkFlag,checkDefFlag,submitFlag,operator,sign,char1,char2,char3,char4,char5,char6,subRiskVer) values
+     (#{riskCode,jdbcType=VARCHAR},#{risk,jdbcType=VARCHAR},#{insuranceCom,jdbcType=VARCHAR}, #{riskVer,jdbcType=VARCHAR},
+      #{riskName,jdbcType=VARCHAR},#{riskShortName,jdbcType=VARCHAR},#{subRiskFlag,jdbcType=VARCHAR},
+      #{destRate,jdbcType=VARCHAR}, #{origRiskCode,jdbcType=VARCHAR},#{riskType,jdbcType=VARCHAR},#{riskProp,jdbcType=VARCHAR},
+      #{riskPeriod,jdbcType=VARCHAR}, #{insuAccFlag,jdbcType=VARCHAR},#{startDate,jdbcType=VARCHAR},#{endDate,jdbcType=VARCHAR},
+      #{checkFlag,jdbcType=VARCHAR},#{checkDefFlag,jdbcType=VARCHAR}, #{submitFlag,jdbcType=VARCHAR},
+      #{operator,jdbcType=VARCHAR},#{sign,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR},
+      #{char3,jdbcType=VARCHAR},#{char4,jdbcType=VARCHAR}, #{char5,jdbcType=VARCHAR}, #{char6,jdbcType=VARCHAR}, #{subRiskVer,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  	<insert id="addB" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+  insert into lmriskB(riskCode,risk,insuranceCom,riskVer,riskName,riskShortName,subRiskFlag,destRate,origRiskCode,riskType,riskProp,riskPeriod,
+      insuAccFlag,startDate,endDate,checkFlag,checkDefFlag,submitFlag,operator,sign,char1,char2,char3,char4,char5,char6,subRiskVer) values
+     (#{riskCode,jdbcType=VARCHAR},#{risk,jdbcType=VARCHAR},#{insuranceCom,jdbcType=VARCHAR}, #{riskVer,jdbcType=VARCHAR},
+      #{riskName,jdbcType=VARCHAR},#{riskShortName,jdbcType=VARCHAR},#{subRiskFlag,jdbcType=VARCHAR},
+      #{destRate,jdbcType=VARCHAR}, #{origRiskCode,jdbcType=VARCHAR},#{riskType,jdbcType=VARCHAR},#{riskProp,jdbcType=VARCHAR},
+      #{riskPeriod,jdbcType=VARCHAR}, #{insuAccFlag,jdbcType=VARCHAR},#{startDate,jdbcType=VARCHAR},#{endDate,jdbcType=VARCHAR},
+      #{checkFlag,jdbcType=VARCHAR},#{checkDefFlag,jdbcType=VARCHAR}, #{submitFlag,jdbcType=VARCHAR},
+      #{operator,jdbcType=VARCHAR},#{sign,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR},
+      #{char3,jdbcType=VARCHAR},#{char4,jdbcType=VARCHAR}, #{char5,jdbcType=VARCHAR}, #{char6,jdbcType=VARCHAR}, #{subRiskVer,jdbcType=VARCHAR})
+</insert>
+  
+  
+   <insert id="insertRela" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+  	  insert into LMRiskRela(riskcode,relariskcode,relacode,managecomgrp,char1,char2 )
+  	  values (#{riskcode,jdbcType=VARCHAR},#{relariskcode,jdbcType=VARCHAR}, #{relacode,jdbcType=VARCHAR},
+      #{managecomgrp,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertRelaB" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+  	  insert into LMRiskRelaB(riskcode,relariskcode,relacode,managecomgrp,char1,char2 )
+  	  values (#{riskcode,jdbcType=VARCHAR},#{relariskcode,jdbcType=VARCHAR}, #{relacode,jdbcType=VARCHAR},
+      #{managecomgrp,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR})
+  </insert>
+  
+  
+    <insert id="insertParam" parameterType="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo">
+  	  insert into LMRiskParamsDef( riskcode,dutycode,othercode,ctrltype,paramstype,paramscode,paramsname,char1,char2 )
+  	  values (#{riskcode,jdbcType=VARCHAR},#{dutycode,jdbcType=VARCHAR}, #{othercode,jdbcType=VARCHAR},
+      #{ctrltype,jdbcType=VARCHAR},#{paramstype,jdbcType=VARCHAR},#{paramscode,jdbcType=VARCHAR},
+      #{paramsname,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR})
+  </insert>
+  
+  
+    <insert id="insertParamB" parameterType="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo">
+  	  insert into LMRiskParamsDefB( riskcode,dutycode,othercode,ctrltype,paramstype,paramscode,paramsname,char1,char2 )
+  	  values (#{riskcode,jdbcType=VARCHAR},#{dutycode,jdbcType=VARCHAR}, #{othercode,jdbcType=VARCHAR},
+      #{ctrltype,jdbcType=VARCHAR},#{paramstype,jdbcType=VARCHAR},#{paramscode,jdbcType=VARCHAR},
+      #{paramsname,jdbcType=VARCHAR}, #{char1,jdbcType=VARCHAR},#{char2,jdbcType=VARCHAR})
+  </insert>
+  
+ <delete id="delete" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+   delete from lmrisk where insuranceCom=#{insuranceCom,jdbcType=VARCHAR} and  riskCode= #{riskCode,jdbcType=VARCHAR}
+ </delete>
+ 
+  <delete id="deleteA" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+   delete from lmriskA where insuranceCom=#{insuranceCom,jdbcType=VARCHAR} and  riskCode= #{riskCode,jdbcType=VARCHAR}
+ </delete>
+ 
+ 
+ 
+  <delete id="deleteRela" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+   delete from lmriskrela where  relariskcode= #{riskCode,jdbcType=VARCHAR}
+ </delete>
+ 
+  <delete id="deleteRelaA" parameterType="com.sinosoft.service.business.db.vo.LmriskrelaAVo">
+   delete from lmriskrelaa where  relariskcode= #{riskCode,jdbcType=VARCHAR}
+ </delete>
+ 
+ 
+  <delete id="deleteParam" parameterType="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo">
+   delete from LMRiskParamsDef where  riskCode= #{riskCode,jdbcType=VARCHAR}
+ </delete>
+ 
+  <delete id="deleteParamA" parameterType="com.sinosoft.service.business.db.vo.LmriskparamsdefaVo">
+   delete from LMRiskParamsDefA where riskCode= #{riskCode,jdbcType=VARCHAR}
+ </delete>
+  
+	<update id="updateLacomByAgentcom" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+    update lmriskA
+    <set>
+      <if test="riskCode != null">
+        riskCode= #{riskCode,jdbcType=VARCHAR},
+      </if>
+       <if test="insuranceCom != null">
+        insuranceCom= #{insuranceCom,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator= #{operator,jdbcType=VARCHAR},
+      </if>
+       <if test="riskVer != null">
+        riskVer = #{riskVer,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name= #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null">
+        linkman= #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null">
+        states= #{states,jdbcType=VARCHAR},
+      </if>
+       <if test="upagentcom != null">
+        upagentcom= #{upagentcom,jdbcType=VARCHAR},
+      </if>
+       <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+       <if test="makedate != null">
+        makedate= #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maketime != null">
+        maketime= #{maketime,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate= #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifytime != null">
+        modifytime= #{modifytime,jdbcType=VARCHAR},
+      </if>
+     </set>
+    where agentcom=#{agentcom,jdbcType=VARCHAR}
+
+  </update>	 
+	 
+
+
+<update id="updateA" parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+update lmriskA set checkDefFlag=#{checkDefFlag,jdbcType=VARCHAR} ,checkFlag=#{checkFlag,jdbcType=VARCHAR} ,operator=#{operator,jdbcType=VARCHAR}  where riskcode=#{riskCode,jdbcType=VARCHAR}
+</update>
+<update id="updateB"  parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+ update lmriskrelaa set char1='N' ,char2='W' where relariskcode=#{riskCode,jdbcType=VARCHAR}
+
+</update>
+ <update id="updateC"  parameterType="com.sinosoft.service.business.db.vo.LmriskAVo">
+ update lmriskparamsdefa set char1='N',char2='W' where riskcode=#{riskCode,jdbcType=VARCHAR}
+ 
+ </update>
+
+</mapper>

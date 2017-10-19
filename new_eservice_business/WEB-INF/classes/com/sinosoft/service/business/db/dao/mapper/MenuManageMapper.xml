@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.MenuManageExtDao">
+	<resultMap id="BaseResultMap" type="com.sinosoft.service.business.db.vo.SYSMenuVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="par_uid" jdbcType="VARCHAR" property="parUid" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="menu_desc" jdbcType="VARCHAR" property="menuDesc" />
+    <result column="menu_status" jdbcType="CHAR" property="menuStatus" />
+    <result column="menu_link" jdbcType="VARCHAR" property="menuLink" />
+    <result column="menu_index" jdbcType="INTEGER" property="menuIndex" />
+    <result column="T_S_uid" jdbcType="VARCHAR" property="T_S_uid" />
+    <result column="meddle_menu" jdbcType="INTEGER" property="meddlemenu" />
+    <result column="meddle_menu_name" jdbcType="CHAR" property="meddlemenuname" />
+    <result column="crt_time" jdbcType="TIMESTAMP" property="crtTime" />
+    <result column="upd_time" jdbcType="TIMESTAMP" property="updTime" />
+    <result column="SUB_MENU_NAME" jdbcType="VARCHAR" property="submenuname" />
+    <result column="SUB_MENU" jdbcType="INTEGER" property="submenu" />
+  </resultMap>
+  <sql id="Base_Column_List">
+   id, par_uid, menu_name, menu_desc, menu_status, menu_link, menu_index, T_S_uid, meddle_menu, meddle_menu_name, 
+   crt_time, upd_time,sub_menu_name
+  </sql>
+  
+    <select id="selectByUid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    	select
+		<include refid="Base_Column_List" /> 
+		from menu
+		where id = #{id} 
+    </select>
+    
+    <select id="select" resultMap="BaseResultMap">
+    	select * from menu
+    </select>
+    
+    <select id="selectByMenuName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from menu
+    where menu_desc = #{menuDesc,jdbcType=VARCHAR}
+  </select>
+	  <select id="queryByMenuIndex" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from menu
+		where menu_desc = #{menuDesc} 
+	   		 
+	</select>
+	
+	<select id="queryBymenuName" parameterType="com.sinosoft.service.business.db.vo.SYSMenuVo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from menu
+		<where>
+		   <if test="menuName != null and menuName !='' ">
+		        and menu_name = #{menuName}
+		   </if> 
+		   <if test="submenuname != null and submenuname !='' ">
+		        and sub_menu_name = #{submenuname}
+		   </if> 
+		</where>
+	</select>
+	
+	
+	<!-- <select id="queryBysubmenuName" parameterType="com.sinosoft.service.business.db.vo.SYSMenuVo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from menu
+		where sub_menu_name = #{submenuName}
+	</select> -->
+	
+	
+	<update id="update" parameterType="com.sinosoft.service.business.db.vo.SYSMenuVo">
+        update menu
+    <set>
+      <if test="uid != null">
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parUid != null">
+        par_uid = #{parUid,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null">
+       menu_desc  = #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null">
+        menu_status = #{menuStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLink != null">
+       menu_link  = #{menuLink,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIndex != null">
+        menu_index = #{menuIndex,jdbcType=INTEGER},
+      </if>
+      <if test="T_S_uid != null">
+        T_S_uid = #{T_S_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        meddle_menu = #{meddlemenu,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null">
+        meddle_menu_name = #{meddlemenuname,jdbcType=CHAR},
+      </if>
+      <if test="crtTime != null">
+        crt_time = #{crtTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null">
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>	 
+</mapper>

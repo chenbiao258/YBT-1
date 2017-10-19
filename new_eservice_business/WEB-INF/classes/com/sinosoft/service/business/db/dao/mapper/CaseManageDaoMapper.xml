@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.service.business.db.dao.CaseManageDao">
+	<resultMap type="com.sinosoft.service.business.db.vo.CaseManageVo" id="BaseResultMap">
+		<id column="uid" jdbcType="VARCHAR" property="uid" />
+	    <result column="case_code" jdbcType="VARCHAR" property="caseCode" />
+	    <result column="case_name" jdbcType="VARCHAR" property="caseName" />
+	    <result column="tester_uid" jdbcType="VARCHAR" property="testerUid" />
+	    <result column="case_type" jdbcType="CHAR" property="caseType" />
+	    <result column="case_content_uid" jdbcType="VARCHAR" property="caseContentUid" />
+	    <result column="case_desc" jdbcType="VARCHAR" property="caseDesc" />
+	    <result column="case_state" jdbcType="CHAR" property="caseState" />
+	    <result column="version" jdbcType="INTEGER" property="version" />
+	    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+	    <result column="crt_time" jdbcType="TIMESTAMP" property="crtTime" />
+	    <result column="upd_time" jdbcType="TIMESTAMP" property="updTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+    uid, case_code, case_name, tester_uid, case_type, case_content_uid, case_desc, case_state, 
+    version, del_flag, crt_time, upd_time
+  	</sql>
+  
+  	<select id="queryList" parameterType="com.sinosoft.service.business.db.vo.CaseManageVo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bs_case
+    where 1=1
+    	<if test="uid != null">
+        and uid = #{uid,jdbcType=VARCHAR}
+      </if>
+      <if test="caseCode != null">
+        and case_code = #{caseCode,jdbcType=VARCHAR}
+      </if>
+      <if test="caseName != null">
+        and case_name = #{caseName,jdbcType=VARCHAR}
+      </if>
+      <if test="testerUid != null">
+        and tester_uid = #{testerUid,jdbcType=VARCHAR}
+      </if>
+      <if test="caseType != null">
+        and case_type = #{caseType,jdbcType=CHAR}
+      </if>
+      <if test="caseContentUid != null">
+        and case_content_uid = #{caseContentUid,jdbcType=VARCHAR}
+      </if>
+      <if test="caseDesc != null">
+        and case_desc = #{caseDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="caseState != null">
+        and case_state = #{caseState,jdbcType=CHAR}
+      </if>
+      <if test="version != null">
+        and version = #{version,jdbcType=INTEGER}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag,jdbcType=CHAR}
+      </if>
+      <if test="crtTime != null">
+        and crt_time = #{crtTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updTime != null">
+        and upd_time = #{updTime,jdbcType=TIMESTAMP}
+      </if>
+  </select>
+</mapper>
