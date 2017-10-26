@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Properties>
+		<Property name="log.path">/home/ybt/logs/</Property>
+		<Property name="log.pattern">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console">
+			<PatternLayout pattern="${log.pattern}" />
+			<ThresholdFilter level="debug" onMatch="ACCEPT"
+				onMismatch="DENY" />
+		</Console>
+
+
+		<RollingFile name="Rolling" fileName="${log.path}/new_eservice_business.log"
+			filePattern="${log.path}/new_eservice_business-%d{yyyy-MM-dd}.%i.log.gz">
+			<PatternLayout pattern="${log.pattern}" />
+
+			<SizeBasedTriggeringPolicy size="50MB" />
+		</RollingFile>
+
+	</Appenders>
+	<Loggers>
+		<Logger name="EventLogger" level="debug" additivity="false">
+			<AppenderRef ref="Routing" />
+		</Logger>
+		
+		 <!-- 将业务dao接口填写进去,并用控制台输出即可 -->  
+        <logger name="com.sinosoft.service.business.db.dao" level="DEBUG" additivity="false">  
+            <appender-ref ref="Console"/>  
+        </logger> 
+        
+        <Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="Rolling" />
+			
+		</Root> 
+	</Loggers>
+</Configuration>
