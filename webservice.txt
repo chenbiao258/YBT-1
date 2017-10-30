@@ -11,3 +11,19 @@ http://uat-wealth-fps-hbcn.hk.hsbc:30001/fps-ws-web/GoalSolutionWebServiceEndpoi
 
 
 retrieveGoalSolutionDetail
+
+
+
+
+
+
+
+
+
+
+return new javax.xml.namespace.QName("http://endpoint.custmgmt.ws.custfinplan.finmktoffermgmt.group.hsbc.com/", "RtvCusFinInfoWebServiceEndpoint");
+
+
+
+
+return new javax.xml.namespace.QName("http://endpoint.fna.ws.custfinplan.finmktoffermgmt.group.hsbc.com/", "FinancialNeedAnalysisWebServiceEndpoint");
