@@ -1,0 +1,38 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:end="http://endpoint.goalsolution.ws.custfinplan.finmktoffermgmt.group.hsbc.com/">
+   <soap:Header/>
+   <soap:Body>
+      <end:retrieveGoalSolutionDetail>
+         <arg0>
+				<sessionInfo>
+					<businessLine>PFS</businessLine> //默认FTS
+					<channelId>OHB</channelId>  //默认OHB
+					<countryCode>CN</countryCode>//? 暂定CN
+					<employeeUserId>29000103</employeeUserId>// staffid
+					<groupMember>HSBC</groupMember>//默认HSBC
+					<hubUserId>WD01</hubUserId>  //the HUB user Id 
+					<hubWorkstationId>WD01</hubWorkstationId> //the HUB workstation ID
+				</sessionInfo>
+				<customers>
+					<countryISOCode>CN</countryISOCode>//暂定CN
+					<customerAttribute>
+						<attributeKey />
+						<attributeValue />
+					</customerAttribute>
+					<groupMemberCode>HSBC</groupMemberCode> //固定
+					<rolePlayerIdentificationNumber>CNHSBC200007995</rolePlayerIdentificationNumber>//CNHBSC+staffid
+					<sourceSystemRolePlayerCode>CDM</sourceSystemRolePlayerCode>
+				</customers>
+				<goalKey>
+					<arrangementIdentifierFinancialPlanning>170202</arrangementIdentifierFinancialPlanning>
+					<goalSequenceNumber>82412</goalSequenceNumber>
+				</goalKey>
+				<localeCode>
+					<localeCode>en_US</localeCode>
+				</localeCode>
+				<subserviceId>
+					<functionOutputCode>SUMMARY</functionOutputCode>
+				</subserviceId>
+			</arg0>
+      </end:retrieveGoalSolutionDetail>
+   </soap:Body>
+</soap:Envelope>
