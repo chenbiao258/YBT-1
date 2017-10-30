@@ -1,0 +1,13 @@
+http://uat-wealth-fps-hbcn.hk.hsbc:30001/fps-ws-web/GoalSolutionWebServiceEndpoint  
+
+
+
+
+
+
+
+
+
+
+
+retrieveGoalSolutionDetail
