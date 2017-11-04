@@ -1,0 +1,38 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:end="http://endpoint.goalsolution.ws.custfinplan.finmktoffermgmt.group.hsbc.com/">
+   <soap:Header/>
+   <soap:Body>
+      <end:retrieveGoalSolutionDetail>
+         <arg0>
+				<sessionInfo>
+					<businessLine>PFS</businessLine>
+					<channelId>OHB</channelId>
+					<countryCode>CN</countryCode>
+					<employeeUserId>29000103</employeeUserId>
+					<groupMember>HSBC</groupMember>
+					<hubUserId>WD01</hubUserId>
+					<hubWorkstationId>WD01</hubWorkstationId>
+				</sessionInfo>
+				<customers>
+					<countryISOCode>CN</countryISOCode>
+					<customerAttribute>
+						<attributeKey />
+						<attributeValue />
+					</customerAttribute>
+					<groupMemberCode>HSBC</groupMemberCode>
+					<rolePlayerIdentificationNumber>CNHSBC200007995</rolePlayerIdentificationNumber>
+					<sourceSystemRolePlayerCode>CDM</sourceSystemRolePlayerCode>
+				</customers>
+				<goalKey>
+					<arrangementIdentifierFinancialPlanning>170202</arrangementIdentifierFinancialPlanning>
+					<goalSequenceNumber>82412</goalSequenceNumber>
+				</goalKey>
+				<localeCode>
+					<localeCode>en_US</localeCode>
+				</localeCode>
+				<subserviceId>
+					<functionOutputCode>SUMMARY</functionOutputCode>
+				</subserviceId>
+			</arg0>
+      </end:retrieveGoalSolutionDetail>
+   </soap:Body>
+</soap:Envelope>
