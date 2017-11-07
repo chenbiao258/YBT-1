@@ -1,0 +1,21 @@
+insert into ldcode(codetype,code,codename) values('joinaccount','1','货币型投资账户');
+
+insert into ldcode(codetype,code,codename) values('joinaccount','2','债券型投资账户');
+
+insert into ldcode(codetype,code,codename) values('joinaccount','3','混合偏债型投资账户');
+
+insert into ldcode(codetype,code,codename) values('joinaccount','4','混合偏股型投资账户');
+
+insert into ldcode(codetype,code,codename) values('joinaccount','5','股票型投资账户');
+
+
+insert into ldcode(codetype,code,codename) values('joinaccounts','1','货币型');
+
+insert into ldcode(codetype,code,codename) values('joinaccounts','2','债券型');
+
+insert into ldcode(codetype,code,codename) values('joinaccounts','3','混合偏债型');
+
+insert into ldcode(codetype,code,codename) values('joinaccounts','4','混合偏股型');
+
+insert into ldcode(codetype,code,codename) values('joinaccounts','5','股票型');
+commit;
