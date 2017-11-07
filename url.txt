@@ -1,7 +1,0 @@
-SFPµÄwebservice½Ó¿Ú
- 
-For risk level
-http://uat-wealth-qas-hbcn.hk.hsbc:30101/group-qas-ws-web/QuestionnaireWebServiceEndpoint
- 
-for financial situation data 
-http://uat-wealth-fps-hbcn.hk.hsbc:30001/fps-ws-web/FinancialNeedAnalysisWebServiceEndpoint
